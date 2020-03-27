@@ -24,10 +24,12 @@ import {Observable} from 'rxjs';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
