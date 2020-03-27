@@ -49,9 +49,43 @@
 
                         </form>
                         <div style="width: 100%;" class="text-center">
-                            <button mat-raised-button color="primary"><i class="fas fa-plus-circle"></i>
+                            <button mat-raised-button class="text-white" color="accent"><i class="fas fa-plus-circle"></i>
                             Agregar Médico</button>
                         </div>
+
+                        <div style="width: 100%;" class="text-center" *ngIf="">
+                            <button mat-raised-button class="text-white" color="accent"><i class="fas fa-edit"></i>
+                            Modificar Médico</button>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header ProductSans text-center text-white" style="background: #004D40;"><h3>Médicos registrados</h3></div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td>No.</td>
+                                <td>Nombre</td>
+                                <td>Exequatur</td>
+                                <td>Especialidad</td>
+                                <td>Acciones</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of medicos">
+                                <td>{{item.idMedico}}</td>
+                                <td>{{item.Nombre}}</td>
+                                <td>{{item.Exequatur}}</td>
+                                <td>{{item.Especialidad}}</td>
+                                <td><button mat-raised-button class="bg-primary text-white"><i class="fas fa-edit"></i></button>
+                                <button mat-raised-button color="warn" class="text-white ml-2"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

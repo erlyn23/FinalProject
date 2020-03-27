@@ -9,7 +9,7 @@ import {AngularFireModule} from '@angular/fire';
 import {AngularFireDatabaseModule } from '@angular/fire/database';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {HttpClientModule} from '@angular/common/http';
-import {MatToolbarModule, MatCard, MatCheckbox, MatMenuModule, MatIconModule, MatPaginatorModule, MatNativeDateModule, MAT_DATE_LOCALE, MAT_DATE_FORMATS} from '@angular/material';
+import {MatToolbarModule, MatCard, MatCheckbox, MatMenuModule, MatIconModule, MatPaginatorModule, MatNativeDateModule, MAT_DATE_LOCALE, MAT_DATE_FORMATS, MatTableModule} from '@angular/material';
 import {environment} from '../environments/environment';
 import {MatButtonModule} from '@angular/material/button';
 import {MatCardModule} from '@angular/material';
@@ -20,12 +20,13 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatDialogModule} from '@angular/material/dialog';
-import {Observable} from 'rxjs';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { HomeComponent } from './components/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+
+
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     MatDatepickerModule,
     MatNativeDateModule,
     NgxPaginationModule,
-    NgxMaterialTimepickerModule.setLocale('es-ES')
+    NgxMaterialTimepickerModule.setLocale('es-ES'),
+    MatTableModule,
     
   ],
   providers: [{

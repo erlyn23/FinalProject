@@ -65,6 +65,8 @@ export class HomeComponent implements OnInit {
     "Neurofisiología clínica",
     "Radiología"];
 
+    medicos: any[];
+
     fg: FormGroup;
   constructor(private fb: FormBuilder, private gs: GeneralService,
     private ms: MedicosService) { }
@@ -75,9 +77,9 @@ export class HomeComponent implements OnInit {
       Exequatur: [""],
       Especialidad: ["",[Validators.required]]
     });
-   /* this.ms.ObtenerMedicos().subscribe((data:any) =>{
-      
-    })*/
+    this.ms.ObtenerMedicos().subscribe((data:any) =>{
+      this.medicos = data;
+    })
   }
 
 
