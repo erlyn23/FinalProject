@@ -134,6 +134,7 @@
     <Compile Include="Models\Citas.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CitasArregladas.cs" />
     <Compile Include="Models\Habitaciones.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
