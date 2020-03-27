@@ -9,12 +9,11 @@ import { MedicosService } from 'src/app/services/medicos.service';
 })
 export class HomeComponent implements OnInit {
 
-  datos: any[];
   constructor(private gs: GeneralService,
     private ms: MedicosService) { }
 
   ngOnInit() {
-    this.ms.ObtenerMedicos().subscribe(data =>{
+    this.ms.ObtenerMedicos().subscribe((data:any) =>{
       
     })
   }
