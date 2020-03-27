@@ -7,24 +7,46 @@
             <div class="card">
                 <div class="card-header text-center text-white" style="background:#004D40;"><h3>Agregar Médico</h3></div>
                     <div class="card-body">
-                        <form>
+                        <form [formGroup]="fg">
                             <mat-form-field style="width: 100%;">
-                                <input type="text" matInput >
+                                <input type="text" matInput formControlName="Nombre">
                                 <mat-label class="ProductSans"><i class="fas fa-user-md"></i> 
                                 Nombre</mat-label>
                             </mat-form-field>
+
+                            <div *ngIf="Nombre.invalid &&(Nombre.touched || Nombre.dirty)">
+                                <mat-error *ngIf="Nombre.errors.required">
+                                    Este campo es <strong>obligatorio</strong>
+                                </mat-error>
+    
+                                <mat-error *ngIf="Nombre.errors.minlength">
+                                    Ingresa al menos 3 carácteres
+                                </mat-error>
+    
+                                <mat-error *ngIf="Nombre.errors.maxlength">
+                                    Solo puedes insertar 30 carácteres.
+                                </mat-error>
+                           </div>
+
                             <div class="form-group">
                                 <label for="exequatur"><i class="fas fa-paperclip"></i> 
                                 Subir exequatur (PDF)</label>
-                                <input type="file" id="exequatur">
+                                <input type="file" id="exequatur" formControlName="Exequatur">
                             </div>
 
                             <mat-form-field style="width: 100%;">
                                 <mat-label><i class="fas fa-stethoscope"></i> Especialidad</mat-label>
-                                <mat-select>
+                                <mat-select formControlName="Especialidad"> 
                                     <mat-option *ngFor="let i of Especialidades" [value]="i">{{i}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
+
+                            <div *ngIf="Especialidad.invalid &&(Especialidad.touched || Especialidad.dirty)">
+                                <mat-error *ngIf="Especialidad.errors.required">
+                                    Este campo es <strong>obligatorio</strong>
+                                </mat-error>
+                           </div>
+
                         </form>
                         <div style="width: 100%;" class="text-center">
                             <button mat-raised-button color="primary"><i class="fas fa-plus-circle"></i>

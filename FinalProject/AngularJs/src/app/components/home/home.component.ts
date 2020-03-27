@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GeneralService } from 'src/app/services/general.service';
 import { MedicosService } from 'src/app/services/medicos.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
@@ -63,13 +64,31 @@ export class HomeComponent implements OnInit {
     "Microbiología y parasitología",
     "Neurofisiología clínica",
     "Radiología"];
-  constructor(private gs: GeneralService,
+
+    fg: FormGroup;
+  constructor(private fb: FormBuilder, private gs: GeneralService,
     private ms: MedicosService) { }
 
   ngOnInit() {
+    this.fg = this.fb.group({
+      Nombre: ["",[Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
+      Exequatur: [""],
+      Especialidad: ["",[Validators.required]]
+    });
    /* this.ms.ObtenerMedicos().subscribe((data:any) =>{
       
     })*/
+  }
+
+
+  get Nombre(){
+    return this.fg.get('Nombre');
+  }
+  get Exequatur(){
+    return this.fg.get('Exequatur');
+  }
+  get Especialidad(){
+    return this.fg.get('Especialidad');
   }
 
 }
