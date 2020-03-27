@@ -1,0 +1,28 @@
+/* You can add global styles to this file, and also import other style files */
+@font-face
+{
+    font-family: 'Product Sans';
+    src: url('./assets/font/ProductSans-Regular.ttf');
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: 'Product Sans'; 
+}
+
+.ProductSans
+{
+    font-family: 'Product Sans';
+}
+
+.navegador a:hover
+{
+    text-decoration: none;
+    color:white;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+input[type=number] { -moz-appearance:textfield; }
