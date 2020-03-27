@@ -13,9 +13,9 @@ export class HomeComponent implements OnInit {
     private ms: MedicosService) { }
 
   ngOnInit() {
-    this.ms.ObtenerMedicos().subscribe((data:any) =>{
+   /* this.ms.ObtenerMedicos().subscribe((data:any) =>{
       
-    })
+    })*/
   }
 
 }
