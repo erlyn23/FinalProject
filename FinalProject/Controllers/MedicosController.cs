@@ -24,6 +24,7 @@ namespace FinalProject.Controllers
 
         // GET: api/Medicos/5
         [ResponseType(typeof(Medicos))]
+        [Route("MedicoEspecifico")]
         public IHttpActionResult GetMedicos(int id)
         {
             Medicos medicos = db.Medicos.Find(id);
@@ -37,6 +38,7 @@ namespace FinalProject.Controllers
 
         // PUT: api/Medicos/5
         [ResponseType(typeof(void))]
+        [Route("ModificarMedico")]
         public IHttpActionResult PutMedicos(int id, Medicos medicos)
         {
             if (!ModelState.IsValid)
@@ -72,6 +74,7 @@ namespace FinalProject.Controllers
 
         // POST: api/Medicos
         [ResponseType(typeof(Medicos))]
+        [Route("CrearMedico")]
         public IHttpActionResult PostMedicos(Medicos medicos)
         {
             if (!ModelState.IsValid)
@@ -87,6 +90,7 @@ namespace FinalProject.Controllers
 
         // DELETE: api/Medicos/5
         [ResponseType(typeof(Medicos))]
+        [Route("BorrarMedico")]
         public IHttpActionResult DeleteMedicos(int id)
         {
             Medicos medicos = db.Medicos.Find(id);

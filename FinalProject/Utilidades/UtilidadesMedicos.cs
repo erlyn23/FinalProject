@@ -7,5 +7,9 @@ namespace FinalProject.Utilidades
 {
     public class UtilidadesMedicos
     {
+        public static void IngresarPaciente() 
+        { 
+            
+        }
     }
 }
