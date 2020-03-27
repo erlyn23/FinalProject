@@ -12,19 +12,21 @@ using FinalProject.Models;
 
 namespace FinalProject.Controllers
 {
+    [RoutePrefix("api/Medicos")]
     public class MedicosController : ApiController
     {
         private SistemaMedicoEntities db = new SistemaMedicoEntities();
 
         // GET: api/Medicos
+        [Route("ObtenerTodos")]
         public IQueryable<Medicos> GetMedicos()
         {
             return db.Medicos;
         }
 
         // GET: api/Medicos/5
-        [ResponseType(typeof(Medicos))]
         [Route("MedicoEspecifico")]
+        [ResponseType(typeof(Medicos))]
         public IHttpActionResult GetMedicos(int id)
         {
             Medicos medicos = db.Medicos.Find(id);
@@ -74,7 +76,7 @@ namespace FinalProject.Controllers
 
         // POST: api/Medicos
         [ResponseType(typeof(Medicos))]
-        [Route("CrearMedico")]
+        [Route("InsertarMedico")]
         public IHttpActionResult PostMedicos(Medicos medicos)
         {
             if (!ModelState.IsValid)

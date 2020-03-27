@@ -19,26 +19,7 @@ namespace FinalProject.Controllers
         private SqlConnection conexion = new SqlConnection();
         private SqlCommand cmd = new SqlCommand();
         private SqlDataReader reader;
-        
-        
-        [ResponseType(typeof(void))]
-        [Route("AgregarCita")]
-        public IHttpActionResult AddCita(Citas cita, Medicos medico, Pacientes paciente)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            cita.idPaciente = paciente.idPaciente;
-            cita.idMedico = medico.idMedico;
-
-            db.Citas.Add(cita);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = cita.idCita }, cita);
-        }
-
+       
         public List<CitasArregladas> GetCitas() 
         {
             List<CitasArregladas> salida = new List<CitasArregladas>();
