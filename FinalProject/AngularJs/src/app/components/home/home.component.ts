@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GeneralService } from 'src/app/services/general.service';
+import { MedicosService } from 'src/app/services/medicos.service';
 
 @Component({
   selector: 'app-home',
@@ -9,11 +10,12 @@ import { GeneralService } from 'src/app/services/general.service';
 export class HomeComponent implements OnInit {
 
   datos: any[];
-  constructor(private service: GeneralService) { }
+  constructor(private gs: GeneralService,
+    private ms: MedicosService) { }
 
   ngOnInit() {
-    this.service.ObtenerCitas().subscribe(data =>{
-      console.log(data);
+    this.ms.ObtenerMedicos().subscribe(data =>{
+      
     })
   }
 
