@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GeneralService } from 'src/app/services/general.service';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  datos: any[];
+  constructor(private service: GeneralService) { }
 
   ngOnInit() {
+    this.service.ObtenerCitas().subscribe(data =>{
+      console.log(data);
+    })
   }
 
 }

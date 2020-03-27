@@ -21,7 +21,7 @@ namespace FinalProject
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-            var cors = new EnableCorsAttribute("http://localhost:4200", "*", "*");
+            var cors = new EnableCorsAttribute("*", "*", "*");
             config.EnableCors(cors);
         }
     }

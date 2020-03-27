@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class GeneralService {
 
-  url = 'http://localhost:44743/'
+  url = 'https://localhost:44347/api/Citas';
   constructor(private http: HttpClient) { }
   ObtenerCitas(): Observable<CitaArreglada[]>
   {
