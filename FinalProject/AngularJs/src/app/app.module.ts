@@ -25,9 +25,6 @@ import {NgxPaginationModule} from 'ngx-pagination';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { HomeComponent } from './components/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-
-
-
 @NgModule({
   declarations: [
     AppComponent,

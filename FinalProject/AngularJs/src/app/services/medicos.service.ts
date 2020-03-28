@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Medicos } from '../Models/Medicos';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -12,6 +12,18 @@ export class MedicosService {
   constructor(private http: HttpClient) { }
 
   ObtenerMedicos(): Observable<Medicos[]>{
-    return this.http.get<Medicos[]>(this.url + "/ObtenerTodos");
+    return this.http.get<Medicos[]>(this.url);
   }
+
+  AgregarMedico(medico: Medicos): Observable<Medicos>
+  {
+    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) }; 
+    return this.http.post<Medicos>(this.url, medico, httpOptions);
+  }
+
+  /*ModificarMedico(id:string, medico: Medicos)
+  {
+    const httpOptions = {headers: new HttpHeaders({'Content-Type':'application/json'})}
+    return this.http.put<Medicos>(this.url + "/ModificarMedico/"+id, medico, httpOptions);
+  }*/
 }

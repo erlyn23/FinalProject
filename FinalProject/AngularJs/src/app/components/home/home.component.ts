@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { GeneralService } from 'src/app/services/general.service';
 import { MedicosService } from 'src/app/services/medicos.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Medicos } from 'src/app/Models/Medicos';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -10,6 +12,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class HomeComponent implements OnInit {
 
+  todosMedicos: any[];
   Especialidades: any[] = ["Elige una opción...","Alergología",
     "Anestesiología",
     "Cardiología",
@@ -68,6 +71,8 @@ export class HomeComponent implements OnInit {
     medicos: any[];
 
     fg: FormGroup;
+    id: number;
+    comprobar: boolean = false;
   constructor(private fb: FormBuilder, private gs: GeneralService,
     private ms: MedicosService) { }
 
@@ -77,12 +82,31 @@ export class HomeComponent implements OnInit {
       Exequatur: [""],
       Especialidad: ["",[Validators.required]]
     });
-    this.ms.ObtenerMedicos().subscribe((data:any) =>{
-      this.medicos = data;
-    })
+    this.obtenerMedicos();
+    
   }
 
+  obtenerMedicos(){
+    this.ms.ObtenerMedicos().subscribe((data:any)=>
+    {
+      return this.todosMedicos = data;
+    });
+  }
 
+  addMedico(medico: Medicos)
+  {
+    medico = new Medicos();
+    
+    medico.Nombre = this.fg.value.Nombre;
+    medico.Exequatur = this.fg.value.Exequatur;
+    medico.Especialidad = this.fg.value.Especialidad;
+    this.ms.AgregarMedico(medico).subscribe(()=>{
+      this.todosMedicos = [];
+      this.obtenerMedicos();
+      this.fg.reset();
+    })
+  }
+  
   get Nombre(){
     return this.fg.get('Nombre');
   }
