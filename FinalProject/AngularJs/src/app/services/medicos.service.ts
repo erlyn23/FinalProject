@@ -26,4 +26,9 @@ export class MedicosService {
     const httpOptions = {headers: new HttpHeaders({'Content-Type':'application/json'})}
     return this.http.put<Medicos>(this.url + "/ModificarMedico/"+id, medico, httpOptions);
   }*/
+
+  BorrarMedico(idMedico: string): Observable<number>{
+    const httpOptions = {headers: new HttpHeaders({'Content-type':'application/json'})};
+    return this.http.delete<number>(this.url+"?id="+idMedico, httpOptions);
+  }
 }

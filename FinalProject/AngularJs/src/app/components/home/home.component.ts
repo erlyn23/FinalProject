@@ -4,6 +4,8 @@ import { MedicosService } from 'src/app/services/medicos.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Medicos } from 'src/app/Models/Medicos';
 import { Observable } from 'rxjs';
+import { MatSnackBar } from '@angular/material';
+import { preserveWhitespacesDefault } from '@angular/compiler';
 
 @Component({
   selector: 'app-home',
@@ -74,12 +76,13 @@ export class HomeComponent implements OnInit {
     id: number;
     comprobar: boolean = false;
   constructor(private fb: FormBuilder, private gs: GeneralService,
-    private ms: MedicosService) { }
+    private ms: MedicosService,
+    private snack: MatSnackBar) { }
 
   ngOnInit() {
     this.fg = this.fb.group({
       Nombre: ["",[Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
-      Exequatur: [""],
+      Exequatur: ["", [Validators.required, Validators.maxLength(10)]],
       Especialidad: ["",[Validators.required]]
     });
     this.obtenerMedicos();
@@ -103,8 +106,21 @@ export class HomeComponent implements OnInit {
     this.ms.AgregarMedico(medico).subscribe(()=>{
       this.todosMedicos = [];
       this.obtenerMedicos();
+      this.snack.open('El médico se ha añadido correctamente', 'Listo',{
+        duration: 3000,
+      });
       this.fg.reset();
     })
+  }
+
+  deleteMedico(i: number)
+  {
+    const idMed = this.todosMedicos[i].idMedico;
+    this.ms.BorrarMedico(idMed.toString()).subscribe(()=>
+    {
+      this.todosMedicos = [];
+      this.obtenerMedicos();
+    });
   }
   
   get Nombre(){
