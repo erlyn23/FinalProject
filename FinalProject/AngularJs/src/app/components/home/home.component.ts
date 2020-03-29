@@ -4,7 +4,7 @@ import { MedicosService } from 'src/app/services/medicos.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Medicos } from 'src/app/Models/Medicos';
 import { Observable } from 'rxjs';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatTableDataSource } from '@angular/material';
 import { preserveWhitespacesDefault } from '@angular/compiler';
 
 @Component({
@@ -69,6 +69,8 @@ export class HomeComponent implements OnInit {
     "Microbiología y parasitología",
     "Neurofisiología clínica",
     "Radiología"];
+
+    Columnas: string[] = ["No.", "Nombre", "Exequatur", "Especialidad"];
 
     medicos: any[];
 
