@@ -26,12 +26,14 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { HomeComponent } from './components/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { DialogComponent } from './components/dialog/dialog.component';
+import { PacientesComponent } from './components/pacientes/pacientes.component';
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     NavbarComponent,
-    DialogComponent
+    DialogComponent,
+    PacientesComponent
   ],
   imports: [
     BrowserModule,
