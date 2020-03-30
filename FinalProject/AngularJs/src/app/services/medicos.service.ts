@@ -21,11 +21,11 @@ export class MedicosService {
     return this.http.post<Medicos>(this.url, medico, httpOptions);
   }
 
-  /*ModificarMedico(id:string, medico: Medicos)
+  ModificarMedico(id:string, medico: Medicos)
   {
     const httpOptions = {headers: new HttpHeaders({'Content-Type':'application/json'})}
-    return this.http.put<Medicos>(this.url + "/ModificarMedico/"+id, medico, httpOptions);
-  }*/
+    return this.http.put<Medicos>(this.url, medico, httpOptions);
+  }
 
   BorrarMedico(idMedico: string): Observable<number>{
     const httpOptions = {headers: new HttpHeaders({'Content-type':'application/json'})};

@@ -3,9 +3,8 @@ import { GeneralService } from 'src/app/services/general.service';
 import { MedicosService } from 'src/app/services/medicos.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Medicos } from 'src/app/Models/Medicos';
-import { Observable } from 'rxjs';
-import { MatSnackBar, MatTableDataSource } from '@angular/material';
-import { preserveWhitespacesDefault } from '@angular/compiler';
+import { MatSnackBar, MatDialogRef, MatDialog } from '@angular/material';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-home',
@@ -15,6 +14,7 @@ import { preserveWhitespacesDefault } from '@angular/compiler';
 export class HomeComponent implements OnInit {
 
   todosMedicos: any[];
+  valor: any;
   Especialidades: any[] = ["Elige una opción...","Alergología",
     "Anestesiología",
     "Cardiología",
@@ -77,18 +77,20 @@ export class HomeComponent implements OnInit {
     fg: FormGroup;
     id: number;
     comprobar: boolean = false;
-  constructor(private fb: FormBuilder, private gs: GeneralService,
+  
+  
+    constructor(private fb: FormBuilder, private gs: GeneralService,
     private ms: MedicosService,
-    private snack: MatSnackBar) { }
+    private snack: MatSnackBar,
+    private dialog: MatDialog) { }
 
   ngOnInit() {
     this.fg = this.fb.group({
       Nombre: ["",[Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
-      Exequatur: ["", [Validators.required, Validators.maxLength(10)]],
+      Exequatur: ["", [Validators.required,Validators.pattern('[0-9]*'), Validators.maxLength(10)]],
       Especialidad: ["",[Validators.required]]
     });
     this.obtenerMedicos();
-    
   }
 
   obtenerMedicos(){
@@ -108,21 +110,64 @@ export class HomeComponent implements OnInit {
     this.ms.AgregarMedico(medico).subscribe(()=>{
       this.todosMedicos = [];
       this.obtenerMedicos();
-      this.snack.open('El médico se ha añadido correctamente', 'Listo',{
+      this.snack.open('El médico se ha añadido correctamente', '',{
         duration: 3000,
       });
       this.fg.reset();
     })
   }
 
-  deleteMedico(i: number)
+  deleteMedico(i: number):void
   {
-    const idMed = this.todosMedicos[i].idMedico;
-    this.ms.BorrarMedico(idMed.toString()).subscribe(()=>
+    const dialogRef = this.dialog.open(DialogComponent, 
+      {
+        width: '300px',
+        data: 'Confirmar',
+      });
+
+      dialogRef.afterClosed().subscribe(result =>{
+        if(result)
+        {
+          const idMed = this.todosMedicos[i].idMedico;
+          this.ms.BorrarMedico(idMed.toString()).subscribe(()=>
+          {
+            this.todosMedicos = [];
+            this.obtenerMedicos();
+          });
+          this.snack.open('Médico eliminado correctamente', '',
+          {
+            duration: 3000,
+          });
+        }
+      });
+  } 
+  index: number;
+  rellenarDatos(i:number)
+  {
+    this.comprobar = true;
+    const obj = {Nombre: this.todosMedicos[i].Nombre, Exequatur: this.todosMedicos[i].Exequatur, Especialidad: this.todosMedicos[i].Especialidad};
+    this.fg.setValue(obj);
+    this.index = i;
+  }
+  
+  modificarMedico()
+  {
+    const idMedico = this.todosMedicos[this.index].idMedico;
+    let medico = new Medicos();
+    medico.Nombre = this.fg.value.Nombre;
+    medico.Exequatur = this.fg.value.Exequatur;
+    medico.Especialidad = this.fg.value.Especialidad;
+
+    this.ms.ModificarMedico(idMedico.toString(), medico).subscribe(()=>
     {
       this.todosMedicos = [];
       this.obtenerMedicos();
-    });
+      this.snack.open('Medico modificado correctamente', '',{
+        duration: 3000
+      });
+      this.fg.reset();
+      this.comprobar = false;
+    })
   }
   
   get Nombre(){

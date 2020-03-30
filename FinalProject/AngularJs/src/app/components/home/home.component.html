@@ -6,8 +6,8 @@
     <div class="row ProductSans mt-3">
         <div class="col-md-4">
             <div class="card">
-                <div class="card-header text-center text-white" style="background:#004D40;"><h3>Agregar Médico</h3></div>
-                <div class="card-header text-center text-white" style="background:#004D40;" *ngIf="comprobar"><h3>Modificar Médico</h3></div>
+                <div class="card-header text-center text-white" style="background:#004D40;" *ngIf="!comprobar"><h3>Agregar Médico</h3></div>
+                <div class="card-header text-center text-white" style="background:#004D40;" *ngIf="comprobar"><h3>Editar Médico</h3></div>
                     <div class="card-body">
                         <form [formGroup]="fg">
                             <mat-form-field style="width: 100%;">
@@ -33,7 +33,7 @@
                            <mat-form-field style="width: 100%;">
                                <mat-label><i class="fas fa-file"></i> 
                                 Exequatur (No. Decreto)</mat-label>
-                                <input matInput type="number" formControlName="Exequatur">
+                                <input matInput type="text" formControlName="Exequatur">
                            </mat-form-field>
 
                            <div *ngIf="Exequatur.invalid &&(Exequatur.touched || Exequatur.dirty)">
@@ -41,14 +41,17 @@
                                 Este campo es <strong>obligatorio</strong>
                             </mat-error>
                             <mat-error *ngIf="Exequatur.errors.maxlength">
-                                Solo puedes insertar 10 carácteres
+                                No puedes insertar más de 10 carácteres
+                            </mat-error>
+                            <mat-error *ngIf="Exequatur.errors.pattern">
+                                Solo puedes escribir números aquí
                             </mat-error>
                          </div>
                                 
                             <mat-form-field style="width: 100%;">
                                 <mat-label><i class="fas fa-stethoscope"></i> Especialidad</mat-label>
                                 <mat-select formControlName="Especialidad"> 
-                                    <mat-option *ngFor="let i of Especialidades" [value]="i">{{i}}</mat-option>
+                                    <mat-option *ngFor="let especialidad of Especialidades" [value]="especialidad">{{especialidad}}</mat-option>
                                 </mat-select>
                             </mat-form-field>
 
@@ -59,14 +62,14 @@
                            </div>
 
                         </form>
-                        <div style="width: 100%;" class="text-center">
+                        <div style="width: 100%;" class="text-center" *ngIf="!comprobar">
                             <button mat-raised-button class="text-white" (click)="addMedico()" color="accent" [disabled]="!fg.valid"><i class="fas fa-plus-circle"></i>
                             Agregar Médico</button>
                         </div>
 
                         <div style="width: 100%;" class="text-center" *ngIf="comprobar">
-                            <button mat-raised-button class="text-white" color="accent" (click)="modificarMedico()" [disabled]="!fg.valid"><i class="fas fa-edit"></i>
-                            Modificar Médico</button>
+                            <button mat-raised-button class="text-white" color="accent" (click)="modificarMedico()" [disabled]="!fg.valid"><i class="fas fa-check-circle"></i>
+                            Guardar Cambios</button>
                         </div>
                 </div>
             </div>
@@ -91,7 +94,7 @@
                                 <td>{{item.Nombre}}</td>
                                 <td>{{item.Exequatur}}</td>
                                 <td>{{item.Especialidad}}</td>
-                                <td><button mat-button ><i class="fas fa-edit"></i></button>
+                                <td><button mat-button (click)="rellenarDatos(i)" ><i class="fas fa-edit"></i></button>
                                 <button mat-button class="text-danger" (click)="deleteMedico(i)"><i class="fas fa-trash"></i></button>
                                 </td>
                             </tr>

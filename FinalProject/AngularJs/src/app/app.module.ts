@@ -19,17 +19,19 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatDialogModule} from '@angular/material/dialog';
+import {MatDialogModule, MatDialog} from '@angular/material/dialog';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { HomeComponent } from './components/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { DialogComponent } from './components/dialog/dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    NavbarComponent
+    NavbarComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,
@@ -63,6 +65,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     MatTableModule,
     
   ],
+  entryComponents:[DialogComponent],
   providers: [{
     provide: MAT_DATE_LOCALE, useValue:'es-ES'
   }],
