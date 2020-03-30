@@ -27,13 +27,15 @@ import { HomeComponent } from './components/home/home.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { PacientesComponent } from './components/pacientes/pacientes.component';
+import { CitasComponent } from './components/citas/citas.component';
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     NavbarComponent,
     DialogComponent,
-    PacientesComponent
+    PacientesComponent,
+    CitasComponent
   ],
   imports: [
     BrowserModule,

@@ -13,7 +13,6 @@ using FinalProject.Models;
 
 namespace FinalProject.Controllers
 {
-    [RoutePrefix("api/Citas")]
     public class CitasController : ApiController
     {
         private SistemaMedicoEntities db = new SistemaMedicoEntities();
@@ -21,7 +20,6 @@ namespace FinalProject.Controllers
         private SqlCommand cmd = new SqlCommand();
         private SqlDataReader reader;
        
-        [Route("ObtenerCitas")]
         public List<CitasArregladas> GetCitas() 
         {
             List<CitasArregladas> salida = new List<CitasArregladas>();
@@ -46,20 +44,27 @@ namespace FinalProject.Controllers
             return salida;
         }
 
-        [Route("CrearCitas")]
-        public IHttpActionResult PostCita(Citas cita, int idMedico, int idPaciente) 
+        [ResponseType(typeof(Citas))]
+        public IHttpActionResult PostCita(Citas cita) 
         {
             if (!ModelState.IsValid) 
             {
                 return BadRequest(ModelState);
             }
-            cita.idMedico = idMedico;
-            cita.idPaciente = idPaciente;
 
             db.Citas.Add(cita);
             db.SaveChanges();
 
             return CreatedAtRoute("DefaultApi", new { id = cita.idCita }, cita);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing) 
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }
