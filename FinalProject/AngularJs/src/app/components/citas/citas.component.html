@@ -25,7 +25,7 @@
                         <form [formGroup]="fg">
                             <mat-form-field style="width: 100%;">
                                 <mat-select formControlName="NombreMedico">
-                                    <mat-option *ngFor="let med of todosMedicos" [value]="med">{{med.Nombre}}</mat-option>
+                                    <mat-option *ngFor="let med of todosMedicos, let i = index" [value]="i">{{med.Nombre}}</mat-option>
                                 </mat-select>
                                 <mat-label class="ProductSans"><i class="fas fa-user-md"></i> 
                                 Nombre del médico</mat-label>
@@ -41,7 +41,7 @@
                                <mat-label><i class="fas fa-user"></i> 
                                 Nombre del paciente</mat-label>
                                 <mat-select formControlName="NombrePaciente">
-                                    <mat-option *ngFor="let pac of todosPacientes" [value]="pac">{{pac.Nombre}}</mat-option>
+                                    <mat-option *ngFor="let pac of todosPacientes, let i = index" [value]="i">{{pac.Nombre}}</mat-option>
                                 </mat-select>
                            </mat-form-field>
 
@@ -52,7 +52,7 @@
                             </div>
                                 
                         <mat-form-field style="width: 100%;">
-                                <mat-label>Fecha</mat-label>
+                                <mat-label>Fecha: </mat-label>
                                 <input matInput formControlName="Fecha" [matDatepicker]="picker">
                                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                                 <mat-datepicker #picker></mat-datepicker>
@@ -86,17 +86,19 @@
                         <thead>
                             <tr class="text-center">
                                 <td>No.</td>
-                                <td>Nombre</td>
-                                <td>Exequatur</td>
-                                <td>Especialidad</td>
+                                <td>Nombre del médico</td>
+                                <td>Nombre del paciente</td>
+                                <td>Fecha de la cita</td>
+                                <td>Hora de la cita</td>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="text-center" *ngFor="let item of todosMedicos, let i = index">
+                            <tr class="text-center" *ngFor="let item of todasCitas, let i = index">
                                 <td>{{i+1}}</td>
-                                <td>{{item.Nombre}}</td>
-                                <td>{{item.Exequatur}}</td>
-                                <td>{{item.Especialidad}}</td>
+                                <td>{{item.NombreMedico}}</td>
+                                <td>{{item.NombrePaciente}}</td>
+                                <td>{{item.Fecha}}</td>
+                                <td>{{item.Hora}}</td>
                             </tr>
                         </tbody>
                     </table>

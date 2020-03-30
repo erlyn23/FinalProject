@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Medicos } from 'src/app/Models/Medicos';
 import { MatSnackBar, MatDialogRef, MatDialog } from '@angular/material';
 import { DialogComponent } from '../dialog/dialog.component';
+import { CitasService } from 'src/app/services/citas.service';
 
 @Component({
   selector: 'app-home',
@@ -82,7 +83,8 @@ export class HomeComponent implements OnInit {
     constructor(private fb: FormBuilder,
     private ms: MedicosService,
     private snack: MatSnackBar,
-    private dialog: MatDialog) { }
+    private dialog: MatDialog,
+    private cs: CitasService) { }
 
   ngOnInit() {
     this.fg = this.fb.group({
@@ -130,6 +132,10 @@ export class HomeComponent implements OnInit {
         if(result)
         {
           const idMed = this.todosMedicos[i].idMedico;
+          this.cs.BorrarCita(idMed.toString()).subscribe(()=>{
+            this.todosMedicos = [];
+            this.obtenerMedicos();
+          })
           this.ms.BorrarMedico(idMed.toString()).subscribe(()=>
           {
             this.todosMedicos = [];

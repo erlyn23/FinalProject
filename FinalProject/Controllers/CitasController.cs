@@ -45,7 +45,7 @@ namespace FinalProject.Controllers
         }
 
         [ResponseType(typeof(Citas))]
-        public IHttpActionResult PostCita(Citas cita) 
+        public IHttpActionResult PostCitas(Citas cita) 
         {
             if (!ModelState.IsValid) 
             {
@@ -56,6 +56,22 @@ namespace FinalProject.Controllers
             db.SaveChanges();
 
             return CreatedAtRoute("DefaultApi", new { id = cita.idCita }, cita);
+        }
+
+        [ResponseType(typeof(Citas))]
+
+        public IHttpActionResult DeleteCita(int id) 
+        {
+            conexion.ConnectionString = "Data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN;integrated security=SSPI;database=SistemaMedico;";
+            conexion.Open();
+            cmd.Connection = conexion;
+            string query = "delete from Citas where idMedico=" + id;
+            cmd.CommandText = query;
+            cmd.ExecuteNonQuery();
+            cmd.Dispose();
+            conexion.Close();
+            return Ok(id);
+
         }
 
         protected override void Dispose(bool disposing)

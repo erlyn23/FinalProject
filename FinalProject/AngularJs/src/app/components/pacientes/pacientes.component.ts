@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { Pacientes } from 'src/app/Models/Pacientes';
 import { DialogComponent } from '../dialog/dialog.component';
+import { CitasService } from 'src/app/services/citas.service';
 
 @Component({
   selector: 'app-pacientes',
@@ -20,7 +21,8 @@ export class PacientesComponent implements OnInit {
     private fb: FormBuilder, 
     private snack: MatSnackBar, 
     private dialog:MatDialog,
-    private dc: DialogComponent) { }
+    private dc: DialogComponent,
+    private cs: CitasService) { }
 
   ngOnInit() {
     this.fg = this.fb.group({
@@ -94,6 +96,10 @@ export class PacientesComponent implements OnInit {
     dialogRef.afterClosed().subscribe(data=>{
       if(data){
 
+        this.cs.BorrarCita(this.todosPacientes[i].idPaciente.toString()).subscribe(()=>{
+          this.todosPacientes = [];
+          this.obtenerPacientes();
+        });
         this.ps.EliminarPaciente(this.todosPacientes[i].idPaciente.toString()).subscribe(()=>
         {  
           this.todosPacientes = [];
