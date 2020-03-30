@@ -152,13 +152,13 @@ export class HomeComponent implements OnInit {
   
   modificarMedico()
   {
-    const idMedico = this.todosMedicos[this.index].idMedico;
     let medico = new Medicos();
+    medico.idMedico = this.todosMedicos[this.index].idMedico;
     medico.Nombre = this.fg.value.Nombre;
     medico.Exequatur = this.fg.value.Exequatur;
     medico.Especialidad = this.fg.value.Especialidad;
 
-    this.ms.ModificarMedico(idMedico.toString(), medico).subscribe(()=>
+    this.ms.ModificarMedico(medico).subscribe(()=>
     {
       this.todosMedicos = [];
       this.obtenerMedicos();

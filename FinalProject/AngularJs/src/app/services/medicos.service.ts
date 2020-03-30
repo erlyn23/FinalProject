@@ -21,9 +21,9 @@ export class MedicosService {
     return this.http.post<Medicos>(this.url, medico, httpOptions);
   }
 
-  ModificarMedico(id:string, medico: Medicos)
+  ModificarMedico(medico: Medicos)
   {
-    const httpOptions = {headers: new HttpHeaders({'Content-Type':'application/json'})}
+    const httpOptions = {headers: new HttpHeaders({'Content-type':'application/json'})}
     return this.http.put<Medicos>(this.url, medico, httpOptions);
   }
 

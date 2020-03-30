@@ -40,16 +40,11 @@ namespace FinalProject.Controllers
 
         // PUT: api/Medicos/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutMedicos(int id, Medicos medicos)
+        public  IHttpActionResult PutMedicos(Medicos medicos)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
-            }
-
-            if (id != medicos.idMedico)
-            {
-                return BadRequest();
             }
 
             db.Entry(medicos).State = EntityState.Modified;
@@ -60,7 +55,7 @@ namespace FinalProject.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MedicosExists(id))
+                if (!MedicosExists(medicos.idMedico))
                 {
                     return NotFound();
                 }
