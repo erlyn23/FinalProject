@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit {
 
   todosMedicos: any[];
   valor: any;
-  Especialidades: any[] = ["Elige una opción...","Alergología",
+  Especialidades: any[] = ["Alergología",
     "Anestesiología",
     "Cardiología",
     "Gastroenterología",
@@ -68,7 +68,8 @@ export class HomeComponent implements OnInit {
     "Medicina nuclear",
     "Microbiología y parasitología",
     "Neurofisiología clínica",
-    "Radiología"];
+    "Radiología",
+    "Odontología"];
 
     Columnas: string[] = ["No.", "Nombre", "Exequatur", "Especialidad"];
 
@@ -90,6 +91,7 @@ export class HomeComponent implements OnInit {
       Exequatur: ["", [Validators.required,Validators.pattern('[0-9]*'), Validators.maxLength(10)]],
       Especialidad: ["",[Validators.required]]
     });
+    this.Especialidades.sort();
     this.obtenerMedicos();
   }
 
