@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { GeneralService } from 'src/app/services/general.service';
 import { MedicosService } from 'src/app/services/medicos.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Medicos } from 'src/app/Models/Medicos';
@@ -80,10 +79,11 @@ export class HomeComponent implements OnInit {
     comprobar: boolean = false;
   
   
-    constructor(private fb: FormBuilder, private gs: GeneralService,
+    constructor(private fb: FormBuilder,
     private ms: MedicosService,
     private snack: MatSnackBar,
-    private dialog: MatDialog) { }
+    private dialog: MatDialog,
+    private dc: DialogComponent) { }
 
   ngOnInit() {
     this.fg = this.fb.group({
@@ -119,7 +119,7 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  deleteMedico(i: number):void
+  deleteMedico(i: number)
   {
     const dialogRef = this.dialog.open(DialogComponent, 
       {

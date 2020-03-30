@@ -69,7 +69,10 @@ import { PacientesComponent } from './components/pacientes/pacientes.component';
   ],
   entryComponents:[DialogComponent],
   providers: [{
-    provide: MAT_DATE_LOCALE, useValue:'es-ES'
+    provide: MAT_DATE_LOCALE, useValue:'es-ES',
+  },
+  {
+    provide: DialogComponent,
   }],
   bootstrap: [AppComponent]
 })

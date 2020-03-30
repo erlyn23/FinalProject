@@ -20,69 +20,74 @@
     <div class="row ProductSans mt-3">
         <div class="col-md-4">
             <div class="card mb-4">
-                <div class="card-header text-center text-white" style="background:#004D40;" *ngIf="!comprobar"><h3>Agregar Médico</h3></div>
-                <div class="card-header text-center text-white" style="background:#004D40;" *ngIf="comprobar"><h3>Editar Médico</h3></div>
+                <div class="card-header text-center text-white" style="background:#004D40;" *ngIf="!comprobar"><h3>Agregar Paciente</h3></div>
+                <div class="card-header text-center text-white" style="background:#004D40;" *ngIf="comprobar"><h3>Editar Paciente</h3></div>
                     <div class="card-body">
                         <form [formGroup]="fg">
                             <mat-form-field style="width: 100%;">
-                                <input type="text" matInput formControlName="Nombre">
-                                <mat-label class="ProductSans"><i class="fas fa-user-md"></i> 
-                                Nombre</mat-label>
+                                <mat-label class="ProductSans"><i class="fas fa-address-card"></i> 
+                                Cédula</mat-label>
+                                <input type="text" matInput formControlName="Cedula">
                             </mat-form-field>
 
-                            <div *ngIf="Nombre.invalid &&(Nombre.touched || Nombre.dirty)">
-                                <mat-error *ngIf="Nombre.errors.required">
+                            <div *ngIf="Cedula.invalid &&(Cedula.touched || Cedula.dirty)">
+                                <mat-error *ngIf="Cedula.errors.required">
                                     Este campo es <strong>obligatorio</strong>
                                 </mat-error>
-    
-                                <mat-error *ngIf="Nombre.errors.minlength">
-                                    Ingresa al menos 3 carácteres
+
+                                <mat-error *ngIf="Cedula.errors.pattern">
+                                    Solo puedes insertar números aquí
                                 </mat-error>
     
-                                <mat-error *ngIf="Nombre.errors.maxlength">
-                                    Solo puedes insertar 30 carácteres.
+                                <mat-error *ngIf="Cedula.errors.minlength">
+                                    Solo puedes ingresar 11 carácteres
+                                </mat-error>
+    
+                                <mat-error *ngIf="Cedula.errors.maxlength">
+                                    Solo puedes ingresar 11 carácteres.
                                 </mat-error>
                            </div>
 
                            <mat-form-field style="width: 100%;">
-                               <mat-label><i class="fas fa-file"></i> 
-                                Exequatur (No. Decreto)</mat-label>
-                                <input matInput type="text" formControlName="Exequatur">
+                               <mat-label><i class="fas fa-user"></i> 
+                                Nombre</mat-label>
+                                <input matInput type="text" formControlName="Nombre">
                            </mat-form-field>
 
-                           <div *ngIf="Exequatur.invalid &&(Exequatur.touched || Exequatur.dirty)">
-                            <mat-error *ngIf="Exequatur.errors.required">
+                           <div *ngIf="Nombre.invalid &&(Nombre.touched || Nombre.dirty)">
+                            <mat-error *ngIf="Nombre.errors.required">
                                 Este campo es <strong>obligatorio</strong>
                             </mat-error>
-                            <mat-error *ngIf="Exequatur.errors.maxlength">
-                                No puedes insertar más de 10 carácteres
+                            <mat-error *ngIf="Nombre.errors.maxlength">
+                                No puedes insertar más de 30 carácteres
                             </mat-error>
-                            <mat-error *ngIf="Exequatur.errors.pattern">
-                                Solo puedes escribir números aquí
+                            <mat-error *ngIf="Nombre.errors.minlength">
+                                Debes insertar al menos 3 carácteres
                             </mat-error>
                          </div>
                                 
                             <mat-form-field style="width: 100%;">
-                                <mat-label><i class="fas fa-stethoscope"></i> Especialidad</mat-label>
-                                <mat-select formControlName="Especialidad"> 
-                                    <mat-option *ngFor="let especialidad of Especialidades" [value]="especialidad">{{especialidad}}</mat-option>
+                                <mat-label><i class="fas fa-check-circle"></i> Asegurado</mat-label>
+                                <mat-select formControlName="Asegurado"> 
+                                    <mat-option value="Sí">Sí</mat-option>
+                                    <mat-option value="No">No</mat-option>
                                 </mat-select>
                             </mat-form-field>
 
-                            <div *ngIf="Especialidad.invalid &&(Especialidad.touched || Especialidad.dirty)">
-                                <mat-error *ngIf="Especialidad.errors.required">
+                            <div *ngIf="Asegurado.invalid &&(Asegurado.touched || Asegurado.dirty)">
+                                <mat-error *ngIf="Asegurado.errors.required">
                                     Este campo es <strong>obligatorio</strong>
                                 </mat-error>
                            </div>
 
                         </form>
                         <div style="width: 100%;" class="text-center" *ngIf="!comprobar">
-                            <button mat-raised-button class="text-white" (click)="addMedico()" color="accent" [disabled]="!fg.valid"><i class="fas fa-plus-circle"></i>
-                            Agregar Médico</button>
+                            <button mat-raised-button class="text-white" (click)="addPaciente()" color="accent" [disabled]="!fg.valid"><i class="fas fa-plus-circle"></i>
+                            Agregar Paciente</button>
                         </div>
 
                         <div style="width: 100%;" class="text-center" *ngIf="comprobar">
-                            <button mat-raised-button class="text-white" color="accent" (click)="modificarMedico()" [disabled]="!fg.valid"><i class="fas fa-check-circle"></i>
+                            <button mat-raised-button class="text-white" color="accent" (click)="modificarPaciente()" [disabled]="!fg.valid"><i class="fas fa-check-circle"></i>
                             Guardar Cambios</button>
                         </div>
                 </div>
@@ -90,26 +95,26 @@
         </div>
             <div class="col-md-8">
                <div class="card mb-4">
-                <div class="card-header ProductSans text-center text-white" style="background: #004D40;"><h3>Médicos registrados</h3></div>
+                <div class="card-header ProductSans text-center text-white" style="background: #004D40;"><h3>Pacientes registrados</h3></div>
                 <div class="card-body">
                     <table class="table table-hover table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl ">
                         <thead>
                             <tr class="text-center">
                                 <td>No.</td>
+                                <td>Cédula</td>
                                 <td>Nombre</td>
-                                <td>Exequatur</td>
-                                <td>Especialidad</td>
+                                <td>Asegurado</td>
                                 <td>Acciones</td>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="text-center" *ngFor="let item of todosMedicos, let i = index">
+                            <tr class="text-center" *ngFor="let item of todosPacientes, let i = index">
                                 <td>{{i+1}}</td>
+                                <td>{{item.Cedula}}</td>
                                 <td>{{item.Nombre}}</td>
-                                <td>{{item.Exequatur}}</td>
-                                <td>{{item.Especialidad}}</td>
+                                <td>{{item.Asegurado}}</td>
                                 <td><button mat-button (click)="rellenarDatos(i)" ><i class="fas fa-edit"></i></button>
-                                <button mat-button class="text-danger" (click)="deleteMedico(i)"><i class="fas fa-trash"></i></button>
+                                <button mat-button class="text-danger" (click)="deletePaciente(i)"><i class="fas fa-trash"></i></button>
                                 </td>
                             </tr>
                         </tbody>
