@@ -82,8 +82,7 @@ export class HomeComponent implements OnInit {
     constructor(private fb: FormBuilder,
     private ms: MedicosService,
     private snack: MatSnackBar,
-    private dialog: MatDialog,
-    private dc: DialogComponent) { }
+    private dialog: MatDialog) { }
 
   ngOnInit() {
     this.fg = this.fb.group({

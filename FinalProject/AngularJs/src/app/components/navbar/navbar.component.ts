@@ -21,4 +21,8 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['/pacientes']);
   }
 
+  Citas(){
+    this.router.navigate(['/citas']);
+  }
+
 }

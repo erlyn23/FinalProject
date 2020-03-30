@@ -1,0 +1,107 @@
+<div>
+    <app-navbar></app-navbar>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-lg-12">
+            <div class="contenedorTitulo">
+                <h1 class="titulo">Administración de citas</h1>
+            </div>
+            <div style="z-index: 1; margin-left: -16px; width: 100%; background: black; opacity: 0.5; height: 400px;" class="position-absolute">
+            </div>
+            <div style="width: 100%; height: 400px; background-image: url('./../../assets/img/portada.jpg'); background-size: 100% 100%; background-repeat: no-repeat;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row ProductSans mt-3">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header text-center text-white" style="background:#004D40;"><h3>Agendar Cita</h3></div>
+                    <div class="card-body">
+                        <form [formGroup]="fg">
+                            <mat-form-field style="width: 100%;">
+                                <mat-select formControlName="NombreMedico">
+                                    <mat-option *ngFor="let med of todosMedicos" [value]="med">{{med.Nombre}}</mat-option>
+                                </mat-select>
+                                <mat-label class="ProductSans"><i class="fas fa-user-md"></i> 
+                                Nombre del médico</mat-label>
+                            </mat-form-field>
+
+                            <div *ngIf="NombreMedico.invalid &&(NombreMedico.touched || NombreMedico.dirty)">
+                                <mat-error *ngIf="NombreMedico.errors.required">
+                                    Este campo es <strong>obligatorio</strong>
+                                </mat-error>
+                           </div>
+
+                           <mat-form-field style="width: 100%;">
+                               <mat-label><i class="fas fa-user"></i> 
+                                Nombre del paciente</mat-label>
+                                <mat-select formControlName="NombrePaciente">
+                                    <mat-option *ngFor="let pac of todosPacientes" [value]="pac">{{pac.Nombre}}</mat-option>
+                                </mat-select>
+                           </mat-form-field>
+
+                           <div *ngIf="NombrePaciente.invalid &&(NombrePaciente.touched || NombrePaciente.dirty)">
+                            <mat-error *ngIf="NombrePaciente.errors.required">
+                                Este campo es <strong>obligatorio</strong>
+                            </mat-error>
+                            </div>
+                                
+                        <mat-form-field style="width: 100%;">
+                                <mat-label>Fecha</mat-label>
+                                <input matInput formControlName="Fecha" [matDatepicker]="picker">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+
+                        <div *ngIf="Fecha.invalid &&(Fecha.touched || Fecha.dirty)">
+                            <mat-error *ngIf="Fecha.errors.required">
+                                Este campo es <strong>obligatorio</strong>
+                            </mat-error>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-clock"></i>
+                            Hora</label>
+                            <input type="time" formControlName="Hora">
+                        </div>
+
+                        </form>
+                        <div style="width: 100%;" class="text-center">
+                            <button mat-raised-button class="text-white" (click)="addCita()" color="accent" [disabled]="!fg.valid"><i class="fas fa-plus-circle"></i>
+                            Agendar Cita</button>
+                        </div>
+                </div>
+            </div>
+        </div>
+            <div class="col-md-8">
+               <div class="card mb-4">
+                <div class="card-header ProductSans text-center text-white" style="background: #004D40;"><h3>Citas agendadas</h3></div>
+                <div class="card-body">
+                    <table class="table table-hover table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl ">
+                        <thead>
+                            <tr class="text-center">
+                                <td>No.</td>
+                                <td>Nombre</td>
+                                <td>Exequatur</td>
+                                <td>Especialidad</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-center" *ngFor="let item of todosMedicos, let i = index">
+                                <td>{{i+1}}</td>
+                                <td>{{item.Nombre}}</td>
+                                <td>{{item.Exequatur}}</td>
+                                <td>{{item.Especialidad}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+               </div> 
+            </div>
+        </div>
+    </div>
