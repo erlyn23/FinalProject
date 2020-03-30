@@ -8,7 +8,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class PacientesService {
 
-  url = "https://localhost:44347/Pacientes";
+  url = "https://localhost:44347/api/Pacientes";
   constructor(private http: HttpClient) { }
 
   ObtenerPacientes(): Observable<Pacientes[]>

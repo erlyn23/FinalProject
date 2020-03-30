@@ -39,6 +39,7 @@ export class PacientesComponent implements OnInit {
   }
 
   addPaciente(paciente: Pacientes){
+    paciente = new Pacientes();
     paciente.Cedula = this.fg.value.Cedula;
     paciente.Nombre = this.fg.value.Nombre;
     paciente.Asegurado = this.fg.value.Asegurado;
@@ -55,15 +56,16 @@ export class PacientesComponent implements OnInit {
 
   index: number;
   rellenarDatos(i:number){
-    this.fg.value.Cedula = this.todosPacientes[i].Cedula;
-    this.fg.value.Nombre = this.todosPacientes[i].Nombre;
-    this.fg.value.Asegurado = this.todosPacientes[i].Asegurado;
+    this.fg.controls.Cedula.setValue(this.todosPacientes[i].Cedula); 
+    this.fg.controls.Nombre.setValue(this.todosPacientes[i].Nombre);
+    this.fg.controls.Asegurado.setValue(this.todosPacientes[i].Asegurado);
     this.index = i;
     this.comprobar = true;
   }
 
   modificarPaciente(paciente: Pacientes)
   {
+    paciente = new Pacientes();
     paciente.idPaciente = this.todosPacientes[this.index].idPaciente;
     paciente.Cedula = this.fg.value.Cedula;
     paciente.Nombre = this.fg.value.Nombre;
