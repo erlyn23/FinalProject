@@ -37,16 +37,11 @@ namespace FinalProject.Controllers
 
         // PUT: api/Habitaciones/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutHabitaciones(int id, Habitaciones habitaciones)
+        public IHttpActionResult PutHabitaciones(Habitaciones habitaciones)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
-            }
-
-            if (id != habitaciones.idHabitacion)
-            {
-                return BadRequest();
             }
 
             db.Entry(habitaciones).State = EntityState.Modified;
@@ -57,7 +52,7 @@ namespace FinalProject.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!HabitacionesExists(id))
+                if (!HabitacionesExists(habitaciones.idHabitacion))
                 {
                     return NotFound();
                 }

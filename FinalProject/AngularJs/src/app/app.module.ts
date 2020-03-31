@@ -28,6 +28,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { PacientesComponent } from './components/pacientes/pacientes.component';
 import { CitasComponent } from './components/citas/citas.component';
+import { HabitacionesComponent } from './components/habitaciones/habitaciones.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,7 +36,8 @@ import { CitasComponent } from './components/citas/citas.component';
     NavbarComponent,
     DialogComponent,
     PacientesComponent,
-    CitasComponent
+    CitasComponent,
+    HabitacionesComponent
   ],
   imports: [
     BrowserModule,
