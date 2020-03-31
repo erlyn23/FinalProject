@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { Citas } from '../Models/Citas';
-import { HttpClient, HttpHeaderResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { CitaArreglada } from '../Models/CitaArreglada';
 
 @Injectable({
@@ -18,8 +18,10 @@ export class CitasService {
   }
 
   AgregarCita(citas: Citas):Observable<Citas>{
-    const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
-    return this.http.post<Citas>(this.url, citas, httpOptions);
+  
+      const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
+      return this.http.post<Citas>(this.url, citas, httpOptions);
+     
   }
 
   BorrarCita(id: string, tipo:string): Observable<number>{
@@ -27,3 +29,4 @@ export class CitasService {
     return this.http.delete<number>(this.url+"/?id="+id+"&tipo="+tipo, httpOptions);
   }
 }
+

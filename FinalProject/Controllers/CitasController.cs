@@ -52,8 +52,16 @@ namespace FinalProject.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.Citas.Add(cita);
-            db.SaveChanges();
+            DateTime fecha = DateTime.Now;
+            if(cita.Fecha < fecha) 
+            {
+                return BadRequest("Fecha invalida o pasada");
+            }
+            else 
+            {
+                db.Citas.Add(cita);
+                db.SaveChanges();
+            }
 
             return CreatedAtRoute("DefaultApi", new { id = cita.idCita }, cita);
         }

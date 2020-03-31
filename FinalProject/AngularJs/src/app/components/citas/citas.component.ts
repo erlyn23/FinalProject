@@ -66,20 +66,26 @@ export class CitasComponent implements OnInit {
     let cita = new Citas();
     const idMedico = this.todosMedicos[this.fg.value.NombreMedico].idMedico;
     const idPaciente = this.todosPacientes[this.fg.value.NombrePaciente].idPaciente;
+    let actual = new Date();
 
     cita.idMedico = idMedico;
     cita.idPaciente = idPaciente;
     cita.Fecha = this.fg.value.Fecha;
     cita.Hora = this.fg.value.Hora;
 
-    this.cs.AgregarCita(cita).subscribe(()=>{
-      this.snack.open('Cita agendada correctamente', '',{
-        duration: 3000,
+    if(cita.Fecha < actual)
+    {
+      alert("La fecha no es válida");
+    }else{
+      this.cs.AgregarCita(cita).subscribe(()=>{
+        this.snack.open('Cita agendada correctamente', '',{
+          duration: 3000,
+        });
+        this.todasCitas = [];
+        this.obtenerCitas();
+        this.fg.reset();
       });
-      this.todasCitas = [];
-      this.obtenerCitas();
-      this.fg.reset();
-    });
+    }
   }
 
 

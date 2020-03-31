@@ -44,3 +44,16 @@ input[type=number] { -moz-appearance:textfield; }
     text-align: center;
     height: 400px;
 }
+
+.pickermio{
+    border-style: none;
+    border-bottom-style: solid;
+    border-bottom-color: gray;
+    width: 100%;
+    border-bottom-width: 1px;
+}
+
+.pickermio:focus{
+    border-bottom-color: #004D40;
+    border-bottom-width: 1px;
+}
