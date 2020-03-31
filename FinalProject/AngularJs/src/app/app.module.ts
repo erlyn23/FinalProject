@@ -30,6 +30,7 @@ import { PacientesComponent } from './components/pacientes/pacientes.component';
 import { CitasComponent } from './components/citas/citas.component';
 import { HabitacionesComponent } from './components/habitaciones/habitaciones.component';
 import { IngresosComponent } from './components/ingresos/ingresos.component';
+import { AltasComponent } from './components/altas/altas.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { IngresosComponent } from './components/ingresos/ingresos.component';
     PacientesComponent,
     CitasComponent,
     HabitacionesComponent,
-    IngresosComponent
+    IngresosComponent,
+    AltasComponent
   ],
   imports: [
     BrowserModule,

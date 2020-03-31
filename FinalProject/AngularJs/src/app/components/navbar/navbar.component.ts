@@ -33,4 +33,8 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['/ingresos']);
   }
 
+  AltaMedica(){
+    this.router.navigate(['/altas']);
+  }
+
 }

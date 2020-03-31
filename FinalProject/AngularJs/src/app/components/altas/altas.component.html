@@ -1,0 +1,104 @@
+<div>
+    <app-navbar></app-navbar>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-lg-12">
+            <div class="contenedorTitulo">
+                <h1 class="titulo">Altas Médicas</h1>
+            </div>
+            <div style="z-index: 1; margin-left: -16px; width: 100%; background: black; opacity: 0.5; height: 400px;" class="position-absolute">
+            </div>
+            <div style="width: 100%; height: 400px; background-image: url('./../../assets/img/portada.jpg'); background-size: 100% 100%; background-repeat: no-repeat;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row ProductSans mt-3">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header text-center text-white" style="background:#004D40;"><h3>Seleccionar Ingreso</h3></div>
+                    <div class="card-body">
+                    <form [formGroup]="fg">
+                            <mat-form-field style="width: 100%;">
+                                <mat-select formControlName="idIngresos" (ngModelChange)="buscarIngreso($event)">
+                                    <mat-option *ngFor="let ing of todosIngresos, let i = index" [value]="i">{{ing.idIngreso}}</mat-option>
+                                </mat-select>
+                                <mat-label class="ProductSans"><i class="fas fa-key"></i> 
+                                Id de ingreso</mat-label>
+                            </mat-form-field>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header ProductSans text-center text-white" style="background: #004D40;"><h3>Consulta de ingreso</h3></div>
+                <div class="card-body">
+                    <table class="table table-hover table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl ">
+                        <thead>
+                            <tr class="text-center">
+                                <th>No.</th>
+                                <th>Paciente</th>
+                                <th>Número de habitación</th>
+                                <th>Fecha de ingreso</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-center" *ngIf="busqueda != undefined">
+                                <td>{{1}}</td>
+                                <td>{{this.busqueda.NombrePaciente}}</td>
+                                <td>{{this.busqueda.NumeroHabitacion}}</td>
+                                <td>{{this.busqueda.FechaIngreso}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div> 
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header ProductSans text-center text-white" style="background: #004d40;"><h3>Dar alta médica</h3></div>
+                <div class="card-body">
+                    
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header ProductSans text-center text-white" style="background: #004d40;"><h3>Lista de altas médicas</h3></div>
+                <div class="card-body">
+                    <table class="table table-hover table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Nombre del paciente</th>
+                                <th>Fecha de ingreso</th>
+                                <th>Fecha de alta médica</th>
+                                <th>Monto total a pagar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of todasAltas, let i = index">
+                                <td>{{i+1}}</td>
+                                <td>{{item.NombrePaciente}}</td>
+                                <td>{{item.FechaIngreso}}</td>
+                                <td>{{item.FechaSalida}}</td>
+                                <td>{{item.Monto}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
