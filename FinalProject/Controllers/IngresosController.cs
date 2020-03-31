@@ -44,6 +44,7 @@ namespace FinalProject.Controllers
             return lista;
         }
 
+        [ResponseType(typeof(Ingresos))]
         public IHttpActionResult PostIngresos(Ingresos ingreso) 
         {
             if (!ModelState.IsValid)
@@ -62,8 +63,37 @@ namespace FinalProject.Controllers
                 db.Ingresos.Add(ingreso);
                 db.SaveChanges();
             }
-
             return CreatedAtRoute("DefaultApi", new { id = ingreso.idIngreso }, ingreso);
+        }
+
+        [ResponseType(typeof(Ingresos))]
+
+        public IHttpActionResult DeleteIngreso(int id, string tipo) 
+        {
+            conexion.ConnectionString = "data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN; integrated security = SSPI; database = SistemaMedico;";
+            conexion.Open();
+            cmd.Connection = conexion;
+            switch (tipo) 
+            {
+                case "Paciente":
+                    string query = "delete from Ingresos where idPaciente=" + id;
+                    cmd.CommandText = query;
+                    cmd.ExecuteNonQuery();
+                    break;
+                case "Habitacion":
+                    string query1 = "delete from Ingresos where idHabitacion=" + id;
+                    cmd.CommandText = query1;
+                    cmd.ExecuteNonQuery();
+                    break;
+                case "Ingreso":
+                    string query2 = "delete from Ingresos where idIngreso=" + id;
+                    cmd.CommandText = query2;
+                    cmd.ExecuteNonQuery();
+                    break;
+            }
+            cmd.Dispose();
+            conexion.Close();
+            return Ok(id);
         }
     }
 }

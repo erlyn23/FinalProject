@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { Habitaciones } from 'src/app/Models/Habitaciones';
 import { DialogComponent } from '../dialog/dialog.component';
+import { IngresosService } from 'src/app/services/ingresos.service';
 
 @Component({
   selector: 'app-habitaciones',
@@ -18,6 +19,7 @@ export class HabitacionesComponent implements OnInit {
   decimalpatron = '^[0-9]{1,4}(\.[0-9][0-9])?$';
 
   constructor(private hs: HabitacionesService,
+    private is: IngresosService,
     private fb: FormBuilder,
     private snack: MatSnackBar,
     private dialog: MatDialog) { }
@@ -91,7 +93,11 @@ export class HabitacionesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(salida=>{
       if(salida){
-        this.hs.EliminarHabitacion(idHab.toString()).subscribe(()=>{
+          this.is.EliminarIngreso(idHab.toString(), "Habitacion").subscribe(()=>{
+            this.todasHabitaciones = [];
+            this.obtenerHabitaciones();
+          });
+          this.hs.EliminarHabitacion(idHab.toString()).subscribe(()=>{
           this.todasHabitaciones = [];
           this.obtenerHabitaciones();
           this.snack.open('Habitación eliminada correctamente', '',{

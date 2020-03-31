@@ -150,6 +150,7 @@
     <Compile Include="Models\Ingresos.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\IngresosArreglados.cs" />
     <Compile Include="Models\Medicos.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

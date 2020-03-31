@@ -40,7 +40,7 @@
                            <mat-form-field style="width: 100%;">
                                <mat-label><i class="fas fa-list-ol"></i> 
                                 Número de habitación</mat-label>
-                                <mat-select formControlName="NoHabitacion">
+                                <mat-select formControlName="NoHabitacion" (ngModelChange)="changeEvent($event)">
                                     <mat-option *ngFor="let hab of todasHabitaciones, let i = index" [value]="i">{{hab.Numero}}</mat-option>
                                 </mat-select>
                            </mat-form-field>
@@ -83,7 +83,6 @@
                                 <th>Nombre del paciente</th>
                                 <th>Número de habitación</th>
                                 <th>Fecha de ingreso</th>
-                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -92,7 +91,6 @@
                                 <td>{{item.NombrePaciente}}</td>
                                 <td>{{item.NumeroHabitacion}}</td>
                                 <td>{{item.FechaIngreso}}</td>
-                                <td><button mat-button class="text-danger" (click)="deleteIngreso(i)"><i class="fas fa-trash"></i></button></td>
                             </tr>
                         </tbody>
                     </table>
