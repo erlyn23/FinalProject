@@ -1,1 +1,121 @@
-<p>habitaciones works!</p>
+<div>
+    <app-navbar></app-navbar>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-lg-12">
+            <div class="contenedorTitulo">
+                <h1 class="titulo">Administración de habitaciones</h1>
+            </div>
+            <div style="z-index: 1; margin-left: -16px; width: 100%; background: black; opacity: 0.5; height: 400px;" class="position-absolute">
+            </div>
+            <div style="width: 100%; height: 400px; background-image: url('./../../assets/img/portada.jpg'); background-size: 100% 100%; background-repeat: no-repeat;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row ProductSans mt-3">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-header text-center text-white" style="background:#004D40;" *ngIf="!comprobar"><h3>Agregar Habitación</h3></div>
+                <div class="card-header text-center text-white" style="background:#004D40;" *ngIf="comprobar"><h3>Editar Habitación</h3></div>
+                    <div class="card-body">
+                        <form [formGroup]="fg">
+                            <mat-form-field style="width: 100%;">
+                                <mat-label><i class="fas fa-list-ol"></i> 
+                                 Número de habitación </mat-label>
+                                 <input matInput type="text" formControlName="NoHabitacion">
+                            </mat-form-field>
+ 
+                            <div *ngIf="NoHabitacion.invalid &&(NoHabitacion.touched || NoHabitacion.dirty)">
+                             <mat-error *ngIf="NoHabitacion.errors.required">
+                                 Este campo es <strong>obligatorio</strong>
+                             </mat-error>
+                             <mat-error *ngIf="NoHabitacion.errors.maxlength">
+                                 No puedes insertar más de 10 carácteres
+                             </mat-error>
+                             <mat-error *ngIf="NoHabitacion.errors.pattern">
+                                 Solo puedes escribir números aquí
+                             </mat-error>
+                          </div>
+
+                            <mat-form-field style="width: 100%;">
+                                <mat-label><i class="fas fa-door-closed"></i> Tipo de habitación</mat-label>
+                                <mat-select formControlName="Tipo"> 
+                                    <mat-option value="Doble">Doble</mat-option>
+                                    <mat-option value="Suite">Suite</mat-option>
+                                    <mat-option value="Privada">Privada</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <div *ngIf="Tipo.invalid &&(Tipo.touched || Tipo.dirty)">
+                             <mat-error *ngIf="Tipo.errors.required">
+                                 Este campo es <strong>obligatorio</strong>
+                                </mat-error>
+                            </div>
+
+                            <mat-form-field style="width: 100%;">
+                                <mat-label><i class="fas fa-money-bill-wave"></i> 
+                                 Precio por día</mat-label>
+                                 <input matInput type="text" formControlName="PrecioxDia">
+                            </mat-form-field>
+ 
+                            <div *ngIf="PrecioxDia.invalid &&(PrecioxDia.touched || PrecioxDia.dirty)">
+                             <mat-error *ngIf="PrecioxDia.errors.required">
+                                 Este campo es <strong>obligatorio</strong>
+                             </mat-error>
+                             <mat-error *ngIf="PrecioxDia.errors.maxlength">
+                                 No puedes insertar más de 10 carácteres
+                             </mat-error>
+                             <mat-error *ngIf="PrecioxDia.errors.pattern">
+                                 Solo puedes escribir números aquí
+                             </mat-error>
+                          </div>
+                        </form>
+
+                        <div style="width: 100%;" class="text-center" *ngIf="!comprobar">
+                            <button mat-raised-button class="text-white" (click)="addHabitacion()" color="accent" [disabled]="!fg.valid"><i class="fas fa-plus-circle"></i>
+                            Agregar Habitación</button>
+                        </div>
+
+                        <div style="width: 100%;" class="text-center" *ngIf="comprobar">
+                            <button mat-raised-button class="text-white" color="accent" (click)="modificarHabitacion()" [disabled]="!fg.valid"><i class="fas fa-check-circle"></i>
+                            Guardar Cambios</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-header ProductSans text-center text-white" style="background: #004D40;"><h3>Médicos registrados</h3></div>
+                <div class="card-body">
+                    <table class="table table-hover table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl ">
+                        <thead>
+                            <tr class="text-center">
+                                <td>No.</td>
+                                <td>Número de habitación</td>
+                                <td>Tipo</td>
+                                <td>Precio por día</td>
+                                <td>Acciones</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="text-center" *ngFor="let item of todosMedicos, let i = index">
+                                <td>{{i+1}}</td>
+                                <td>{{item.Nombre}}</td>
+                                <td>{{item.Exequatur}}</td>
+                                <td>{{item.Especialidad}}</td>
+                                <td><button mat-button (click)="rellenarDatos(i)" ><i class="fas fa-edit"></i></button>
+                                <button mat-button class="text-danger" (click)="deleteMedico(i)"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+               </div> 
+            </div>
+    </div>
