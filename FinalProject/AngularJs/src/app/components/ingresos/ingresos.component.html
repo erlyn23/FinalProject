@@ -20,7 +20,7 @@
     <div class="row ProductSans mt-3">
         <div class="col-md-4">
             <div class="card mb-4">
-                <div class="card-header text-center text-white" style="background:#004D40;"><h3>Agendar Cita</h3></div>
+                <div class="card-header text-center text-white" style="background:#004D40;"><h3>Ingresar Paciente</h3></div>
                     <div class="card-body">
                         <form [formGroup]="fg">
                             <mat-form-field style="width: 100%;">
@@ -69,6 +69,9 @@
                             <button mat-raised-button class="text-white" (click)="addIngreso()" color="accent" [disabled]="!fg.valid"><i class="fas fa-plus-circle"></i>
                             Registrar Ingreso</button>
                         </div>
+                        <mat-error *ngIf="errorMessage != ''">
+                            <p class="text-center">{{this.errorMessage}}</p>
+                        </mat-error>
                 </div>
             </div>
         </div>

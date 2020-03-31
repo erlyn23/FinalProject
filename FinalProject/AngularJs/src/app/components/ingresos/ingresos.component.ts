@@ -20,6 +20,8 @@ export class IngresosComponent implements OnInit {
   todosPacientes: Pacientes[];
   todosIngresos: IngresoArreglado[];
   fg: FormGroup;
+  NumeroHabitacion: any;
+  errorMessage: any;
 
   constructor(private is: IngresosService,
     private ps: PacientesService,
@@ -55,8 +57,6 @@ export class IngresosComponent implements OnInit {
       return this.todosPacientes = data;
     });
   }
-  NumeroHabitacion: any;
-
   addIngreso(){
     let ingreso = new Ingresos();
     ingreso.FechaIngreso = this.fg.value.Fecha;
@@ -74,10 +74,10 @@ export class IngresosComponent implements OnInit {
 
     if(ingreso.FechaIngreso < actual)
     {
-      alert("La fecha no puede ser atrasada");
+      this.errorMessage = "La fecha no puede ser atrasada";
     }else if(this.NumeroHabitacion == this.todasHabitaciones[this.fg.value.NoHabitacion].Numero)
     {
-      alert("Esta habitación está ocupada");
+      this.errorMessage = "Esta habitación está ocupada, intente con una nueva";
     }
     else
     {
