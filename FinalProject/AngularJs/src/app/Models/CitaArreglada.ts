@@ -1,5 +1,5 @@
 export class CitaArreglada{
-    idCita: number;
+    IdCita: number;
     NombreMedico: string;
     NombrePaciente: string;
     Fecha: string;

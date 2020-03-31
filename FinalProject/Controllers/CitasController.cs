@@ -44,6 +44,8 @@ namespace FinalProject.Controllers
             return salida;
         }
 
+
+
         [ResponseType(typeof(Citas))]
         public IHttpActionResult PostCitas(Citas cita) 
         {
@@ -73,17 +75,23 @@ namespace FinalProject.Controllers
             conexion.ConnectionString = "Data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN;integrated security=SSPI;database=SistemaMedico;";
             conexion.Open();
             cmd.Connection = conexion;
-            if(tipo == "Médico") 
+            switch (tipo) 
             {
-                string query = "delete from Citas where idMedico=" + id;
-                cmd.CommandText = query;
-                cmd.ExecuteNonQuery();
-            }
-            else if(tipo == "Paciente") 
-            {
-                string query = "delete from Citas where idPaciente=" + id;
-                cmd.CommandText = query;
-                cmd.ExecuteNonQuery();
+                case "Médico":
+                    string query = "delete from Citas where idMedico=" + id;
+                    cmd.CommandText = query;
+                    cmd.ExecuteNonQuery();
+                    break;
+                case "Paciente":
+                    string query1 = "delete from Citas where idPaciente=" + id;
+                    cmd.CommandText = query1;
+                    cmd.ExecuteNonQuery();
+                    break;
+                case "Cita":
+                    string query2 = "delete from Citas where idCita=" + id;
+                    cmd.CommandText = query2;
+                    cmd.ExecuteNonQuery();
+                    break;
             }
             
             cmd.Dispose();

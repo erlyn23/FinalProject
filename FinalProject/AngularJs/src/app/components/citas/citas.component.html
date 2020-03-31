@@ -90,6 +90,7 @@
                                 <td>Nombre del paciente</td>
                                 <td>Fecha de la cita</td>
                                 <td>Hora de la cita</td>
+                                <td>Acciones</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -99,6 +100,7 @@
                                 <td>{{item.NombrePaciente}}</td>
                                 <td>{{item.Fecha}}</td>
                                 <td>{{item.Hora}}</td>
+                                <td><button mat-button class="text-danger" (click)="deleteCita(i)"><i class="fas fa-trash"></i></button></td>
                             </tr>
                         </tbody>
                     </table>
