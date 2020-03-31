@@ -7,6 +7,8 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { CitasService } from 'src/app/services/citas.service';
 import { Medicos } from 'src/app/Models/Medicos';
 import { MedicosService } from 'src/app/services/medicos.service';
+import { AltasService } from 'src/app/services/altas.service';
+import { IngresosService } from 'src/app/services/ingresos.service';
 
 @Component({
   selector: 'app-pacientes',
@@ -20,6 +22,8 @@ export class PacientesComponent implements OnInit {
   comprobar: boolean = false;
 
   constructor(private ps: PacientesService, 
+    private as: AltasService,
+    private is: IngresosService,
     private fb: FormBuilder, 
     private snack: MatSnackBar, 
     private dialog:MatDialog,
@@ -97,6 +101,14 @@ export class PacientesComponent implements OnInit {
     dialogRef.afterClosed().subscribe(data=>{
       if(data){
         const idPac = this.todosPacientes[i].idPaciente;
+        this.as.EliminarAltaMedica(idPac.toString(), "Paciente").subscribe(()=>{
+          this.todosPacientes = [];
+          this.obtenerPacientes();
+        });
+        this.is.EliminarIngreso(idPac.toString(), "Paciente").subscribe(()=>{
+          this.todosPacientes= [];
+          this.obtenerPacientes();
+        });
         this.cs.BorrarCita(idPac.toString(), "Paciente").subscribe(()=>{
             {
             this.todosPacientes =[];

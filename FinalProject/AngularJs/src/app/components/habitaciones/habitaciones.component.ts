@@ -5,6 +5,7 @@ import { MatSnackBar, MatDialog } from '@angular/material';
 import { Habitaciones } from 'src/app/Models/Habitaciones';
 import { DialogComponent } from '../dialog/dialog.component';
 import { IngresosService } from 'src/app/services/ingresos.service';
+import { AltasService } from 'src/app/services/altas.service';
 
 @Component({
   selector: 'app-habitaciones',
@@ -20,6 +21,7 @@ export class HabitacionesComponent implements OnInit {
 
   constructor(private hs: HabitacionesService,
     private is: IngresosService,
+    private as: AltasService,
     private fb: FormBuilder,
     private snack: MatSnackBar,
     private dialog: MatDialog) { }
@@ -93,6 +95,10 @@ export class HabitacionesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(salida=>{
       if(salida){
+          this.as.EliminarAltaMedica(idHab.toString(),"Habitacion").subscribe(()=>{
+            this.todasHabitaciones = [];
+            this.obtenerHabitaciones();
+          });
           this.is.EliminarIngreso(idHab.toString(), "Habitacion").subscribe(()=>{
             this.todasHabitaciones = [];
             this.obtenerHabitaciones();
