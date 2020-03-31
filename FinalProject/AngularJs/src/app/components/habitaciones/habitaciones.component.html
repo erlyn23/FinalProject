@@ -71,7 +71,11 @@
                                  No puedes insertar más de 10 carácteres
                              </mat-error>
                              <mat-error *ngIf="PrecioxDia.errors.pattern">
-                                 Solo puedes escribir números aquí
+                                 Solo puedes insertar números, 4 enteros máximo, 2 decimales máximo <br>
+                                 <b>Ejemplo:</b> 123.49 y que no exceda los 4 números enteros
+                             </mat-error>
+                             <mat-error *ngIf="PrecioxDia.errors.max">
+                                 El precio no puede superar los 9999.99 pesos
                              </mat-error>
                           </div>
                         </form>
@@ -88,10 +92,9 @@
                     </div>
                 </div>
             </div>
-        </div>
         <div class="col-md-8">
             <div class="card mb-4">
-                <div class="card-header ProductSans text-center text-white" style="background: #004D40;"><h3>Médicos registrados</h3></div>
+                <div class="card-header ProductSans text-center text-white" style="background: #004D40;"><h3>Habitaciones registradas</h3></div>
                 <div class="card-body">
                     <table class="table table-hover table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl ">
                         <thead>
@@ -104,13 +107,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="text-center" *ngFor="let item of todosMedicos, let i = index">
+                            <tr class="text-center" *ngFor="let item of todasHabitaciones, let i = index">
                                 <td>{{i+1}}</td>
-                                <td>{{item.Nombre}}</td>
-                                <td>{{item.Exequatur}}</td>
-                                <td>{{item.Especialidad}}</td>
+                                <td>{{item.Numero}}</td>
+                                <td>{{item.Tipo}}</td>
+                                <td>RD$ {{item.PrecioxDia}}</td>
                                 <td><button mat-button (click)="rellenarDatos(i)" ><i class="fas fa-edit"></i></button>
-                                <button mat-button class="text-danger" (click)="deleteMedico(i)"><i class="fas fa-trash"></i></button>
+                                <button mat-button class="text-danger" (click)="deleteHabitacion(i)"><i class="fas fa-trash"></i></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -119,3 +122,4 @@
                </div> 
             </div>
     </div>
+</div>
