@@ -145,6 +145,7 @@ export class HomeComponent implements OnInit {
           {
             duration: 3000,
           });
+          this.fg.reset();
         }
       });
   } 
