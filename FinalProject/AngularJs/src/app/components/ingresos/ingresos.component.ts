@@ -55,7 +55,8 @@ export class IngresosComponent implements OnInit {
       return this.todosPacientes = data;
     });
   }
-  NumerosHabitaciones: any[];
+  NumeroHabitacion: any;
+
   addIngreso(){
     let ingreso = new Ingresos();
     ingreso.FechaIngreso = this.fg.value.Fecha;
@@ -64,9 +65,19 @@ export class IngresosComponent implements OnInit {
     ingreso.FechaIngreso = this.fg.value.Fecha;
     let actual = new Date();
 
+    for(let i in this.todosIngresos){
+      if(this.todasHabitaciones[this.fg.value.NoHabitacion].Numero == this.todosIngresos[i].NumeroHabitacion)
+      {
+        this.NumeroHabitacion = this.todosIngresos[i].NumeroHabitacion;
+      }
+    }
+
     if(ingreso.FechaIngreso < actual)
     {
       alert("La fecha no puede ser atrasada");
+    }else if(this.NumeroHabitacion == this.todasHabitaciones[this.fg.value.NoHabitacion].Numero)
+    {
+      alert("Esta habitación está ocupada");
     }
     else
     {
