@@ -22,8 +22,8 @@ export class CitasService {
     return this.http.post<Citas>(this.url, citas, httpOptions);
   }
 
-  BorrarCita(id: string): Observable<number>{
+  BorrarCita(id: string, tipo:string): Observable<number>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
-    return this.http.delete<number>(this.url+"/?id="+id, httpOptions);
+    return this.http.delete<number>(this.url+"/?id="+id+"&tipo="+tipo, httpOptions);
   }
 }

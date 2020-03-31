@@ -60,14 +60,24 @@ namespace FinalProject.Controllers
 
         [ResponseType(typeof(Citas))]
 
-        public IHttpActionResult DeleteCita(int id) 
+        public IHttpActionResult DeleteCita(int id, string tipo) 
         {
             conexion.ConnectionString = "Data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN;integrated security=SSPI;database=SistemaMedico;";
             conexion.Open();
             cmd.Connection = conexion;
-            string query = "delete from Citas where idMedico=" + id;
-            cmd.CommandText = query;
-            cmd.ExecuteNonQuery();
+            if(tipo == "Médico") 
+            {
+                string query = "delete from Citas where idMedico=" + id;
+                cmd.CommandText = query;
+                cmd.ExecuteNonQuery();
+            }
+            else if(tipo == "Paciente") 
+            {
+                string query = "delete from Citas where idPaciente=" + id;
+                cmd.CommandText = query;
+                cmd.ExecuteNonQuery();
+            }
+            
             cmd.Dispose();
             conexion.Close();
             return Ok(id);

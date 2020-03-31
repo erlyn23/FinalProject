@@ -5,6 +5,8 @@ import { MatSnackBar, MatDialog } from '@angular/material';
 import { Pacientes } from 'src/app/Models/Pacientes';
 import { DialogComponent } from '../dialog/dialog.component';
 import { CitasService } from 'src/app/services/citas.service';
+import { Medicos } from 'src/app/Models/Medicos';
+import { MedicosService } from 'src/app/services/medicos.service';
 
 @Component({
   selector: 'app-pacientes',
@@ -32,7 +34,6 @@ export class PacientesComponent implements OnInit {
     });
     this.obtenerPacientes();
   }
-
 
   obtenerPacientes(){
     this.ps.ObtenerPacientes().subscribe(data=>{
@@ -95,12 +96,14 @@ export class PacientesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(data=>{
       if(data){
-
-        this.cs.BorrarCita(this.todosPacientes[i].idPaciente.toString()).subscribe(()=>{
-          this.todosPacientes = [];
-          this.obtenerPacientes();
-        });
-        this.ps.EliminarPaciente(this.todosPacientes[i].idPaciente.toString()).subscribe(()=>
+        const idPac = this.todosPacientes[i].idPaciente;
+        this.cs.BorrarCita(idPac.toString(), "Paciente").subscribe(()=>{
+            {
+            this.todosPacientes =[];
+            this.obtenerPacientes();
+          }  
+        })
+        this.ps.EliminarPaciente(idPac.toString()).subscribe(()=>
         {  
           this.todosPacientes = [];
           this.obtenerPacientes();
