@@ -29,4 +29,8 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['/habitaciones']);
   }
 
+  Ingresos(){
+    this.router.navigate(['/ingresos']);
+  }
+
 }
