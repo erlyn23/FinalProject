@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HabDialogComponent } from './hab-dialog.component';
+import { IngresosComponent } from './ingresos.component';
 
-describe('HabDialogComponent', () => {
-  let component: HabDialogComponent;
-  let fixture: ComponentFixture<HabDialogComponent>;
+describe('IngresosComponent', () => {
+  let component: IngresosComponent;
+  let fixture: ComponentFixture<IngresosComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HabDialogComponent ]
+      declarations: [ IngresosComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HabDialogComponent);
+    fixture = TestBed.createComponent(IngresosComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

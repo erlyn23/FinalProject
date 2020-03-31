@@ -3,7 +3,7 @@ import { HabitacionesService } from 'src/app/services/habitaciones.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { Habitaciones } from 'src/app/Models/Habitaciones';
-import { HabDialogComponent } from 'src/app/components/hab-dialog/hab-dialog.component';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-habitaciones',
@@ -83,7 +83,7 @@ export class HabitacionesComponent implements OnInit {
   }
 
   deleteHabitacion(i:number){
-    const dialogRef = this.dialog.open(HabDialogComponent,{
+    const dialogRef = this.dialog.open(DialogComponent,{
       width:'350px',
       data: 'Confirmar',
     });

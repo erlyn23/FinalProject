@@ -29,7 +29,8 @@ import { DialogComponent } from './components/dialog/dialog.component';
 import { PacientesComponent } from './components/pacientes/pacientes.component';
 import { CitasComponent } from './components/citas/citas.component';
 import { HabitacionesComponent } from './components/habitaciones/habitaciones.component';
-import { HabDialogComponent } from './components/hab-dialog/hab-dialog.component';
+import { IngresosComponent } from './components/ingresos/ingresos.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +40,7 @@ import { HabDialogComponent } from './components/hab-dialog/hab-dialog.component
     PacientesComponent,
     CitasComponent,
     HabitacionesComponent,
-    HabDialogComponent
+    IngresosComponent
   ],
   imports: [
     BrowserModule,
@@ -73,7 +74,7 @@ import { HabDialogComponent } from './components/hab-dialog/hab-dialog.component
     MatTableModule,
     
   ],
-  entryComponents:[DialogComponent, HabDialogComponent],
+  entryComponents:[DialogComponent],
   providers: [{
     provide: MAT_DATE_LOCALE, useValue:'es-ES',
   },
