@@ -29,7 +29,7 @@ import { DialogComponent } from './components/dialog/dialog.component';
 import { PacientesComponent } from './components/pacientes/pacientes.component';
 import { CitasComponent } from './components/citas/citas.component';
 import { HabitacionesComponent } from './components/habitaciones/habitaciones.component';
-import { HabDialogComponent } from './hab-dialog/hab-dialog.component';
+import { HabDialogComponent } from './components/hab-dialog/hab-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,

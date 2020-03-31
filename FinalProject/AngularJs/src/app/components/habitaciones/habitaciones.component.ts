@@ -3,7 +3,7 @@ import { HabitacionesService } from 'src/app/services/habitaciones.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { Habitaciones } from 'src/app/Models/Habitaciones';
-import { HabDialogComponent } from 'src/app/hab-dialog/hab-dialog.component';
+import { HabDialogComponent } from 'src/app/components/hab-dialog/hab-dialog.component';
 
 @Component({
   selector: 'app-habitaciones',
