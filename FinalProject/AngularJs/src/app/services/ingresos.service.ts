@@ -16,6 +16,10 @@ export class IngresosService {
     return this.http.get<IngresoArreglado[]>(this.url);
   }
 
+  ObtenerIngresos2():Observable<Ingresos[]>{
+    return this.http.get<Ingresos[]>(this.url+"/Ingresos2");
+  }
+
   AgregarIngreso(ingreso:Ingresos): Observable<Ingresos>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
     return this.http.post<Ingresos>(this.url, ingreso, httpOptions);

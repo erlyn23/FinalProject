@@ -20,6 +20,7 @@ import { AltaMedica } from 'src/app/Models/AltaMedica';
 export class AltasComponent implements OnInit {
 
   todosIngresos: IngresoArreglado[];
+  todosIngresos2: Ingresos[];
   todasAltasMedicas: AltaMedicaArreglada[];
   todosPacientes: Pacientes[];
   todasHabitaciones: Habitaciones[];
@@ -48,12 +49,19 @@ export class AltasComponent implements OnInit {
     this.obtenerPacientes();
     this.obtenerHabitaciones();
     this.obtenerIngresos();
+    this.obtenerIngresos2();
   }
 
   obtenerIngresos(){
     this.is.ObtenerIngresos().subscribe((data:any)=>{
       return this.todosIngresos = data;
     });
+  }
+
+  obtenerIngresos2(){
+    this.is.ObtenerIngresos2().subscribe((data:any)=>{
+      return this.todosIngresos2 = data;
+    })
   }
 
   obtenerAltasMedicas(){
@@ -96,17 +104,17 @@ export class AltasComponent implements OnInit {
       }
     }
 
-    //Aquí obtengo el Id del paciente extraído del array pacientes.
-    for(let i in this.todosIngresos){
-      if(this.fg.value.Paciente == this.todosIngresos[i].NombrePaciente){
-        Paciente = this.todosPacientes[i].idPaciente;
+    //Aquí obtengo el Id del paciente extraído del array Ingresos.
+    for(let i in this.todosIngresos2){
+      if(this.busqueda.idIngreso == this.todosIngresos[i].idIngreso){
+        Paciente = this.todosIngresos2[i].idPaciente;
       }
     }
 
     let diastranscurridos = (fechita2.getTime() - fechita1.getTime())/(1000*60*60*24);
 
     console.log(precioXdia, Paciente, Habitacion);
-    /*if(fechita2 < fechita1)
+    if(fechita2 < fechita1)
     {
       this.errorMessage = "La fecha de salida debe ser mayor a la fecha de ingreso";
     }
@@ -127,7 +135,7 @@ export class AltasComponent implements OnInit {
           duration: 3000
         });
       });
-    }*/
+    }
   }
 
 

@@ -14,6 +14,7 @@ using FinalProject.Models;
 
 namespace FinalProject.Controllers
 {
+    [RoutePrefix("api/Ingresos")]
     public class IngresosController : ApiController
     {
         private SistemaMedicoEntities db = new SistemaMedicoEntities();
@@ -44,6 +45,7 @@ namespace FinalProject.Controllers
             return lista;
         }
 
+        [Route("Ingresos2")]
         public IQueryable<Ingresos> GetIngresos2()
         {
             return db.Ingresos;
