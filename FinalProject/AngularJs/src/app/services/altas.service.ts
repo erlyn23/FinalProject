@@ -9,7 +9,7 @@ import { AltaMedica } from '../Models/AltaMedica';
 })
 export class AltasService {
 
-  url = "https://localhost:44347/api/AltasMedicas";
+  url = "https://localhost:44347/api/AltaMedica";
   constructor(private http: HttpClient) { }
 
   ObtenerAltasMedicas():Observable<AltaMedicaArreglada[]>{

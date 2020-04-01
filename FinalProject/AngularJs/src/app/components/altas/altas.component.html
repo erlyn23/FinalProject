@@ -30,49 +30,87 @@
                                 <mat-label class="ProductSans"><i class="fas fa-key"></i> 
                                 Id de ingreso</mat-label>
                             </mat-form-field>
+
+                            <div *ngIf="idIngresos.invalid &&(idIngresos.touched || idIngresos.dirty)">
+                                <mat-error *ngIf="idIngresos.errors.required">
+                                    Debes elegir un id para llenar los demás datos
+                                </mat-error>
+                            </div>
+
+                            <mat-form-field style="width: 100%;">
+                                <mat-select formControlName="NombrePaciente">
+                                    <mat-option *ngFor="let pac of todosPacientes, let i = index" [value]="i">{{pac.Nombre}}</mat-option>
+                                </mat-select>
+                                <mat-label class="ProductSans"><i class="fas fa-user"></i> 
+                                Nombre del paciente</mat-label>
+                            </mat-form-field>
+
+                            <div *ngIf="NombrePaciente.invalid &&(NombrePaciente.dirty || NombrePaciente.touched)">
+                                <mat-error *ngIf="NombrePaciente.errors.required">
+                                    Este campo es <strong>obligatorio</strong>
+                                </mat-error>
+                            </div>
+
+                            <mat-form-field style="width: 100%;">
+                                <mat-select formControlName="NoHabitacion">
+                                    <mat-option *ngFor="let hab of todasHabitaciones, let i = index" [value]="i">{{hab.Numero}}</mat-option>
+                                </mat-select>
+                                <mat-label class="ProductSans"><i class="fas fa-list-ol"></i> 
+                                Número de habitación</mat-label>
+                            </mat-form-field>
+
+                            <div *ngIf="NoHabitacion.invalid &&(NoHabitacion.dirty || NoHabitacion.touched)">
+                                <mat-error *ngIf="NoHabitacion.errors.required">
+                                    Este campo es <strong>obligatorio</strong>
+                                </mat-error>
+                            </div>
+
+                            <mat-form-field style="width: 100%;">
+                                <mat-label>Fecha de ingreso </mat-label>
+                                <input matInput formControlName="FechaIngreso" [matDatepicker]="picker1" readonly="true">
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker #picker1 disabled="true"></mat-datepicker>
+                            </mat-form-field>
+
+                            <div *ngIf="FechaIngreso.invalid &&(FechaIngreso.touched || FechaIngreso.dirty)">
+                                <mat-error *ngIf="FechaIngreso.errors.required">
+                                    Este campo es <strong>obligatorio</strong>
+                                </mat-error>
+                            </div>
+
+                            <mat-form-field style="width: 100%;">
+                                <mat-label>Fecha de salida </mat-label>
+                                <input matInput formControlName="FechaSalida" [matDatepicker]="picker2">
+                                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                                <mat-datepicker #picker2></mat-datepicker>
+                            </mat-form-field>
+
+                            <div *ngIf="FechaSalida.invalid &&(FechaSalida.touched || FechaSalida.dirty)">
+                                <mat-error *ngIf="FechaSalida.errors.required">
+                                    Este campo es <strong>obligatorio</strong>
+                                </mat-error>
+                            </div>
+
+                            <div *ngIf="errorMessage != ''">
+                                <mat-error>
+                                    {{errorMessage}}
+                                </mat-error>
+                            </div>
+
+                            <div *ngIf="Monto != ''">
+                                <p class="text-center text-success ProductSans"><i class="fas fa-money-bill-wave"></i>Monto total a pagar: RD$ {{this.Monto}}</p>
+                            </div>
                     </form>
+                    <div style="width: 100%;" class="text-center">
+                        <button mat-raised-button class="text-white" (click)="CalcularMonto()" color="accent" [disabled]="!fg.valid"><i class="fas fa-calculator"></i>
+                        Calcular Monto</button>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="col-md-8">
             <div class="card mb-4">
                 <div class="card-header ProductSans text-center text-white" style="background: #004D40;"><h3>Consulta de ingreso</h3></div>
-                <div class="card-body">
-                    <table class="table table-hover table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl ">
-                        <thead>
-                            <tr class="text-center">
-                                <th>No.</th>
-                                <th>Paciente</th>
-                                <th>Número de habitación</th>
-                                <th>Fecha de ingreso</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="text-center" *ngIf="busqueda != undefined">
-                                <td>{{1}}</td>
-                                <td>{{this.busqueda.NombrePaciente}}</td>
-                                <td>{{this.busqueda.NumeroHabitacion}}</td>
-                                <td>{{this.busqueda.FechaIngreso}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div> 
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header ProductSans text-center text-white" style="background: #004d40;"><h3>Dar alta médica</h3></div>
-                <div class="card-body">
-                    
-                </div>
-            </div>
-        </div>
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header ProductSans text-center text-white" style="background: #004d40;"><h3>Lista de altas médicas</h3></div>
                 <div class="card-body">
                     <table class="table table-hover table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl">
                         <thead>
@@ -95,7 +133,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div> 
         </div>
     </div>
 </div>

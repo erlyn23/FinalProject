@@ -10,17 +10,13 @@
 namespace FinalProject.Models
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class AltaMedica
+    public partial class sp_helpdiagrams_Result
     {
-        public int idAltaMedica { get; set; }
-        public int idIngreso { get; set; }
-        public Nullable<int> idHabitacion { get; set; }
-        public Nullable<int> idPaciente { get; set; }
-        public System.DateTime FechaSalida { get; set; }
-        public Nullable<decimal> Monto { get; set; }
-    
-        public virtual Ingresos Ingresos { get; set; }
+        public string Database { get; set; }
+        public string Name { get; set; }
+        public int ID { get; set; }
+        public string Owner { get; set; }
+        public int OwnerID { get; set; }
     }
 }
