@@ -224,6 +224,7 @@
           <Property Name="Tipo" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="PrecioxDia" Type="Decimal" Precision="6" Scale="2" Nullable="false" />
           <NavigationProperty Name="Ingresos" Relationship="Self.fk_Paciente1" FromRole="Habitaciones" ToRole="Ingresos" />
+          <Property Name="Disponibilidad" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
         </EntityType>
         <EntityType Name="Ingresos">
           <Key>

@@ -24,6 +24,7 @@ namespace FinalProject.Models
         public int Numero { get; set; }
         public string Tipo { get; set; }
         public decimal PrecioxDia { get; set; }
+        public int Disponibilidad { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Ingresos> Ingresos { get; set; }

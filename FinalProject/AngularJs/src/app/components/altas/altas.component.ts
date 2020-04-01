@@ -131,7 +131,7 @@ export class AltasComponent implements OnInit {
       this.as.AgregarAltaMedica(alta).subscribe(()=>{
         this.todasAltasMedicas = [];
         this.obtenerAltasMedicas();
-        this.snack.open('Alta médica dada correctamente (se eliminó el ingreso y se desocupó la habitación)', '',{
+        this.snack.open('Alta médica dada correctamente (se desocupó la habitación)', '',{
           duration: 3000
         });
       });
