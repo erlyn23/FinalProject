@@ -81,6 +81,7 @@ export class IngresosComponent implements OnInit {
     }
     else
     {
+      this.errorMessage = "";
       this.is.AgregarIngreso(ingreso).subscribe(()=>{
         this.todosIngresos = [];
         this.obtenerIngresos();

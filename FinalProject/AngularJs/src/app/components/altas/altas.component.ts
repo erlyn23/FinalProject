@@ -102,14 +102,13 @@ export class AltasComponent implements OnInit {
       alta.idPaciente = this.todosPacientes[this.fg.value.NombrePaciente].idPaciente;
       alta.FechaSalida = this.fg.value.FechaSalida;
       alta.Monto = this.Monto;
-      console.log(alta);
-      /*this.as.AgregarAltaMedica(alta).subscribe(()=>{
+      this.as.AgregarAltaMedica(alta).subscribe(()=>{
         this.todasAltasMedicas = [];
         this.obtenerAltasMedicas();
-        this.snack.open('Alta médica dada correctamente', '',{
+        this.snack.open('Alta médica dada correctamente (se eliminó el ingreso y se desocupó la habitación)', '',{
           duration: 3000
         });
-      });*/
+      });
     }
   }
 
