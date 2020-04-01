@@ -38,29 +38,25 @@
                             </div>
 
                             <mat-form-field style="width: 100%;">
-                                <mat-select formControlName="NombrePaciente">
-                                    <mat-option *ngFor="let pac of todosPacientes, let i = index" [value]="i">{{pac.Nombre}}</mat-option>
-                                </mat-select>
+                                <input type="text" matInput formControlName="Paciente" readonly="true">
                                 <mat-label class="ProductSans"><i class="fas fa-user"></i> 
                                 Nombre del paciente</mat-label>
                             </mat-form-field>
 
-                            <div *ngIf="NombrePaciente.invalid &&(NombrePaciente.dirty || NombrePaciente.touched)">
-                                <mat-error *ngIf="NombrePaciente.errors.required">
+                            <div *ngIf="Paciente.invalid &&(Paciente.dirty || Paciente.touched)">
+                                <mat-error *ngIf="Paciente.errors.required">
                                     Este campo es <strong>obligatorio</strong>
                                 </mat-error>
                             </div>
 
                             <mat-form-field style="width: 100%;">
-                                <mat-select formControlName="NoHabitacion">
-                                    <mat-option *ngFor="let hab of todasHabitaciones, let i = index" [value]="i">{{hab.Numero}}</mat-option>
-                                </mat-select>
+                                <input matInput type="text" formControlName="NumeroHab" readonly="true">
                                 <mat-label class="ProductSans"><i class="fas fa-list-ol"></i> 
                                 Número de habitación</mat-label>
                             </mat-form-field>
 
-                            <div *ngIf="NoHabitacion.invalid &&(NoHabitacion.dirty || NoHabitacion.touched)">
-                                <mat-error *ngIf="NoHabitacion.errors.required">
+                            <div *ngIf="NumeroHab.invalid &&(NumeroHab.dirty || NumeroHab.touched)">
+                                <mat-error *ngIf="NumeroHab.errors.required">
                                     Este campo es <strong>obligatorio</strong>
                                 </mat-error>
                             </div>
@@ -102,7 +98,7 @@
                             </div>
                     </form>
                     <div style="width: 100%;" class="text-center">
-                        <button mat-raised-button class="text-white" (click)="CalcularMonto()" color="accent" [disabled]="!fg.valid"><i class="fas fa-calculator"></i>
+                        <button mat-raised-button class="text-white" (click)="registrarAltaMedica()" color="accent" [disabled]="!fg.valid"><i class="fas fa-calculator"></i>
                         Calcular Monto</button>
                     </div>
                 </div>
@@ -119,16 +115,16 @@
                                 <th>Nombre del paciente</th>
                                 <th>Fecha de ingreso</th>
                                 <th>Fecha de alta médica</th>
-                                <th>Monto total a pagar</th>
+                                <th>Monto total pagado</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let item of todasAltas, let i = index">
+                            <tr *ngFor="let item of todasAltasMedicas, let i = index">
                                 <td>{{i+1}}</td>
                                 <td>{{item.NombrePaciente}}</td>
                                 <td>{{item.FechaIngreso}}</td>
                                 <td>{{item.FechaSalida}}</td>
-                                <td>{{item.Monto}}</td>
+                                <td>RD$ {{item.Monto}}</td>
                             </tr>
                         </tbody>
                     </table>

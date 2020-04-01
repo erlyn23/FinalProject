@@ -38,8 +38,8 @@ export class AltasComponent implements OnInit {
   ngOnInit() {
     this.fg = this.fb.group({
       idIngresos: ["", [Validators.required]], 
-      NombrePaciente: ["",[Validators.required]],
-      NoHabitacion: ["",[Validators.required]],
+      Paciente: ["",[Validators.required]],
+      NumeroHab: ["",[Validators.required]],
       FechaIngreso:["", [Validators.required]],
       FechaSalida: ["",[Validators.required]],
     });
@@ -77,18 +77,36 @@ export class AltasComponent implements OnInit {
   buscarIngreso(val)
   {
     this.busqueda = this.todosIngresos[val];
-    this.fg.controls.NombrePaciente.setValue(this.busqueda.NombrePaciente);
-    this.fg.controls.NoHabitacion.setValue(this.busqueda.NoHabitacion);
+    this.fg.controls.Paciente.setValue(this.busqueda.NombrePaciente);
+    this.fg.controls.NumeroHab.setValue(this.busqueda.NumeroHabitacion);
     this.fg.controls.FechaIngreso.setValue(this.busqueda.FechaIngreso);
   }
-
-  CalcularMonto(){
+  registrarAltaMedica(){
     let fechita1 = new Date(this.fg.value.FechaIngreso);
     let fechita2 = new Date(this.fg.value.FechaSalida);
-    let precioXdia = this.todasHabitaciones[this.fg.value.NoHabitacion].PrecioxDia;
+    let precioXdia;
+    let Habitacion;
+    let Paciente;
+
+    //Aquí yo obtengo la habitación extraida del array Habitaciones.
+    for(let i in this.todasHabitaciones){
+      if(this.fg.value.NumeroHab == this.todasHabitaciones[i].Numero){
+        precioXdia = this.todasHabitaciones[i].PrecioxDia; 
+        Habitacion = this.todasHabitaciones[i].idHabitacion;
+      }
+    }
+
+    //Aquí obtengo el Id del paciente extraído del array pacientes.
+    for(let i in this.todosIngresos){
+      if(this.fg.value.Paciente == this.todosIngresos[i].NombrePaciente){
+        Paciente = this.todosPacientes[i].idPaciente;
+      }
+    }
+
     let diastranscurridos = (fechita2.getTime() - fechita1.getTime())/(1000*60*60*24);
 
-    if(fechita2 < fechita1)
+    console.log(precioXdia, Paciente, Habitacion);
+    /*if(fechita2 < fechita1)
     {
       this.errorMessage = "La fecha de salida debe ser mayor a la fecha de ingreso";
     }
@@ -98,8 +116,8 @@ export class AltasComponent implements OnInit {
       this.Monto = precioXdia * diastranscurridos;
       let alta = new AltaMedica();
       alta.idIngreso = this.todosIngresos[this.fg.value.idIngresos].idIngreso;
-      alta.idHabitacion = this.todasHabitaciones[this.fg.value.NoHabitacion].idHabitacion;
-      alta.idPaciente = this.todosPacientes[this.fg.value.NombrePaciente].idPaciente;
+      alta.idHabitacion = Habitacion;
+      alta.idPaciente = Paciente;
       alta.FechaSalida = this.fg.value.FechaSalida;
       alta.Monto = this.Monto;
       this.as.AgregarAltaMedica(alta).subscribe(()=>{
@@ -109,18 +127,18 @@ export class AltasComponent implements OnInit {
           duration: 3000
         });
       });
-    }
+    }*/
   }
 
 
   get idIngresos(){
     return this.fg.get('idIngresos');
   }
-  get NombrePaciente(){
-    return this.fg.get('NombrePaciente');
+  get Paciente(){
+    return this.fg.get('Paciente');
   }
-  get NoHabitacion(){
-    return this.fg.get('NoHabitacion');
+  get NumeroHab(){
+    return this.fg.get('NumeroHab');
   }
   get FechaIngreso(){
     return this.fg.get('FechaIngreso');

@@ -44,6 +44,11 @@ namespace FinalProject.Controllers
             return lista;
         }
 
+        public IQueryable<Ingresos> GetIngresos2()
+        {
+            return db.Ingresos;
+        }
+
         [ResponseType(typeof(Ingresos))]
         public IHttpActionResult PostIngresos(Ingresos ingreso) 
         {
