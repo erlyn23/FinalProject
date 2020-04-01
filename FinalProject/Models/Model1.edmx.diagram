@@ -4,18 +4,17 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="6485d6953bb64d5cb1fcd6c803837cc2" Name="Diagram1">
-        <EntityTypeShape EntityType="SistemaMedicoModel.AltaMedica" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="SistemaMedicoModel.Citas" Width="1.5" PointX="3" PointY="5" IsExpanded="true" />
-        <EntityTypeShape EntityType="SistemaMedicoModel.Habitaciones" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SistemaMedicoModel.Ingresos" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="SistemaMedicoModel.Medicos" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SistemaMedicoModel.Pacientes" Width="1.5" PointX="0.75" PointY="8.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SistemaMedicoModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="4.75" IsExpanded="true" />
-        <AssociationConnector Association="SistemaMedicoModel.fk_Ingreso" ManuallyRouted="false" />
-        <AssociationConnector Association="SistemaMedicoModel.fk_Medico" ManuallyRouted="false" />
-        <AssociationConnector Association="SistemaMedicoModel.fk_Paciente" ManuallyRouted="false" />
-        <AssociationConnector Association="SistemaMedicoModel.fk_Paciente1" ManuallyRouted="false" />
+      <Diagram DiagramId="6f74219e06034b758bac7d7a895198dc" Name="Diagram1">
+        <EntityTypeShape EntityType="SistemaMedico1Model.AltaMedica" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="SistemaMedico1Model.Citas" Width="1.5" PointX="3" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SistemaMedico1Model.Habitaciones" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="SistemaMedico1Model.Ingresos" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="SistemaMedico1Model.Medicos" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SistemaMedico1Model.Pacientes" Width="1.5" PointX="0.75" PointY="8.125" IsExpanded="true" />
+        <AssociationConnector Association="SistemaMedico1Model.fk_Ingreso" ManuallyRouted="false" />
+        <AssociationConnector Association="SistemaMedico1Model.fk_Medico" ManuallyRouted="false" />
+        <AssociationConnector Association="SistemaMedico1Model.fk_Paciente" ManuallyRouted="false" />
+        <AssociationConnector Association="SistemaMedico1Model.fk_Paciente1" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

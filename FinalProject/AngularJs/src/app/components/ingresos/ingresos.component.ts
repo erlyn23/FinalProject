@@ -20,7 +20,6 @@ export class IngresosComponent implements OnInit {
   todosPacientes: Pacientes[];
   todosIngresos: IngresoArreglado[];
   fg: FormGroup;
-  NumeroHabitacion: any;
   errorMessage: any;
 
   constructor(private is: IngresosService,
@@ -64,24 +63,34 @@ export class IngresosComponent implements OnInit {
     ingreso.idPaciente = this.todosPacientes[this.fg.value.NombrePaciente].idPaciente;
     ingreso.FechaIngreso = this.fg.value.Fecha;
     let actual = new Date();
-
-    for(let i in this.todosIngresos){
-      if(this.todasHabitaciones[this.fg.value.NoHabitacion].Numero == this.todosIngresos[i].NumeroHabitacion)
-      {
-        this.NumeroHabitacion = this.todosIngresos[i].NumeroHabitacion;
-      }
-    }
+    let hab = new Habitaciones();
+    hab.idHabitacion = ingreso.idHabitacion;
+    hab.Numero = this.todasHabitaciones[this.fg.value.NoHabitacion].Numero;
+    hab.PrecioxDia = this.todasHabitaciones[this.fg.value.NoHabitacion].PrecioxDia;
+    hab.Tipo = this.todasHabitaciones[this.fg.value.NoHabitacion].Tipo;
+    hab.Disponible = this.todasHabitaciones[this.fg.value.NoHabitacion].Disponible;
 
     if(ingreso.FechaIngreso < actual)
     {
       this.errorMessage = "La fecha no puede ser atrasada";
-    }else if(this.NumeroHabitacion == this.todasHabitaciones[this.fg.value.NoHabitacion].Numero)
+    }else if(hab.Disponible == 0)
     {
       this.errorMessage = "Esta habitación está ocupada, intente con una nueva";
     }
     else
     {
       this.errorMessage = "";
+      if(hab.Tipo == "Doble" && hab.Disponible == 1){
+        hab.Disponible = 0;
+      }
+      else if(hab.Tipo == "Doble" && hab.Disponible == 2)
+      {
+        hab.Disponible = 1;
+      }
+      else{
+        hab.Disponible = 0;
+      }
+      this.hs.ModificarHabitacion(hab).subscribe(()=>{});
       this.is.AgregarIngreso(ingreso).subscribe(()=>{
         this.todosIngresos = [];
         this.obtenerIngresos();

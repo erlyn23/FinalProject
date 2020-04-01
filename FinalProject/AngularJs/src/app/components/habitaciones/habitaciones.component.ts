@@ -48,6 +48,12 @@ export class HabitacionesComponent implements OnInit {
     hab.Tipo = this.fg.value.Tipo;
     hab.PrecioxDia = this.fg.value.PrecioxDia;
 
+    if(hab.Tipo == "Doble"){
+      hab.Disponible = 2;
+    }
+    else{
+      hab.Disponible = 1;
+    }
     this.hs.AgregarHabitacion(hab).subscribe(()=>{
       this.todasHabitaciones = [];
       this.obtenerHabitaciones();

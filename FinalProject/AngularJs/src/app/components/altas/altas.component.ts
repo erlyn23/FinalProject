@@ -92,15 +92,15 @@ export class AltasComponent implements OnInit {
   registrarAltaMedica(){
     let fechita1 = new Date(this.fg.value.FechaIngreso);
     let fechita2 = new Date(this.fg.value.FechaSalida);
-    let precioXdia;
-    let Habitacion;
+    let Habitacion = new Habitaciones();
     let Paciente;
 
     //Aquí yo obtengo la habitación extraida del array Habitaciones.
     for(let i in this.todasHabitaciones){
       if(this.fg.value.NumeroHab == this.todasHabitaciones[i].Numero){
-        precioXdia = this.todasHabitaciones[i].PrecioxDia; 
-        Habitacion = this.todasHabitaciones[i].idHabitacion;
+        Habitacion.PrecioxDia = this.todasHabitaciones[i].PrecioxDia; 
+        Habitacion.idHabitacion = this.todasHabitaciones[i].idHabitacion;
+        Habitacion.Numero = this.todasHabitaciones[i].Numero;
       }
     }
 
@@ -112,8 +112,6 @@ export class AltasComponent implements OnInit {
     }
 
     let diastranscurridos = (fechita2.getTime() - fechita1.getTime())/(1000*60*60*24);
-
-    console.log(precioXdia, Paciente, Habitacion);
     if(fechita2 < fechita1)
     {
       this.errorMessage = "La fecha de salida debe ser mayor a la fecha de ingreso";
@@ -121,17 +119,29 @@ export class AltasComponent implements OnInit {
     else
     {
       this.errorMessage = "";
-      this.Monto = precioXdia * diastranscurridos;
+      this.Monto = Habitacion.PrecioxDia * diastranscurridos;
       let alta = new AltaMedica();
       alta.idIngreso = this.todosIngresos[this.fg.value.idIngresos].idIngreso;
-      alta.idHabitacion = Habitacion;
+      alta.idHabitacion = Habitacion.idHabitacion;
       alta.idPaciente = Paciente;
       alta.FechaSalida = this.fg.value.FechaSalida;
       alta.Monto = this.Monto;
+      alta.FechaIngreso = this.fg.value.FechaIngreso;
+
+      if(Habitacion.Tipo == "Doble" && Habitacion.Disponible == 0){
+        Habitacion.Disponible = 1;
+      }else if (Habitacion.Tipo == "Doble" && Habitacion.Disponible == 1){
+        Habitacion.Disponible = 2;
+      }
+      else{
+        Habitacion.Disponible = 1;
+      }
+      this.hs.ModificarHabitacion(Habitacion).subscribe(()=>{});
+      this.is.EliminarIngreso(alta.idIngreso.toString(), "Ingreso").subscribe(()=>{});
       this.as.AgregarAltaMedica(alta).subscribe(()=>{
         this.todasAltasMedicas = [];
         this.obtenerAltasMedicas();
-        this.snack.open('Alta médica dada correctamente (se desocupó la habitación)', '',{
+        this.snack.open('Alta médica dada correctamente (se eliminó el registro de ingreso y se desocupó la habitación)', '',{
           duration: 3000
         });
       });

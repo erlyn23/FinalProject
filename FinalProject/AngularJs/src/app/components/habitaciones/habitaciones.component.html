@@ -102,6 +102,7 @@
                                 <th>No.</th>
                                 <th>Número de habitación</th>
                                 <th>Tipo</th>
+                                <th>Disponibilidad</th>
                                 <th>Precio por día</th>
                                 <th>Acciones</th>
                             </tr>
@@ -111,6 +112,7 @@
                                 <td>{{i+1}}</td>
                                 <td>{{item.Numero}}</td>
                                 <td>{{item.Tipo}}</td>
+                                <td>{{item.Disponible}}</td>
                                 <td>RD$ {{item.PrecioxDia}}</td>
                                 <td><button mat-button (click)="rellenarDatos(i)" ><i class="fas fa-edit"></i></button>
                                 <button mat-button class="text-danger" (click)="deleteHabitacion(i)"><i class="fas fa-trash"></i></button>

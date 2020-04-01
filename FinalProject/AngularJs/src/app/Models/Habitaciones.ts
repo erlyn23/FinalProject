@@ -3,4 +3,5 @@ export class Habitaciones{
     Numero: number;
     Tipo: string;
     PrecioxDia: number;
+    Disponible: number;
 }

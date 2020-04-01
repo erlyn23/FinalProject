@@ -14,7 +14,7 @@ namespace FinalProject.Controllers
 {
     public class HabitacionesController : ApiController
     {
-        private SistemaMedicoEntities db = new SistemaMedicoEntities();
+        private SistemaMedicoEntities1 db = new SistemaMedicoEntities1();
 
         // GET: api/Habitaciones
         public IQueryable<Habitaciones> GetHabitaciones()

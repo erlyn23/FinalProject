@@ -17,7 +17,7 @@ namespace FinalProject.Controllers
     [RoutePrefix("api/Ingresos")]
     public class IngresosController : ApiController
     {
-        private SistemaMedicoEntities db = new SistemaMedicoEntities();
+        private SistemaMedicoEntities1 db = new SistemaMedicoEntities1();
         SqlConnection conexion = new SqlConnection();
         SqlCommand cmd = new SqlCommand();
         SqlDataReader dr;

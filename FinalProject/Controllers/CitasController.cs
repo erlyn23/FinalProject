@@ -15,7 +15,7 @@ namespace FinalProject.Controllers
 {
     public class CitasController : ApiController
     {
-        private SistemaMedicoEntities db = new SistemaMedicoEntities();
+        private SistemaMedicoEntities1 db = new SistemaMedicoEntities1();
         private SqlConnection conexion = new SqlConnection();
         private SqlCommand cmd = new SqlCommand();
         private SqlDataReader reader;

@@ -16,7 +16,7 @@ namespace FinalProject.Controllers
 {
     public class AltaMedicaController : ApiController
     {
-        SistemaMedicoEntities db = new SistemaMedicoEntities();
+        SistemaMedicoEntities1 db = new SistemaMedicoEntities1();
         SqlConnection conexion = new SqlConnection();
         SqlCommand cmd = new SqlCommand();
         SqlDataReader dr;

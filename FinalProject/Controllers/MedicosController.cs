@@ -17,7 +17,7 @@ namespace FinalProject.Controllers
 {
     public class MedicosController : ApiController
     {
-        private SistemaMedicoEntities db = new SistemaMedicoEntities();
+        private SistemaMedicoEntities1 db = new SistemaMedicoEntities1();
 
         // GET: api/Medicos
         public IQueryable<Medicos> GetMedicos()

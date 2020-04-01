@@ -18,8 +18,8 @@ namespace FinalProject.Models
         public int idIngreso { get; set; }
         public Nullable<int> idHabitacion { get; set; }
         public Nullable<int> idPaciente { get; set; }
+        public System.DateTime FehcaIngreso { get; set; }
         public System.DateTime FechaSalida { get; set; }
-        public Nullable<decimal> Monto { get; set; }
     
         public virtual Ingresos Ingresos { get; set; }
     }

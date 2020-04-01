@@ -5,4 +5,5 @@ export class AltaMedica{
     idPaciente: number;
     FechaSalida: Date;
     Monto: number;
+    FechaIngreso: Date;
 }
