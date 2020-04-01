@@ -15,7 +15,7 @@ namespace FinalProject.Controllers
 {
     public class CitasController : ApiController
     {
-        private SistemaMedicoEntities1 db = new SistemaMedicoEntities1();
+        private SistemaMedico1Entities db = new SistemaMedico1Entities();
         private SqlConnection conexion = new SqlConnection();
         private SqlCommand cmd = new SqlCommand();
         private SqlDataReader reader;
@@ -23,7 +23,7 @@ namespace FinalProject.Controllers
         public List<CitasArregladas> GetCitas() 
         {
             List<CitasArregladas> salida = new List<CitasArregladas>();
-            conexion.ConnectionString = "Data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN;integrated security=SSPI;database=SistemaMedico;";
+            conexion.ConnectionString = "Data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN;integrated security=SSPI;database=SistemaMedico1;";
             conexion.Open();
             cmd.Connection = conexion;
             cmd.CommandText = "select c.idCita, m.Nombre, p.Nombre, c.Fecha, c.Hora from Citas c inner join Medicos m on c.idMedico = m.idMedico inner join Pacientes p on c.idPaciente = p.idPaciente ";
@@ -72,7 +72,7 @@ namespace FinalProject.Controllers
 
         public IHttpActionResult DeleteCita(int id, string tipo) 
         {
-            conexion.ConnectionString = "Data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN;integrated security=SSPI;database=SistemaMedico;";
+            conexion.ConnectionString = "Data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN;integrated security=SSPI;database=SistemaMedico1;";
             conexion.Open();
             cmd.Connection = conexion;
             switch (tipo) 

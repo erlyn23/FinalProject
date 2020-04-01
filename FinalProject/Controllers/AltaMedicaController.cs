@@ -16,7 +16,7 @@ namespace FinalProject.Controllers
 {
     public class AltaMedicaController : ApiController
     {
-        SistemaMedicoEntities1 db = new SistemaMedicoEntities1();
+        SistemaMedico1Entities db = new SistemaMedico1Entities();
         SqlConnection conexion = new SqlConnection();
         SqlCommand cmd = new SqlCommand();
         SqlDataReader dr;
@@ -25,7 +25,7 @@ namespace FinalProject.Controllers
         {
             List<AltaArreglada> alta = new List<AltaArreglada>();
             AltaArreglada alta1;
-            conexion.ConnectionString = "data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN; integrated security = SSPI; database=SistemaMedico";
+            conexion.ConnectionString = "data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN; integrated security = SSPI; database=SistemaMedico1";
             conexion.Open();
             cmd.Connection = conexion;
             string query = "select a.idAltaMedica, p.Nombre, i.FechaIngreso, a.FechaSalida, a.Monto from AltaMedica a inner join Pacientes p on a.idPaciente = p.idPaciente inner join Ingresos i on a.idIngreso = i.idIngreso";
@@ -64,7 +64,7 @@ namespace FinalProject.Controllers
 
         public IHttpActionResult DeleteAltaMedica(int id, string tipo) 
         {
-            conexion.ConnectionString = "data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN; integrated security = SSPI; database=SistemaMedico";
+            conexion.ConnectionString = "data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN; integrated security = SSPI; database=SistemaMedico1";
             conexion.Open();
             cmd.Connection = conexion;
             switch (tipo) 

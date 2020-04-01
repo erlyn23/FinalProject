@@ -17,7 +17,7 @@ namespace FinalProject.Controllers
     [RoutePrefix("api/Ingresos")]
     public class IngresosController : ApiController
     {
-        private SistemaMedicoEntities1 db = new SistemaMedicoEntities1();
+        private SistemaMedico1Entities db = new SistemaMedico1Entities();
         SqlConnection conexion = new SqlConnection();
         SqlCommand cmd = new SqlCommand();
         SqlDataReader dr;
@@ -25,7 +25,7 @@ namespace FinalProject.Controllers
         public List<IngresosArreglados> GetIngresos() 
         {
             List<IngresosArreglados> lista = new List<IngresosArreglados>();
-            conexion.ConnectionString = "Data source=DESKTOP-KQ78R80\\SQLEXPRESSERLYN; database=SistemaMedico; integrated security=SSPI";
+            conexion.ConnectionString = "Data source=DESKTOP-KQ78R80\\SQLEXPRESSERLYN; database=SistemaMedico1; integrated security=SSPI";
             conexion.Open();
             cmd.Connection = conexion;
             string query = "select i.idIngreso, p.Nombre, h.Numero, i.FechaIngreso from Ingresos i inner join Pacientes p on i.idPaciente = p.idPaciente inner join Habitaciones h on i.idHabitacion = h.idHabitacion";
@@ -77,7 +77,7 @@ namespace FinalProject.Controllers
 
         public IHttpActionResult DeleteIngreso(int id, string tipo) 
         {
-            conexion.ConnectionString = "data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN; integrated security = SSPI; database = SistemaMedico;";
+            conexion.ConnectionString = "data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN; integrated security = SSPI; database = SistemaMedico1;";
             conexion.Open();
             cmd.Connection = conexion;
             switch (tipo) 
