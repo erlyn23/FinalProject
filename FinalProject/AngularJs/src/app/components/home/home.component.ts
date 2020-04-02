@@ -69,9 +69,10 @@ export class HomeComponent implements OnInit {
     "Microbiología y parasitología",
     "Neurofisiología clínica",
     "Radiología",
-    "Odontología"];
-
-    Columnas: string[] = ["No.", "Nombre", "Exequatur", "Especialidad"];
+    "Odontología",
+    "Psicología industrial",
+    "Psicología escolar",
+    "Psicología"];
 
     medicos: any[];
 

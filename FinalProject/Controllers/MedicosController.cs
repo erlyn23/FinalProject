@@ -16,6 +16,7 @@ using FinalProject.Models;
 
 namespace FinalProject.Controllers
 {
+    [RoutePrefix("api/Medicos")]
     public class MedicosController : ApiController
     {
         private SistemaMedico1Entities db = new SistemaMedico1Entities();
@@ -32,6 +33,24 @@ namespace FinalProject.Controllers
         public IQueryable<Medicos> GetMedicos()
         {
             return db.Medicos;
+        }
+
+        [Route("PorNombre")]
+
+        public IQueryable<Medicos> GetPorNombre(string nom) 
+        {
+            var listaCompleta = db.Medicos;
+            var nombres = from n in listaCompleta where n.Nombre == nom orderby n.Nombre select n;
+            return nombres;
+        }
+
+        [Route("PorEspecialidad")]
+
+        public IQueryable<Medicos> GetPorEspecialidad(string spc) 
+        {
+            var listaCompleta = db.Medicos;
+            var especialidades = from e in listaCompleta where e.Especialidad == spc orderby e.Especialidad select e;
+            return especialidades;
         }
 
         // GET: api/Medicos/5
