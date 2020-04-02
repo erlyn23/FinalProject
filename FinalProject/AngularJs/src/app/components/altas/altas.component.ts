@@ -27,6 +27,7 @@ export class AltasComponent implements OnInit {
   busqueda: any;
   comprobar:boolean = false;
   Monto: any;
+  actual: any;
   errorMessage: any;
   fg: FormGroup;
 
@@ -38,12 +39,13 @@ export class AltasComponent implements OnInit {
     private snack: MatSnackBar) { }
 
   ngOnInit() {
+    this.actual = new Date();
     this.fg = this.fb.group({
       idIngresos: ["", [Validators.required]], 
       Paciente: ["",[Validators.required]],
       NumeroHab: ["",[Validators.required]],
       FechaIngreso:["", [Validators.required]],
-      FechaSalida: ["",[Validators.required]],
+      FechaSalida: [this.actual,[Validators.required]],
     });
 
     this.obtenerAltasMedicas();
@@ -158,7 +160,10 @@ export class AltasComponent implements OnInit {
         });
         this.todosIngresos = [];
         this.obtenerIngresos();
-        this.fg.reset();
+        this.fg.controls.idIngresos.setValue("");
+        this.fg.controls.Paciente.setValue("");
+        this.fg.controls.NumeroHab.setValue("");
+        this.fg.controls.FechaIngreso.setValue("");
         this.comprobar = false;
       });
   }

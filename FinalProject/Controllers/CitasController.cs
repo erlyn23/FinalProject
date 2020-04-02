@@ -100,6 +100,7 @@ namespace FinalProject.Controllers
             }
         }
 
+        [HttpPost]
         [ResponseType(typeof(Citas))]
         [Route("api/Citas/AgregarCita",Name ="addCita")]
         public IHttpActionResult PostCitas(Citas cita) 

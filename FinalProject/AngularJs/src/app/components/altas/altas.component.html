@@ -76,9 +76,9 @@
 
                             <mat-form-field style="width: 100%;">
                                 <mat-label>Fecha de salida </mat-label>
-                                <input matInput formControlName="FechaSalida" [matDatepicker]="picker2">
+                                <input matInput formControlName="FechaSalida" [matDatepicker]="picker2" readonly="true">
                                 <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                                <mat-datepicker #picker2></mat-datepicker>
+                                <mat-datepicker #picker2 disabled="true"></mat-datepicker>
                             </mat-form-field>
 
                             <div *ngIf="FechaSalida.invalid &&(FechaSalida.touched || FechaSalida.dirty)">
