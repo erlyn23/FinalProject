@@ -9,13 +9,22 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using FinalProject.Models;
+using System.Data.SqlClient;
 
 namespace FinalProject.Controllers
 {
     public class HabitacionesController : ApiController
     {
         private SistemaMedico1Entities db = new SistemaMedico1Entities();
+        private SqlConnection conexion = new SqlConnection();
+        private SqlCommand cmd = new SqlCommand();
+        private SqlDataReader dr;
 
+
+        public void Conexion()
+        {
+            conexion.ConnectionString = "Data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN;integrated security=SSPI;database=SistemaMedico1;";
+        }
         // GET: api/Habitaciones
         public IQueryable<Habitaciones> GetHabitaciones()
         {
@@ -74,8 +83,40 @@ namespace FinalProject.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.Habitaciones.Add(habitaciones);
-            db.SaveChanges();
+            try
+            {
+                Conexion();
+                conexion.Open();
+                cmd.Connection = conexion;
+                cmd.CommandText = "Select*from Habitaciones";
+                dr = cmd.ExecuteReader();
+                if (dr.Read())
+                {
+                    while (dr.Read())
+                    {
+                        if (dr.GetInt32(1) == habitaciones.Numero)
+                        {
+                            return BadRequest("El número de habitación ya existe intente con uno nuevo");
+                        }
+                    }
+                }
+                dr.Close();
+                cmd.Dispose();
+                conexion.Close();
+                if (string.IsNullOrEmpty(habitaciones.Numero.ToString()) || string.IsNullOrEmpty(habitaciones.Tipo) || string.IsNullOrEmpty(habitaciones.PrecioxDia.ToString()) || string.IsNullOrEmpty(habitaciones.Disponible.ToString()))
+                {
+                    return BadRequest("No se aceptan campos nulos");
+                }
+                else
+                {
+                    db.Habitaciones.Add(habitaciones);
+                    db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
             return CreatedAtRoute("DefaultApi", new { id = habitaciones.idHabitacion }, habitaciones);
         }
@@ -90,10 +131,48 @@ namespace FinalProject.Controllers
                 return NotFound();
             }
 
-            db.Habitaciones.Remove(habitaciones);
-            db.SaveChanges();
-
-            return Ok(habitaciones);
+            try
+            {
+                Conexion();
+                conexion.Open();
+                cmd.Connection = conexion;
+                cmd.CommandText = "Select*from Ingresos";
+                dr = cmd.ExecuteReader();
+                if (dr.Read())
+                {
+                    while (dr.Read())
+                    {
+                        if (dr.GetInt32(2) == id)
+                        {
+                            return BadRequest("No se puede eliminar esta habitación porque tiene ingresos pendientes");
+                        }
+                    }
+                }
+                dr.Close();
+                cmd.Dispose();
+                cmd.CommandText = "Select*from AltaMedica";
+                dr = cmd.ExecuteReader();
+                if (dr.Read())
+                {
+                    while (dr.Read())
+                    {
+                        if (dr.GetInt32(2) == id)
+                        {
+                            return BadRequest("No se puede eliminar esta habitación porque está registrado en la tabla altas médicas");
+                        }
+                    }
+                }
+                dr.Close();
+                cmd.Dispose();
+                conexion.Close();
+                db.Habitaciones.Remove(habitaciones);
+                db.SaveChanges();
+                return Ok(habitaciones);
+            }
+            catch (Exception e) 
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         protected override void Dispose(bool disposing)

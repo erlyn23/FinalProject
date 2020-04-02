@@ -18,9 +18,9 @@ namespace FinalProject.Controllers
     public class IngresosController : ApiController
     {
         private SistemaMedico1Entities db = new SistemaMedico1Entities();
-        SqlConnection conexion = new SqlConnection();
-        SqlCommand cmd = new SqlCommand();
-        SqlDataReader dr;
+        private SqlConnection conexion = new SqlConnection();
+        private SqlCommand cmd = new SqlCommand();
+        private SqlDataReader dr;
 
         public List<IngresosArreglados> GetIngresos() 
         {
