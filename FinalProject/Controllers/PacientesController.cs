@@ -13,6 +13,7 @@ using FinalProject.Models;
 
 namespace FinalProject.Controllers
 {
+    [RoutePrefix("api/Pacientes")]
     public class PacientesController : ApiController
     {
         private SistemaMedico1Entities db = new SistemaMedico1Entities();
@@ -29,6 +30,51 @@ namespace FinalProject.Controllers
         public IQueryable<Pacientes> GetPacientes()
         {
             return db.Pacientes;
+        }
+
+        [Route("PorNombre")]
+        public IQueryable<Pacientes> GetPorNombre(string nom) 
+        {
+            try
+            {
+                var listaCompleta = db.Pacientes;
+                var nombres = from n in listaCompleta where n.Nombre == nom orderby n.Nombre select n;
+                return nombres;
+            }
+            catch(Exception ex) 
+            {
+                return null;
+            }
+        }
+
+        [Route("PorCedula")]
+        public IQueryable<Pacientes> GetPorCedula(string ced) 
+        {
+            try
+            {
+                var listaCompleta = db.Pacientes;
+                var cedulas = from c in listaCompleta where c.Cedula == ced orderby c.Cedula select c;
+                return cedulas;
+            }
+            catch(Exception ex) 
+            {
+                return null;
+            }
+        }
+
+        [Route("PorAsegurados")]
+        public IQueryable<Pacientes> GetPorAsegurados(string asg) 
+        {
+            try
+            {
+                var listaCompleta = db.Pacientes;
+                var asegurados = from a in listaCompleta where a.Asegurado == asg orderby a.Asegurado select a;
+                return asegurados;
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
         }
 
         // GET: api/Pacientes/5

@@ -39,18 +39,32 @@ namespace FinalProject.Controllers
 
         public IQueryable<Medicos> GetPorNombre(string nom) 
         {
-            var listaCompleta = db.Medicos;
-            var nombres = from n in listaCompleta where n.Nombre == nom orderby n.Nombre select n;
-            return nombres;
+            try
+            {
+                var listaCompleta = db.Medicos;
+                var nombres = from n in listaCompleta where n.Nombre == nom orderby n.Nombre select n;
+                return nombres;
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
         }
 
         [Route("PorEspecialidad")]
 
         public IQueryable<Medicos> GetPorEspecialidad(string spc) 
         {
-            var listaCompleta = db.Medicos;
-            var especialidades = from e in listaCompleta where e.Especialidad == spc orderby e.Especialidad select e;
-            return especialidades;
+            try
+            {
+                var listaCompleta = db.Medicos;
+                var especialidades = from e in listaCompleta where e.Especialidad == spc orderby e.Especialidad select e;
+                return especialidades;
+            }
+            catch(Exception ex) 
+            {
+                return null;
+            }
         }
 
         // GET: api/Medicos/5
