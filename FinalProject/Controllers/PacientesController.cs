@@ -13,7 +13,6 @@ using FinalProject.Models;
 
 namespace FinalProject.Controllers
 {
-    [RoutePrefix("api/Pacientes")]
     public class PacientesController : ApiController
     {
         private SistemaMedico1Entities db = new SistemaMedico1Entities();
@@ -104,6 +103,21 @@ namespace FinalProject.Controllers
 
             try
             {
+                Conexion();
+                conexion.Open();
+                cmd.Connection = conexion;
+                cmd.CommandText = "Select*from Pacientes";
+                dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    if (dr.GetString(1) == pacientes.Cedula)
+                    {
+                        return BadRequest("La cédula ya existe, intente con una nueva");
+                    }
+                }
+                dr.Close();
+                cmd.Dispose();
+                conexion.Close();
                 db.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
@@ -123,6 +137,7 @@ namespace FinalProject.Controllers
 
         // POST: api/Pacientes
         [ResponseType(typeof(Pacientes))]
+        [Route("api/Pacientes/AgregarPaciente", Name ="addPaciente")]
         public IHttpActionResult PostPacientes(Pacientes pacientes)
         {
             if (!ModelState.IsValid)
@@ -136,15 +151,12 @@ namespace FinalProject.Controllers
                 cmd.Connection = conexion;
                 cmd.CommandText = "Select*from Pacientes";
                 dr = cmd.ExecuteReader();
-                if (dr.Read())
+                while (dr.Read())
                 {
-                    while (dr.Read())
-                    {
-                        if (dr.GetString(1) == pacientes.Cedula)
-                        {
-                            return BadRequest("La cédula ya existe intente con uno nuevo");
-                        }
-                    }
+                  if (dr.GetString(1) == pacientes.Cedula)
+                  {
+                    return BadRequest("La cédula ya existe, intente con una nueva");
+                  }
                 }
                 dr.Close();
                 cmd.Dispose();
@@ -153,15 +165,15 @@ namespace FinalProject.Controllers
                 {
                     return BadRequest("No se aceptan campos nulos");
                 }
-                else if(pacientes.Asegurado != "Sí" || pacientes.Asegurado != "No") 
+                else if(pacientes.Asegurado != "Sí" && pacientes.Asegurado != "No") 
                 {
-                    return BadRequest("Este campo solo acepta dos respuestas sí o no");
+                    return BadRequest("El campo Asegurado solo acepta una de dos respuestas sí o no");
                 }
                 else
                 {
                     db.Pacientes.Add(pacientes);
                     db.SaveChanges();
-                    return CreatedAtRoute("DefaultApi", new { id = pacientes.idPaciente }, pacientes);
+                    return CreatedAtRoute("addPaciente", new { id = pacientes.idPaciente }, pacientes);
                 }
             }
             catch (Exception ex)
@@ -186,43 +198,34 @@ namespace FinalProject.Controllers
                 cmd.Connection = conexion;
                 cmd.CommandText = "Select*from Citas";
                 dr = cmd.ExecuteReader();
-                if (dr.Read())
+                while (dr.Read())
                 {
-                    while (dr.Read())
+                    if (dr.GetInt32(2) == id)
                     {
-                        if (dr.GetInt32(2) == id)
-                        {
-                            return BadRequest("No se puede eliminar este paciente porque tiene citas pendientes");
-                        }
+                        return BadRequest("No se puede eliminar este paciente porque tiene citas pendientes");
                     }
                 }
                 dr.Close();
                 cmd.Dispose();
                 cmd.CommandText = "Select*from Ingresos";
                 dr = cmd.ExecuteReader();
-                if (dr.Read()) 
-                {
-                    while (dr.Read()) 
-                    { 
-                        if(dr.GetInt32(3) == id) 
-                        {
-                            return BadRequest("No se puede eliminar este paciente porque tiene ingresos pendientes");
-                        }
-                    }
+                while (dr.Read()) 
+                { 
+                  if(dr.GetInt32(3) == id) 
+                  {
+                    return BadRequest("No se puede eliminar este paciente porque tiene ingresos pendientes");
+                  }
                 }
                 dr.Close();
                 cmd.Dispose();
                 cmd.CommandText = "Select*from AltaMedica";
                 dr = cmd.ExecuteReader();
-                if (dr.Read())
-                {
-                    while (dr.Read()) 
-                    { 
-                        if(dr.GetInt32(3) == id) 
-                        {
-                            return BadRequest("No se puede eliminar este paciente porque está registrado en la tabla altas médicas");
-                        }
-                    }
+                while (dr.Read()) 
+                { 
+                  if(dr.GetInt32(3) == id) 
+                  {
+                    return BadRequest("No se puede eliminar este paciente porque está registrado en la tabla altas médicas");
+                  }
                 }
                 dr.Close();
                 cmd.Dispose();
