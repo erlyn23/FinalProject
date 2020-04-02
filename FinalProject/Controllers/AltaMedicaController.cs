@@ -14,6 +14,7 @@ using FinalProject.Models;
 
 namespace FinalProject.Controllers
 {
+    [RoutePrefix("api/AltaMedica")]
     public class AltaMedicaController : ApiController
     {
         SistemaMedico1Entities db = new SistemaMedico1Entities();
@@ -38,8 +39,8 @@ namespace FinalProject.Controllers
                     alta1 = new AltaArreglada();
                     alta1.idAltaMedica = dr.GetInt32(0);
                     alta1.NombrePaciente = dr.GetString(1);
-                    alta1.FechaIngreso = dr.GetDateTime(2);
-                    alta1.FechaSalida = dr.GetDateTime(3);
+                    alta1.FechaIngreso = dr.GetDateTime(2).ToString();
+                    alta1.FechaSalida = dr.GetDateTime(3).ToString();
                     alta1.Monto = dr.GetDecimal(4);
                     alta.Add(alta1);
                 }
@@ -48,6 +49,35 @@ namespace FinalProject.Controllers
                 return alta;
             }
             catch(Exception ex) 
+            {
+                return null;
+            }
+        }
+        [Route("PorPaciente")]
+        public List<AltaArreglada> GetPorPaciente(string pac)
+        {
+            try
+            {
+                var listaCompleta = GetAltas();
+                var pacientes = from p in listaCompleta where p.NombrePaciente == pac orderby p.NombrePaciente select p;
+                return pacientes.ToList();
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
+        }
+
+        [Route("PorFecha")]
+        public List<AltaArreglada> GetPorFecha(string fech)
+        {
+            try
+            {
+                var listaCompleta = GetAltas();
+                var fechas = from f in listaCompleta where f.FechaSalida == fech orderby f.FechaSalida select f;
+                return fechas.ToList();
+            }
+            catch (Exception ex)
             {
                 return null;
             }

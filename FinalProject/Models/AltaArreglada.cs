@@ -9,8 +9,8 @@ namespace FinalProject.Models
     {
         public int idAltaMedica { get; set; }
         public string NombrePaciente { get; set; }
-        public DateTime FechaIngreso { get; set; }
-        public DateTime FechaSalida { get; set; }
+        public string FechaIngreso { get; set; }
+        public string FechaSalida { get; set; }
         public decimal Monto { get; set; }
     }
 }
