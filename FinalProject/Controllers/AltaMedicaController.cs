@@ -23,14 +23,16 @@ namespace FinalProject.Controllers
            
         public List<AltaArreglada> GetAltas() 
         {
-            List<AltaArreglada> alta = new List<AltaArreglada>();
-            AltaArreglada alta1;
-            conexion.ConnectionString = "data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN; integrated security = SSPI; database=SistemaMedico1";
-            conexion.Open();
-            cmd.Connection = conexion;
-            string query2 = "select a.idAltaMedica, p.Nombre, i.FechaIngreso, a.FechaSalida, a.Monto from AltaMedica a inner join Pacientes p on a.idPaciente = p.idPaciente inner join Ingresos i on i.idIngreso = a.idIngreso";
-            cmd.CommandText = query2;
-            dr = cmd.ExecuteReader();
+            try
+            {
+                List<AltaArreglada> alta = new List<AltaArreglada>();
+                AltaArreglada alta1;
+                conexion.ConnectionString = "data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN; integrated security = SSPI; database=SistemaMedico1";
+                conexion.Open();
+                cmd.Connection = conexion;
+                string query2 = "select a.idAltaMedica, p.Nombre, i.FechaIngreso, a.FechaSalida, a.Monto from AltaMedica a inner join Pacientes p on a.idPaciente = p.idPaciente inner join Ingresos i on i.idIngreso = a.idIngreso";
+                cmd.CommandText = query2;
+                dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
                     alta1 = new AltaArreglada();
@@ -43,7 +45,12 @@ namespace FinalProject.Controllers
                 }
                 cmd.Dispose();
                 conexion.Close();
-            return alta;
+                return alta;
+            }
+            catch(Exception ex) 
+            {
+                return null;
+            }
         }
 
         [ResponseType(typeof(AltaMedica))]
@@ -54,40 +61,60 @@ namespace FinalProject.Controllers
             {
                 return BadRequest(ModelState);
             }
-            db.AltaMedica.Add(alta);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = alta.idAltaMedica }, alta);
+            try
+            {
+                if (string.IsNullOrEmpty(alta.idPaciente.ToString()) || string.IsNullOrEmpty(alta.idHabitacion.ToString()) || string.IsNullOrEmpty(alta.FechaSalida.ToString()) || string.IsNullOrEmpty(alta.FehcaIngreso.ToString()))
+                {
+                    return BadRequest("No se aceptan campos nulos");
+                }
+                else
+                {
+                    db.AltaMedica.Add(alta);
+                    db.SaveChanges();
+                    return CreatedAtRoute("DefaultApi", new { id = alta.idIngreso }, alta);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [ResponseType(typeof(AltaMedica))]
 
         public IHttpActionResult DeleteAltaMedica(int id, string tipo) 
         {
-            conexion.ConnectionString = "data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN; integrated security = SSPI; database=SistemaMedico1";
-            conexion.Open();
-            cmd.Connection = conexion;
-            switch (tipo) 
+            try
             {
-                case "Paciente":
-                    string query1 = "delete from AltaMedica where idPaciente=" + id;
-                    cmd.CommandText = query1;
-                    cmd.ExecuteNonQuery();
-                    break;
-                case "Habitacion":
-                    string query2 = "delete from AltaMedica where idHabitacion=" + id;
-                    cmd.CommandText = query2;
-                    cmd.ExecuteNonQuery();
-                    break;
-                default:
-                    string query3 = "delete from AltaMedica where idAltaMedica=" + id;
-                    cmd.CommandText = query3;
-                    cmd.ExecuteNonQuery();
-                    break;
+                conexion.ConnectionString = "data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN; integrated security = SSPI; database=SistemaMedico1";
+                conexion.Open();
+                cmd.Connection = conexion;
+                switch (tipo)
+                {
+                    case "Paciente":
+                        string query1 = "delete from AltaMedica where idPaciente=" + id;
+                        cmd.CommandText = query1;
+                        cmd.ExecuteNonQuery();
+                        break;
+                    case "Habitacion":
+                        string query2 = "delete from AltaMedica where idHabitacion=" + id;
+                        cmd.CommandText = query2;
+                        cmd.ExecuteNonQuery();
+                        break;
+                    default:
+                        string query3 = "delete from AltaMedica where idAltaMedica=" + id;
+                        cmd.CommandText = query3;
+                        cmd.ExecuteNonQuery();
+                        break;
+                }
+                cmd.Dispose();
+                conexion.Close();
+                return Ok(id);
             }
-            cmd.Dispose();
-            conexion.Close();
-            return Ok(id);
+            catch(Exception ex) 
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

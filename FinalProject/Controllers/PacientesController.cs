@@ -115,14 +115,13 @@ namespace FinalProject.Controllers
                 {
                     db.Pacientes.Add(pacientes);
                     db.SaveChanges();
+                    return CreatedAtRoute("DefaultApi", new { id = pacientes.idPaciente }, pacientes);
                 }
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-
-            return CreatedAtRoute("DefaultApi", new { id = pacientes.idPaciente }, pacientes);
         }
 
         // DELETE: api/Pacientes/5

@@ -114,14 +114,13 @@ namespace FinalProject.Controllers
                 {
                     db.Medicos.Add(medicos);
                     db.SaveChanges();
+                    return CreatedAtRoute("DefaultApi", new { id = medicos.idMedico }, medicos);
                 }
             }
             catch(Exception ex) 
             {
                 return BadRequest(ex.Message);
             }
-
-            return CreatedAtRoute("DefaultApi", new { id = medicos.idMedico }, medicos);
         }
 
         // DELETE: api/Medicos/5

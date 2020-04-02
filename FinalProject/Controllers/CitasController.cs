@@ -19,32 +19,42 @@ namespace FinalProject.Controllers
         private SqlConnection conexion = new SqlConnection();
         private SqlCommand cmd = new SqlCommand();
         private SqlDataReader reader;
-       
-        public List<CitasArregladas> GetCitas() 
-        {
-            List<CitasArregladas> salida = new List<CitasArregladas>();
-            conexion.ConnectionString = "Data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN;integrated security=SSPI;database=SistemaMedico1;";
-            conexion.Open();
-            cmd.Connection = conexion;
-            cmd.CommandText = "select c.idCita, m.Nombre, p.Nombre, c.Fecha, c.Hora from Citas c inner join Medicos m on c.idMedico = m.idMedico inner join Pacientes p on c.idPaciente = p.idPaciente ";
-            reader = cmd.ExecuteReader();
 
-            while (reader.Read()) 
-            {
-                CitasArregladas cita = new CitasArregladas();
-                cita.IdCita = reader.GetInt32(0);
-                cita.NombrePaciente = reader.GetString(2);
-                cita.NombreMedico = reader.GetString(1);
-                cita.Fecha = reader.GetDateTime(3).ToLongDateString();
-                cita.Hora = reader.GetTimeSpan(4).ToString();
-                salida.Add(cita);
-            }
-            cmd.Dispose();
-            conexion.Close();
-            return salida;
+        public void Conexion()
+        {
+            conexion.ConnectionString = "Data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN;integrated security=SSPI;database=SistemaMedico1;";
         }
 
+        public List<CitasArregladas> GetCitas() 
+        {
+            try 
+            {
+                List<CitasArregladas> salida = new List<CitasArregladas>();
+                Conexion();
+                conexion.Open();
+                cmd.Connection = conexion;
+                cmd.CommandText = "select c.idCita, m.Nombre, p.Nombre, c.Fecha, c.Hora from Citas c inner join Medicos m on c.idMedico = m.idMedico inner join Pacientes p on c.idPaciente = p.idPaciente ";
+                reader = cmd.ExecuteReader();
 
+                while (reader.Read())
+                {
+                    CitasArregladas cita = new CitasArregladas();
+                    cita.IdCita = reader.GetInt32(0);
+                    cita.NombrePaciente = reader.GetString(2);
+                    cita.NombreMedico = reader.GetString(1);
+                    cita.Fecha = reader.GetDateTime(3).ToLongDateString();
+                    cita.Hora = reader.GetTimeSpan(4).ToString();
+                    salida.Add(cita);
+                }
+                cmd.Dispose();
+                conexion.Close();
+                return salida;
+            }
+            catch(Exception ex) 
+            {
+                return null;
+            }
+        }
 
         [ResponseType(typeof(Citas))]
         public IHttpActionResult PostCitas(Citas cita) 
@@ -54,49 +64,62 @@ namespace FinalProject.Controllers
                 return BadRequest(ModelState);
             }
 
-            DateTime fecha = DateTime.Now;
-            if(cita.Fecha < fecha) 
+            try
             {
-                return BadRequest("Fecha invalida o pasada");
-            }
-            else 
-            {
-                db.Citas.Add(cita);
-                db.SaveChanges();
-            }
 
-            return CreatedAtRoute("DefaultApi", new { id = cita.idCita }, cita);
+                if (string.IsNullOrEmpty(cita.idPaciente.ToString()) || string.IsNullOrEmpty(cita.idMedico.ToString()) || string.IsNullOrEmpty(cita.Fecha.ToString()))
+                {
+                    return BadRequest("No se aceptan campos nulos");
+                }
+                else
+                {
+                    db.Citas.Add(cita);
+                    db.SaveChanges();
+                    return CreatedAtRoute("DefaultApi", new { id = cita.idCita }, cita);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [ResponseType(typeof(Citas))]
 
         public IHttpActionResult DeleteCita(int id, string tipo) 
         {
-            conexion.ConnectionString = "Data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN;integrated security=SSPI;database=SistemaMedico1;";
-            conexion.Open();
-            cmd.Connection = conexion;
-            switch (tipo) 
+            try 
             {
-                case "Médico":
-                    string query = "delete from Citas where idMedico=" + id;
-                    cmd.CommandText = query;
-                    cmd.ExecuteNonQuery();
-                    break;
-                case "Paciente":
-                    string query1 = "delete from Citas where idPaciente=" + id;
-                    cmd.CommandText = query1;
-                    cmd.ExecuteNonQuery();
-                    break;
-                case "Cita":
-                    string query2 = "delete from Citas where idCita=" + id;
-                    cmd.CommandText = query2;
-                    cmd.ExecuteNonQuery();
-                    break;
+                Conexion();
+                conexion.Open();
+                cmd.Connection = conexion;
+                switch (tipo)
+                {
+                    case "Médico":
+                        string query = "delete from Citas where idMedico=" + id;
+                        cmd.CommandText = query;
+                        cmd.ExecuteNonQuery();
+                        break;
+                    case "Paciente":
+                        string query1 = "delete from Citas where idPaciente=" + id;
+                        cmd.CommandText = query1;
+                        cmd.ExecuteNonQuery();
+                        break;
+                    case "Cita":
+                        string query2 = "delete from Citas where idCita=" + id;
+                        cmd.CommandText = query2;
+                        cmd.ExecuteNonQuery();
+                        break;
+                }
+
+                cmd.Dispose();
+                conexion.Close();
+                return Ok(id);
             }
-            
-            cmd.Dispose();
-            conexion.Close();
-            return Ok(id);
+            catch(Exception ex) 
+            {
+                return BadRequest(ex.Message);
+            }
 
         }
 

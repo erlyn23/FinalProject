@@ -111,14 +111,13 @@ namespace FinalProject.Controllers
                 {
                     db.Habitaciones.Add(habitaciones);
                     db.SaveChanges();
+                    return CreatedAtRoute("DefaultApi", new { id = habitaciones.idHabitacion }, habitaciones);
                 }
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-
-            return CreatedAtRoute("DefaultApi", new { id = habitaciones.idHabitacion }, habitaciones);
         }
 
         // DELETE: api/Habitaciones/5
