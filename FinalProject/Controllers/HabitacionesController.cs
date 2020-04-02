@@ -13,6 +13,7 @@ using System.Data.SqlClient;
 
 namespace FinalProject.Controllers
 {
+    [RoutePrefix("api/Habitaciones")]
     public class HabitacionesController : ApiController
     {
         private SistemaMedico1Entities db = new SistemaMedico1Entities();
@@ -29,6 +30,21 @@ namespace FinalProject.Controllers
         public IQueryable<Habitaciones> GetHabitaciones()
         {
             return db.Habitaciones;
+        }
+
+        [Route("PorTipo")]
+        public IQueryable<Habitaciones> GetPorTipo(string tip) 
+        {
+            try
+            {
+                var listaCompleta = db.Habitaciones;
+                var tipos = from t in listaCompleta where t.Tipo == tip orderby t.Tipo select t;
+                return tipos;
+            }
+            catch(Exception ex) 
+            {
+                return null;
+            }
         }
 
         // GET: api/Habitaciones/5
