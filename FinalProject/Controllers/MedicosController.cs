@@ -34,7 +34,8 @@ namespace FinalProject.Controllers
             return db.Medicos;
         }
 
-        [Route("PorNombre")]
+        [HttpGet]
+        [Route("api/Medicos/PorNombre/{nom}")]
 
         public IQueryable<Medicos> GetPorNombre(string nom) 
         {
@@ -50,7 +51,9 @@ namespace FinalProject.Controllers
             }
         }
 
-        [Route("PorEspecialidad")]
+
+        [HttpGet]
+        [Route("api/Medicos/PorEspecialidad/{spc}")]
 
         public IQueryable<Medicos> GetPorEspecialidad(string spc) 
         {

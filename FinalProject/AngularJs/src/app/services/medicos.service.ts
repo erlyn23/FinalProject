@@ -16,6 +16,22 @@ export class MedicosService {
     return this.http.get<Medicos[]>(this.url);
   }
 
+  ObtenerPorNombre(filtro:string): Observable<Medicos[]>{
+    const httpOptions = {headers: new HttpHeaders({"content-type":"application/json"})}
+    return this.http.get<Medicos[]>(this.url+"/PorNombre/"+filtro, httpOptions).pipe(retry(1),catchError((err)=>{
+      alert(err.error.Message);
+      return throwError(err.error.Message);
+    }));
+  }
+
+  ObtenerPorEspecialidad(filtro:string): Observable<Medicos[]>{
+    const httpOptions = {headers: new HttpHeaders({"content-type":"application/json"})}
+    return this.http.get<Medicos[]>(this.url+"/PorEspecialidad/"+filtro).pipe(retry(1),catchError((err)=>{
+      alert(err.error.Message);
+      return throwError(err.error.Message);
+    }));
+  }
+
   AgregarMedico(medico: Medicos): Observable<Medicos>
   {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) }; 

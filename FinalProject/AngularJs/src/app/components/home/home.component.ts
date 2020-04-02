@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit {
 
   todosMedicos: any[];
   valor: any;
+  busquedas:FormGroup;
   Especialidades: any[] = ["Alergología",
     "Anestesiología",
     "Cardiología",
@@ -83,6 +84,7 @@ export class HomeComponent implements OnInit {
   
   
     constructor(private fb: FormBuilder,
+    private fb2: FormBuilder,
     private ms: MedicosService,
     private snack: MatSnackBar,
     private dialog: MatDialog,
@@ -94,6 +96,12 @@ export class HomeComponent implements OnInit {
       Exequatur: ["", [Validators.required,Validators.pattern('[0-9]*'), Validators.maxLength(10)]],
       Especialidad: ["",[Validators.required]]
     });
+
+    this.busquedas = this.fb2.group({
+      Filtro: [""],
+      Busqueda: [""]
+    })
+
     this.Especialidades.sort();
     this.obtenerMedicos();
   }
@@ -176,6 +184,22 @@ export class HomeComponent implements OnInit {
       this.comprobar = false;
     });
   }
+
+  Search(){
+    if(this.busquedas.value.Filtro == "Nombre" && this.busquedas.value.Busqueda != ""){
+      this.ms.ObtenerPorNombre(this.busquedas.value.Busqueda).subscribe((data:any)=>{
+        this.todosMedicos = data;
+      });
+    }
+    else if(this.busquedas.value.Filtro == "Especialidad" && this.busquedas.value.Busqueda != ""){
+      this.ms.ObtenerPorEspecialidad(this.busquedas.value.Busqueda).subscribe((data:any)=>{
+        this.todosMedicos = data;
+      });
+    }
+    else{
+      this.obtenerMedicos();
+    }
+  }
   
   get Nombre(){
     return this.fg.get('Nombre');
@@ -185,6 +209,14 @@ export class HomeComponent implements OnInit {
   }
   get Especialidad(){
     return this.fg.get('Especialidad');
+  }
+
+  get Filtro(){
+    return this.busquedas.get('Filtro');
+  }
+
+  get Busqueda(){
+    return this.busquedas.get('Busqueda');
   }
 
 }
