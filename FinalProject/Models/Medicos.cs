@@ -22,7 +22,7 @@ namespace FinalProject.Models
     
         public int idMedico { get; set; }
         public string Nombre { get; set; }
-        public string Exequatur { get; set; }
+        public Nullable<int> Exequatur { get; set; }
         public string Especialidad { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

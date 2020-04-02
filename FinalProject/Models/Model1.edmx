@@ -56,7 +56,7 @@
           </Key>
           <Property Name="idMedico" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Exequatur" Type="nvarchar" MaxLength="3000" />
+          <Property Name="Exequatur" Type="int" />
           <Property Name="Especialidad" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Pacientes">
@@ -217,7 +217,7 @@
           </Key>
           <Property Name="idMedico" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Exequatur" Type="String" MaxLength="3000" FixedLength="false" Unicode="true" />
+          <Property Name="Exequatur" Type="Int32" />
           <Property Name="Especialidad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="Citas" Relationship="Self.fk_Medico" FromRole="Medicos" ToRole="Citas" />
         </EntityType>

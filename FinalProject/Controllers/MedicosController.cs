@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Web.Hosting;
 using System.Web;
 using System.Web.Http;
+using System.Data.SqlClient;
 using System.Web.Http.Description;
 using FinalProject.Models;
 
@@ -18,7 +19,15 @@ namespace FinalProject.Controllers
     public class MedicosController : ApiController
     {
         private SistemaMedico1Entities db = new SistemaMedico1Entities();
+        private SqlConnection conexion = new SqlConnection();
+        private SqlCommand cmd = new SqlCommand();
+        private SqlDataReader dr;
 
+
+        public void Conexion()
+        {
+            conexion.ConnectionString = "Data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN;integrated security=SSPI;database=SistemaMedico1;";
+        }
         // GET: api/Medicos
         public IQueryable<Medicos> GetMedicos()
         {
@@ -76,9 +85,38 @@ namespace FinalProject.Controllers
             {
                 return BadRequest(ModelState);
             }
-            
-            db.Medicos.Add(medicos);
-            db.SaveChanges();
+
+            try 
+            {
+                Conexion();
+                conexion.Open();
+                cmd.Connection = conexion;
+                cmd.CommandText = "Select*from Medicos";
+                dr = cmd.ExecuteReader();
+                if (dr.Read()) 
+                {
+                    while (dr.Read())
+                    {
+                        if(dr.GetInt32(2) == medicos.Exequatur) 
+                        {
+                            return BadRequest("El exequatur ya existe intente con uno nuevo");
+                        }
+                    }
+                }
+                if (string.IsNullOrEmpty(medicos.Nombre) || string.IsNullOrEmpty(medicos.Exequatur.ToString()) || string.IsNullOrEmpty(medicos.Especialidad))
+                {
+                    return BadRequest("No se aceptan campos nulos");
+                }
+                else
+                {
+                    db.Medicos.Add(medicos);
+                    db.SaveChanges();
+                }
+            }
+            catch(Exception ex) 
+            {
+                return BadRequest(ex.Message);
+            }
 
             return CreatedAtRoute("DefaultApi", new { id = medicos.idMedico }, medicos);
         }
