@@ -103,6 +103,9 @@ namespace FinalProject.Controllers
                         }
                     }
                 }
+                dr.Close();
+                cmd.Dispose();
+                conexion.Close();
                 if (string.IsNullOrEmpty(medicos.Nombre) || string.IsNullOrEmpty(medicos.Exequatur.ToString()) || string.IsNullOrEmpty(medicos.Especialidad))
                 {
                     return BadRequest("No se aceptan campos nulos");
@@ -148,6 +151,9 @@ namespace FinalProject.Controllers
                         }
                     }
                 }
+                dr.Close();
+                cmd.Dispose();
+                conexion.Close();
                 db.Medicos.Remove(medicos);
                 db.SaveChanges();
                 return Ok(medicos);
