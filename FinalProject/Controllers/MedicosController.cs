@@ -131,10 +131,32 @@ namespace FinalProject.Controllers
                 return NotFound();
             }
 
-            db.Medicos.Remove(medicos);
-            db.SaveChanges();
+            try 
+            {
+                Conexion();
+                conexion.Open();
+                cmd.Connection = conexion;
+                cmd.CommandText = "Select*from Citas";
+                dr = cmd.ExecuteReader();
+                if (dr.Read()) 
+                {
+                    while (dr.Read()) 
+                    { 
+                        if(dr.GetInt32(2) == id) 
+                        {
+                            return BadRequest("No se puede eliminar este médico porque tiene citas pendientes");
+                        }
+                    }
+                }
+                db.Medicos.Remove(medicos);
+                db.SaveChanges();
+                return Ok(medicos);
+            }
+            catch(Exception e) 
+            {
+                return BadRequest(e.Message);
+            }
 
-            return Ok(medicos);
         }
 
         protected override void Dispose(bool disposing)

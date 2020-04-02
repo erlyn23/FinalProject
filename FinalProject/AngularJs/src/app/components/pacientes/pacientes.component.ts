@@ -5,8 +5,6 @@ import { MatSnackBar, MatDialog } from '@angular/material';
 import { Pacientes } from 'src/app/Models/Pacientes';
 import { DialogComponent } from '../dialog/dialog.component';
 import { CitasService } from 'src/app/services/citas.service';
-import { Medicos } from 'src/app/Models/Medicos';
-import { MedicosService } from 'src/app/services/medicos.service';
 import { AltasService } from 'src/app/services/altas.service';
 import { IngresosService } from 'src/app/services/ingresos.service';
 
