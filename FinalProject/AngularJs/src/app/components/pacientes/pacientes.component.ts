@@ -99,20 +99,9 @@ export class PacientesComponent implements OnInit {
     dialogRef.afterClosed().subscribe(data=>{
       if(data){
         const idPac = this.todosPacientes[i].idPaciente;
-        this.as.EliminarAltaMedica(idPac.toString(), "Paciente").subscribe(()=>{
-          this.todosPacientes = [];
-          this.obtenerPacientes();
-        });
-        this.is.EliminarIngreso(idPac.toString(), "Paciente").subscribe(()=>{
-          this.todosPacientes= [];
-          this.obtenerPacientes();
-        });
-        this.cs.BorrarCita(idPac.toString(), "Paciente").subscribe(()=>{
-            {
-            this.todosPacientes =[];
-            this.obtenerPacientes();
-          }  
-        })
+        this.as.EliminarAltaMedica(idPac.toString(), "Paciente").subscribe(()=>{});
+        this.is.EliminarIngreso(idPac.toString(), "Paciente").subscribe(()=>{});
+        this.cs.BorrarCita(idPac.toString(), "Paciente").subscribe(()=>{});
         this.ps.EliminarPaciente(idPac.toString()).subscribe(()=>
         {  
           this.todosPacientes = [];

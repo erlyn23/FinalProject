@@ -13,7 +13,6 @@ using System.Data.SqlClient;
 
 namespace FinalProject.Controllers
 {
-    [RoutePrefix("api/Habitaciones")]
     public class HabitacionesController : ApiController
     {
         private SistemaMedico1Entities db = new SistemaMedico1Entities();
@@ -73,6 +72,21 @@ namespace FinalProject.Controllers
 
             try
             {
+                Conexion();
+                conexion.Open();
+                cmd.Connection = conexion;
+                cmd.CommandText = "Select*from Habitaciones";
+                dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    if (dr.GetInt32(1) == habitaciones.Numero)
+                    {
+                        return BadRequest("El número de habitación ya existe, intente con uno nuevo");
+                    }
+                }
+                dr.Close();
+                cmd.Dispose();
+                conexion.Close();
                 db.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
@@ -92,6 +106,7 @@ namespace FinalProject.Controllers
 
         // POST: api/Habitaciones
         [ResponseType(typeof(Habitaciones))]
+        [Route("api/Habitaciones/AgregarHabitacion",Name ="addHabitacion")]
         public IHttpActionResult PostHabitaciones(Habitaciones habitaciones)
         {
             if (!ModelState.IsValid)
@@ -106,15 +121,12 @@ namespace FinalProject.Controllers
                 cmd.Connection = conexion;
                 cmd.CommandText = "Select*from Habitaciones";
                 dr = cmd.ExecuteReader();
-                if (dr.Read())
+                while (dr.Read())
                 {
-                    while (dr.Read())
-                    {
-                        if (dr.GetInt32(1) == habitaciones.Numero)
-                        {
-                            return BadRequest("El número de habitación ya existe intente con uno nuevo");
-                        }
-                    }
+                  if (dr.GetInt32(1) == habitaciones.Numero)
+                  {
+                    return BadRequest("El número de habitación ya existe, intente con uno nuevo");
+                  }
                 }
                 dr.Close();
                 cmd.Dispose();
@@ -127,7 +139,7 @@ namespace FinalProject.Controllers
                 {
                     db.Habitaciones.Add(habitaciones);
                     db.SaveChanges();
-                    return CreatedAtRoute("DefaultApi", new { id = habitaciones.idHabitacion }, habitaciones);
+                    return CreatedAtRoute("addHabitacion", new { id = habitaciones.idHabitacion }, habitaciones);
                 }
             }
             catch (Exception ex)
@@ -153,28 +165,22 @@ namespace FinalProject.Controllers
                 cmd.Connection = conexion;
                 cmd.CommandText = "Select*from Ingresos";
                 dr = cmd.ExecuteReader();
-                if (dr.Read())
+                while (dr.Read())
                 {
-                    while (dr.Read())
+                    if (dr.GetInt32(2) == id)
                     {
-                        if (dr.GetInt32(2) == id)
-                        {
-                            return BadRequest("No se puede eliminar esta habitación porque tiene ingresos pendientes");
-                        }
+                        return BadRequest("No se puede eliminar esta habitación porque tiene ingresos pendientes");
                     }
                 }
                 dr.Close();
                 cmd.Dispose();
                 cmd.CommandText = "Select*from AltaMedica";
                 dr = cmd.ExecuteReader();
-                if (dr.Read())
+                while (dr.Read())
                 {
-                    while (dr.Read())
+                    if (dr.GetInt32(2) == id)
                     {
-                        if (dr.GetInt32(2) == id)
-                        {
-                            return BadRequest("No se puede eliminar esta habitación porque está registrado en la tabla altas médicas");
-                        }
+                        return BadRequest("No se puede eliminar esta habitación porque está registrado en la tabla altas médicas");
                     }
                 }
                 dr.Close();

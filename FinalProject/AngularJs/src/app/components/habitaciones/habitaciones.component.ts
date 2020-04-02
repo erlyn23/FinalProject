@@ -101,14 +101,8 @@ export class HabitacionesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(salida=>{
       if(salida){
-          this.as.EliminarAltaMedica(idHab.toString(),"Habitacion").subscribe(()=>{
-            this.todasHabitaciones = [];
-            this.obtenerHabitaciones();
-          });
-          this.is.EliminarIngreso(idHab.toString(), "Habitacion").subscribe(()=>{
-            this.todasHabitaciones = [];
-            this.obtenerHabitaciones();
-          });
+          this.as.EliminarAltaMedica(idHab.toString(),"Habitacion").subscribe(()=>{});
+          this.is.EliminarIngreso(idHab.toString(), "Habitacion").subscribe(()=>{});
           this.hs.EliminarHabitacion(idHab.toString()).subscribe(()=>{
           this.todasHabitaciones = [];
           this.obtenerHabitaciones();

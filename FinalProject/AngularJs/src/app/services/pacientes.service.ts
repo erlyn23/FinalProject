@@ -33,7 +33,7 @@ export class PacientesService {
     return this.http.put<Pacientes>(this.url, paciente, httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
       alert(error.error.Message);
       return throwError(error.error.Message);
-    }));;
+    }));
   }
 
   EliminarPaciente(id: string): Observable<number>
@@ -42,6 +42,6 @@ export class PacientesService {
     return this.http.delete<number>(this.url+"/?id="+id, httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
       alert(error.error.Message);
       return throwError(error.error.Message);
-    }));;
+    }));
   }
 }

@@ -134,10 +134,7 @@ export class HomeComponent implements OnInit {
         if(result)
         {
           const idMed = this.todosMedicos[i].idMedico;
-          this.cs.BorrarCita(idMed.toString(),"Médico").subscribe(()=>{
-            this.todosMedicos = [];
-            this.obtenerMedicos();
-          })
+          this.cs.BorrarCita(idMed.toString(),"Médico").subscribe(()=>{});
           this.ms.BorrarMedico(idMed.toString()).subscribe(()=>
           {
             this.todosMedicos = [];
