@@ -13,7 +13,6 @@ using FinalProject.Models;
 
 namespace FinalProject.Controllers
 {
-    [RoutePrefix("api/Citas")]
     public class CitasController : ApiController
     {
         private SistemaMedico1Entities db = new SistemaMedico1Entities();
@@ -102,6 +101,7 @@ namespace FinalProject.Controllers
         }
 
         [ResponseType(typeof(Citas))]
+        [Route("api/Citas/AgregarCita",Name ="addCita")]
         public IHttpActionResult PostCitas(Citas cita) 
         {
             if (!ModelState.IsValid) 
@@ -111,16 +111,19 @@ namespace FinalProject.Controllers
 
             try
             {
-
                 if (string.IsNullOrEmpty(cita.idPaciente.ToString()) || string.IsNullOrEmpty(cita.idMedico.ToString()) || string.IsNullOrEmpty(cita.Fecha.ToString()))
                 {
                     return BadRequest("No se aceptan campos nulos");
+                }
+                if (DateTime.Parse(cita.Hora.ToString()) > DateTime.Parse("20:00") || DateTime.Parse(cita.Hora.ToString()) < DateTime.Parse("8:00")) 
+                {
+                    return BadRequest("Hora no permitida, el horario de citas es de 8:00a.m. a 8:00p.m.");
                 }
                 else
                 {
                     db.Citas.Add(cita);
                     db.SaveChanges();
-                    return CreatedAtRoute("DefaultApi", new { id = cita.idCita }, cita);
+                    return CreatedAtRoute("addCita", new { id = cita.idCita }, cita);
                 }
             }
             catch (Exception ex)
