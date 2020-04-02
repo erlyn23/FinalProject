@@ -13,6 +13,7 @@ using FinalProject.Models;
 
 namespace FinalProject.Controllers
 {
+    [RoutePrefix("api/Citas")]
     public class CitasController : ApiController
     {
         private SistemaMedico1Entities db = new SistemaMedico1Entities();
@@ -51,6 +52,50 @@ namespace FinalProject.Controllers
                 return salida;
             }
             catch(Exception ex) 
+            {
+                return null;
+            }
+        }
+
+        [Route("PorFecha")]
+        public List<CitasArregladas> GetPorFecha(string Fecha)
+        {
+            try
+            {
+                var listaCompleta = GetCitas();
+                var fechas = from f in listaCompleta where f.Fecha == Fecha orderby f.Fecha select f;
+                return fechas.ToList();
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
+        }
+
+        [Route("PorMedico")]
+        public List<CitasArregladas> GetPorMedico(string med)
+        {
+            try
+            {
+                var listaCompleta = GetCitas();
+                var medicos = from m in listaCompleta where m.NombreMedico == med orderby m.NombreMedico select m;
+                return medicos.ToList();
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
+        }
+        [Route("PorPaciente")]
+        public List<CitasArregladas> GetPorPaciente(string pac)
+        {
+            try
+            {
+                var listaCompleta = GetCitas();
+                var pacientes = from p in listaCompleta where p.NombrePaciente == pac orderby p.NombrePaciente select p;
+                return pacientes.ToList();
+            }
+            catch(Exception ex)
             {
                 return null;
             }
