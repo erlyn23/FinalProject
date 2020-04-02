@@ -11,6 +11,6 @@ namespace FinalProject.Models
         public int idPaciente { get; set; }
         public string NombrePaciente { get; set; }
         public int NumeroHabitacion { get; set; }
-        public string FechaIngreso { get; set; }
+        public DateTime FechaIngreso { get; set; }
     }
 }

@@ -14,7 +14,6 @@ using FinalProject.Models;
 
 namespace FinalProject.Controllers
 {
-    [RoutePrefix("api/Ingresos")]
     public class IngresosController : ApiController
     {
         private SistemaMedico1Entities db = new SistemaMedico1Entities();
@@ -44,7 +43,7 @@ namespace FinalProject.Controllers
                     ingreso.idPaciente = dr.GetInt32(1);
                     ingreso.NombrePaciente = dr.GetString(2);
                     ingreso.NumeroHabitacion = dr.GetInt32(3);
-                    ingreso.FechaIngreso = dr.GetDateTime(4).ToString();
+                    ingreso.FechaIngreso = dr.GetDateTime(4);
                     lista.Add(ingreso);
                 }
                 cmd.Dispose();
@@ -64,7 +63,7 @@ namespace FinalProject.Controllers
         }
 
         [Route("PorFecha")]
-        public List<IngresosArreglados> GetPorFecha(string fecha) 
+        public List<IngresosArreglados> GetPorFecha(DateTime fecha) 
         {
             try
             {
@@ -92,18 +91,35 @@ namespace FinalProject.Controllers
                 return null;
             }
         }
-
+        
+        [HttpPost]
+        [Route("api/Ingresos/AgregarIngreso", Name = "addIngreso")]
         [ResponseType(typeof(Ingresos))]
+
         public IHttpActionResult PostIngresos(Ingresos ingreso) 
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
             try
             {
-               
+                Conexion();
+                conexion.Open();
+                cmd.Connection = conexion;
+                cmd.CommandText = "select i.idIngreso, p.idPaciente, p.Nombre, h.Numero, i.FechaIngreso from Ingresos i inner join Pacientes p on i.idPaciente = p.idPaciente inner join Habitaciones h on i.idHabitacion = h.idHabitacion left join AltaMedica a on i.idIngreso = a.idIngreso where a.idIngreso is null";
+                dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                    if (dr.GetInt32(1) == ingreso.idPaciente)
+                    {
+                        return BadRequest("El paciente ya ha sido ingresado en una habitación, primero registre el alta médica e ingréselo de nuevo");
+                    }
+                }
+                dr.Close();
+                cmd.Dispose();
+                conexion.Close();
+
                 if (string.IsNullOrEmpty(ingreso.idPaciente.ToString()) || string.IsNullOrEmpty(ingreso.idHabitacion.ToString()) || string.IsNullOrEmpty(ingreso.FechaIngreso.ToString()))
                 {
                     return BadRequest("No se aceptan campos nulos");
@@ -112,7 +128,7 @@ namespace FinalProject.Controllers
                 {
                     db.Ingresos.Add(ingreso);
                     db.SaveChanges();
-                    return CreatedAtRoute("DefaultApi", new { id = ingreso.idIngreso }, ingreso);
+                    return CreatedAtRoute("addIngreso", new { id = ingreso.idIngreso }, ingreso);
                 }
             }
             catch (Exception ex)

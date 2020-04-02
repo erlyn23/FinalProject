@@ -136,8 +136,9 @@ namespace FinalProject.Controllers
         }
 
         // POST: api/Pacientes
+        [HttpPost]
+        [Route("api/Pacientes/AgregarPaciente", Name = "addPaciente")]
         [ResponseType(typeof(Pacientes))]
-        [Route("api/Pacientes/AgregarPaciente", Name ="addPaciente")]
         public IHttpActionResult PostPacientes(Pacientes pacientes)
         {
             if (!ModelState.IsValid)
