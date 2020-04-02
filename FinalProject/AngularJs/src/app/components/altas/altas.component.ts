@@ -25,6 +25,7 @@ export class AltasComponent implements OnInit {
   todosPacientes: Pacientes[];
   todasHabitaciones: Habitaciones[];
   busqueda: any;
+  comprobar:boolean = false;
   Monto: any;
   errorMessage: any;
   fg: FormGroup;
@@ -85,29 +86,29 @@ export class AltasComponent implements OnInit {
   buscarIngreso(val)
   {
     this.busqueda = this.todosIngresos[val];
-    this.fg.controls.Paciente.setValue(this.busqueda.NombrePaciente);
-    this.fg.controls.NumeroHab.setValue(this.busqueda.NumeroHabitacion);
-    this.fg.controls.FechaIngreso.setValue(this.busqueda.FechaIngreso);
+    if(this.busqueda != undefined)
+    {
+      this.fg.controls.Paciente.setValue(this.busqueda.NombrePaciente);
+      this.fg.controls.NumeroHab.setValue(this.busqueda.NumeroHabitacion);
+      this.fg.controls.FechaIngreso.setValue(this.busqueda.FechaIngreso);
+    }
   }
-  registrarAltaMedica(){
+
+  CalcularMonto(){
     let fechita1 = new Date(this.fg.value.FechaIngreso);
     let fechita2 = new Date(this.fg.value.FechaSalida);
     let Habitacion = new Habitaciones();
     let Paciente;
 
-    //Aquí yo obtengo la habitación extraida del array Habitaciones.
     for(let i in this.todasHabitaciones){
       if(this.fg.value.NumeroHab == this.todasHabitaciones[i].Numero){
         Habitacion.PrecioxDia = this.todasHabitaciones[i].PrecioxDia; 
-        Habitacion.idHabitacion = this.todasHabitaciones[i].idHabitacion;
-        Habitacion.Numero = this.todasHabitaciones[i].Numero;
       }
     }
 
-    //Aquí obtengo el Id del paciente extraído del array Ingresos.
-    for(let i in this.todosIngresos2){
+    for(let i in this.todosIngresos){
       if(this.busqueda.idIngreso == this.todosIngresos[i].idIngreso){
-        Paciente = this.todosIngresos2[i].idPaciente;
+        Paciente = this.todosIngresos[i].idPaciente;
       }
     }
 
@@ -120,6 +121,28 @@ export class AltasComponent implements OnInit {
     {
       this.errorMessage = "";
       this.Monto = Habitacion.PrecioxDia * diastranscurridos;
+      this.comprobar = true;
+    }
+  }
+
+  addAlta(){
+    let Habitacion = new Habitaciones();
+    let Paciente;
+
+    //Aquí yo obtengo la habitación extraida del array Habitaciones.
+    for(let i in this.todasHabitaciones){
+      if(this.fg.value.NumeroHab == this.todasHabitaciones[i].Numero){
+        Habitacion.PrecioxDia = this.todasHabitaciones[i].PrecioxDia; 
+        Habitacion.idHabitacion = this.todasHabitaciones[i].idHabitacion;
+      }
+    }
+
+    //Aquí obtengo el Id del paciente extraído del array Ingresos.
+    for(let i in this.todosIngresos){
+      if(this.busqueda.idIngreso == this.todosIngresos[i].idIngreso){
+        Paciente = this.todosIngresos[i].idPaciente;
+      }
+    }
       let alta = new AltaMedica();
       alta.idIngreso = this.todosIngresos[this.fg.value.idIngresos].idIngreso;
       alta.idHabitacion = Habitacion.idHabitacion;
@@ -127,25 +150,17 @@ export class AltasComponent implements OnInit {
       alta.FechaSalida = this.fg.value.FechaSalida;
       alta.Monto = this.Monto;
       alta.FechaIngreso = this.fg.value.FechaIngreso;
-
-      if(Habitacion.Tipo == "Doble" && Habitacion.Disponible == 0){
-        Habitacion.Disponible = 1;
-      }else if (Habitacion.Tipo == "Doble" && Habitacion.Disponible == 1){
-        Habitacion.Disponible = 2;
-      }
-      else{
-        Habitacion.Disponible = 1;
-      }
-      this.hs.ModificarHabitacion(Habitacion).subscribe(()=>{});
-      this.is.EliminarIngreso(alta.idIngreso.toString(), "Ingreso").subscribe(()=>{});
       this.as.AgregarAltaMedica(alta).subscribe(()=>{
         this.todasAltasMedicas = [];
         this.obtenerAltasMedicas();
-        this.snack.open('Alta médica dada correctamente (se eliminó el registro de ingreso y se desocupó la habitación)', '',{
+        this.snack.open('Alta médica dada correctamente (se desocupó la habitación)', '',{
           duration: 3000
         });
+        this.todosIngresos = [];
+        this.obtenerIngresos();
+        this.fg.reset();
+        this.comprobar = false;
       });
-    }
   }
 
 

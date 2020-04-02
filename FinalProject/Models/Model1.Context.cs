@@ -31,5 +31,6 @@ namespace FinalProject.Models
         public virtual DbSet<Ingresos> Ingresos { get; set; }
         public virtual DbSet<Medicos> Medicos { get; set; }
         public virtual DbSet<Pacientes> Pacientes { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
     }
 }

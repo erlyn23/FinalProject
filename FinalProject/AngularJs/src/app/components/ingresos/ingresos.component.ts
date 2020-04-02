@@ -19,6 +19,7 @@ export class IngresosComponent implements OnInit {
   todasHabitaciones: Habitaciones[];
   todosPacientes: Pacientes[];
   todosIngresos: IngresoArreglado[];
+  FechaDefecto: Date;
   fg: FormGroup;
   errorMessage: any;
 
@@ -29,10 +30,11 @@ export class IngresosComponent implements OnInit {
     private snack: MatSnackBar) { }
 
   ngOnInit() {
+    this.FechaDefecto = new Date();
     this.fg = this.fb.group({
       NombrePaciente: ["",[Validators.required]],
       NoHabitacion: ["",[Validators.required]],
-      Fecha: ["",[Validators.required]]
+      Fecha: [this.FechaDefecto,[Validators.required]]
     });
     this.obtenerIngresos();
     this.obtenerPacientes();
@@ -62,42 +64,24 @@ export class IngresosComponent implements OnInit {
     ingreso.idHabitacion = this.todasHabitaciones[this.fg.value.NoHabitacion].idHabitacion;
     ingreso.idPaciente = this.todosPacientes[this.fg.value.NombrePaciente].idPaciente;
     ingreso.FechaIngreso = this.fg.value.Fecha;
-    let actual = new Date();
-    let hab = new Habitaciones();
-    hab.idHabitacion = ingreso.idHabitacion;
-    hab.Numero = this.todasHabitaciones[this.fg.value.NoHabitacion].Numero;
-    hab.PrecioxDia = this.todasHabitaciones[this.fg.value.NoHabitacion].PrecioxDia;
-    hab.Tipo = this.todasHabitaciones[this.fg.value.NoHabitacion].Tipo;
-    hab.Disponible = this.todasHabitaciones[this.fg.value.NoHabitacion].Disponible;
+    let hab = this.todasHabitaciones[this.fg.value.NoHabitacion].Disponible;
 
-    if(ingreso.FechaIngreso < actual)
-    {
-      this.errorMessage = "La fecha no puede ser atrasada";
-    }else if(hab.Disponible == 0)
+    if(hab == 0)
     {
       this.errorMessage = "Esta habitación está ocupada, intente con una nueva";
     }
     else
     {
       this.errorMessage = "";
-      if(hab.Tipo == "Doble" && hab.Disponible == 1){
-        hab.Disponible = 0;
-      }
-      else if(hab.Tipo == "Doble" && hab.Disponible == 2)
-      {
-        hab.Disponible = 1;
-      }
-      else{
-        hab.Disponible = 0;
-      }
-      this.hs.ModificarHabitacion(hab).subscribe(()=>{});
       this.is.AgregarIngreso(ingreso).subscribe(()=>{
         this.todosIngresos = [];
         this.obtenerIngresos();
         this.snack.open('Ingreso registrado correctamente', '',{
           duration:3000,
         });
-        this.fg.reset();
+        this.fg.controls.NombrePaciente.setValue("");
+        this.fg.controls.NoHabitacion.setValue("");
+        this.fg.value.Fecha = this.FechaDefecto;
       });
     }
   }

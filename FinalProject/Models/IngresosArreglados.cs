@@ -8,6 +8,7 @@ namespace FinalProject.Models
     public class IngresosArreglados
     {
         public int idIngreso { get; set; }
+        public int idPaciente { get; set; }
         public string NombrePaciente { get; set; }
         public int NumeroHabitacion { get; set; }
         public DateTime FechaIngreso { get; set; }

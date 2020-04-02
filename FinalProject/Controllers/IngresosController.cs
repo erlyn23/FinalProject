@@ -28,16 +28,17 @@ namespace FinalProject.Controllers
             conexion.ConnectionString = "Data source=DESKTOP-KQ78R80\\SQLEXPRESSERLYN; database=SistemaMedico1; integrated security=SSPI";
             conexion.Open();
             cmd.Connection = conexion;
-            string query = "select i.idIngreso, p.Nombre, h.Numero, i.FechaIngreso from Ingresos i inner join Pacientes p on i.idPaciente = p.idPaciente inner join Habitaciones h on i.idHabitacion = h.idHabitacion";
+            string query = "select i.idIngreso, p.idPaciente, p.Nombre, h.Numero, i.FechaIngreso from Ingresos i inner join Pacientes p on i.idPaciente = p.idPaciente inner join Habitaciones h on i.idHabitacion = h.idHabitacion left join AltaMedica a on i.idIngreso = a.idIngreso where a.idIngreso is null";
             cmd.CommandText = query;
             dr = cmd.ExecuteReader();
             while (dr.Read()) 
             {
                 IngresosArreglados ingreso = new IngresosArreglados();
                 ingreso.idIngreso = dr.GetInt32(0);
-                ingreso.NombrePaciente = dr.GetString(1);
-                ingreso.NumeroHabitacion = dr.GetInt32(2);
-                ingreso.FechaIngreso = dr.GetDateTime(3);
+                ingreso.idPaciente = dr.GetInt32(1);
+                ingreso.NombrePaciente = dr.GetString(2);
+                ingreso.NumeroHabitacion = dr.GetInt32(3);
+                ingreso.FechaIngreso = dr.GetDateTime(4);
                 lista.Add(ingreso);
             }
             cmd.Dispose();

@@ -93,20 +93,24 @@
                                 </mat-error>
                             </div>
 
-                            <div *ngIf="Monto != ''">
+                            <div *ngIf="comprobar">
                                 <p class="text-center text-success ProductSans"><i class="fas fa-money-bill-wave"></i>Monto total a pagar: RD$ {{this.Monto}}</p>
                             </div>
                     </form>
                     <div style="width: 100%;" class="text-center">
-                        <button mat-raised-button class="text-white" (click)="registrarAltaMedica()" color="accent" [disabled]="!fg.valid"><i class="fas fa-calculator"></i>
+                        <button mat-raised-button class="text-white" (click)="CalcularMonto()" color="accent" [disabled]="!fg.valid"><i class="fas fa-calculator"></i>
                         Calcular Monto</button>
+                    </div>
+                    <div style="width: 100%;" class="text-center mt-3" *ngIf="comprobar">
+                        <button mat-raised-button class="text-white" (click)="addAlta()" color="accent" ><i class="fas fa-check-circle"></i>
+                        Registrar Alta Médica</button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-8">
             <div class="card mb-4">
-                <div class="card-header ProductSans text-center text-white" style="background: #004D40;"><h3>Consulta de ingreso</h3></div>
+                <div class="card-header ProductSans text-center text-white" style="background: #004D40;"><h3>Altas médicas realizadas</h3></div>
                 <div class="card-body">
                     <table class="table table-hover table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl">
                         <thead>

@@ -12,16 +12,12 @@ namespace FinalProject.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class AltaMedica
+    public partial class sysdiagrams
     {
-        public int idAltaMedica { get; set; }
-        public int idIngreso { get; set; }
-        public Nullable<int> idHabitacion { get; set; }
-        public Nullable<int> idPaciente { get; set; }
-        public System.DateTime FehcaIngreso { get; set; }
-        public System.DateTime FechaSalida { get; set; }
-        public Nullable<decimal> Monto { get; set; }
-    
-        public virtual Ingresos Ingresos { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

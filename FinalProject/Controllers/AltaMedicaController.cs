@@ -28,21 +28,21 @@ namespace FinalProject.Controllers
             conexion.ConnectionString = "data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN; integrated security = SSPI; database=SistemaMedico1";
             conexion.Open();
             cmd.Connection = conexion;
-            string query = "select a.idAltaMedica, p.Nombre, i.FechaIngreso, a.FechaSalida, a.Monto from AltaMedica a inner join Pacientes p on a.idPaciente = p.idPaciente inner join Ingresos i on a.idIngreso = i.idIngreso";
-            cmd.CommandText = query;
+            string query2 = "select a.idAltaMedica, p.Nombre, i.FechaIngreso, a.FechaSalida, a.Monto from AltaMedica a inner join Pacientes p on a.idPaciente = p.idPaciente inner join Ingresos i on i.idIngreso = a.idIngreso";
+            cmd.CommandText = query2;
             dr = cmd.ExecuteReader();
-            while (dr.Read()) 
-            {
-                alta1 = new AltaArreglada();
-                alta1.idAltaMedica = dr.GetInt32(0);
-                alta1.NombrePaciente = dr.GetString(1);
-                alta1.FechaIngreso = dr.GetDateTime(2);
-                alta1.FechaSalida = dr.GetDateTime(3);
-                alta1.Monto = dr.GetDecimal(4);
-                alta.Add(alta1);
-            }
-            cmd.Dispose();
-            conexion.Close();
+                while (dr.Read())
+                {
+                    alta1 = new AltaArreglada();
+                    alta1.idAltaMedica = dr.GetInt32(0);
+                    alta1.NombrePaciente = dr.GetString(1);
+                    alta1.FechaIngreso = dr.GetDateTime(2);
+                    alta1.FechaSalida = dr.GetDateTime(3);
+                    alta1.Monto = dr.GetDecimal(4);
+                    alta.Add(alta1);
+                }
+                cmd.Dispose();
+                conexion.Close();
             return alta;
         }
 
