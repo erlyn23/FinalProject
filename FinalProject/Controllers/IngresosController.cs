@@ -44,7 +44,7 @@ namespace FinalProject.Controllers
                     ingreso.idPaciente = dr.GetInt32(1);
                     ingreso.NombrePaciente = dr.GetString(2);
                     ingreso.NumeroHabitacion = dr.GetInt32(3);
-                    ingreso.FechaIngreso = dr.GetDateTime(4);
+                    ingreso.FechaIngreso = dr.GetDateTime(4).ToString();
                     lista.Add(ingreso);
                 }
                 cmd.Dispose();
@@ -61,6 +61,36 @@ namespace FinalProject.Controllers
         public IQueryable<Ingresos> GetIngresos2()
         {
             return db.Ingresos;
+        }
+
+        [Route("PorFecha")]
+        public List<IngresosArreglados> GetPorFecha(string fecha) 
+        {
+            try
+            {
+                var listaCompleta = GetIngresos();
+                var fechas = from f in listaCompleta where f.FechaIngreso == fecha orderby f.FechaIngreso select f;
+                return fechas.ToList();
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
+        }
+        [Route("PorHabitacion")]
+
+        public List<IngresosArreglados> GetPorHabitacion(int num)
+        {
+            try
+            {
+                var listaCompleta = GetIngresos();
+                var numeros = from n in listaCompleta where n.NumeroHabitacion == num orderby n.NumeroHabitacion select n;
+                return numeros.ToList();
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
         }
 
         [ResponseType(typeof(Ingresos))]
