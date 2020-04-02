@@ -85,6 +85,12 @@
                             <button mat-raised-button class="text-white" color="accent" (click)="modificarMedico()" [disabled]="!fg.valid"><i class="fas fa-check-circle"></i>
                             Guardar Cambios</button>
                         </div>
+
+                        <div style="width: 100%;" class="text-center" *ngIf="errorMessage != ''">
+                            <mat-error>
+                                {{errorMessage}}
+                            </mat-error>
+                        </div>
                 </div>
             </div>
         </div>

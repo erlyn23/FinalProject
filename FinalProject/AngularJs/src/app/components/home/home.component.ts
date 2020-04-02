@@ -79,6 +79,7 @@ export class HomeComponent implements OnInit {
     fg: FormGroup;
     id: number;
     comprobar: boolean = false;
+    errorMessage: any;
   
   
     constructor(private fb: FormBuilder,
@@ -176,7 +177,7 @@ export class HomeComponent implements OnInit {
       });
       this.fg.reset();
       this.comprobar = false;
-    })
+    });
   }
   
   get Nombre(){

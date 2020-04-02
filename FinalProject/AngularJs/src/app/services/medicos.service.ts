@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Medicos } from '../Models/Medicos';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import {retry, catchError} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -18,17 +19,26 @@ export class MedicosService {
   AgregarMedico(medico: Medicos): Observable<Medicos>
   {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) }; 
-    return this.http.post<Medicos>(this.url, medico, httpOptions);
+    return this.http.post<Medicos>(this.url+"/AgregarMedico", medico, httpOptions).pipe(retry(1),catchError((err)=>{
+      alert(err.error.Message);
+      return throwError(err.error.Message);
+    }));
   }
 
   ModificarMedico(medico: Medicos)
   {
     const httpOptions = {headers: new HttpHeaders({'Content-type':'application/json'})}
-    return this.http.put<Medicos>(this.url, medico, httpOptions);
+    return this.http.put<Medicos>(this.url, medico, httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
+      alert(error.error.Message);
+      return throwError(error.error.Message);
+    }));
   }
 
   BorrarMedico(idMedico: string): Observable<number>{
     const httpOptions = {headers: new HttpHeaders({'Content-type':'application/json'})};
-    return this.http.delete<number>(this.url+"?id="+idMedico, httpOptions);
+    return this.http.delete<number>(this.url+"?id="+idMedico, httpOptions).pipe(retry(1),catchError((error: HttpErrorResponse)=>{
+      alert(error.error.Message);
+      return throwError(error);
+    }));
   }
 }

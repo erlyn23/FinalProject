@@ -16,7 +16,6 @@ using FinalProject.Models;
 
 namespace FinalProject.Controllers
 {
-    [RoutePrefix("api/Medicos")]
     public class MedicosController : ApiController
     {
         private SistemaMedico1Entities db = new SistemaMedico1Entities();
@@ -93,6 +92,21 @@ namespace FinalProject.Controllers
 
             try
             {
+                Conexion();
+                conexion.Open();
+                cmd.Connection = conexion;
+                cmd.CommandText = "Select*from Medicos";
+                dr = cmd.ExecuteReader();
+                while (dr.Read())
+                {
+                  if (dr.GetInt32(2) == medicos.Exequatur)
+                  {
+                    return BadRequest("El exequatur ya existe intente con uno nuevo");
+                  }
+                }
+                dr.Close();
+                cmd.Dispose();
+                conexion.Close();
                 db.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
@@ -111,6 +125,8 @@ namespace FinalProject.Controllers
         }
 
         // POST: api/Medicos
+        [HttpPost]
+        [Route("api/Medicos/AgregarMedico",Name ="AddMedico")]
         [ResponseType(typeof(Medicos))]
         public IHttpActionResult PostMedicos(Medicos medicos)
         {
@@ -126,15 +142,12 @@ namespace FinalProject.Controllers
                 cmd.Connection = conexion;
                 cmd.CommandText = "Select*from Medicos";
                 dr = cmd.ExecuteReader();
-                if (dr.Read()) 
+                while (dr.Read())
                 {
-                    while (dr.Read())
-                    {
-                        if(dr.GetInt32(2) == medicos.Exequatur) 
-                        {
-                            return BadRequest("El exequatur ya existe intente con uno nuevo");
-                        }
-                    }
+                  if(dr.GetInt32(2) == medicos.Exequatur) 
+                  {
+                    return BadRequest("El exequatur ya existe intente con uno nuevo");
+                  }
                 }
                 dr.Close();
                 cmd.Dispose();
@@ -147,7 +160,7 @@ namespace FinalProject.Controllers
                 {
                     db.Medicos.Add(medicos);
                     db.SaveChanges();
-                    return CreatedAtRoute("DefaultApi", new { id = medicos.idMedico }, medicos);
+                    return CreatedAtRoute("AddMedico", new { id = medicos.idMedico }, medicos);
                 }
             }
             catch(Exception ex) 
@@ -173,15 +186,12 @@ namespace FinalProject.Controllers
                 cmd.Connection = conexion;
                 cmd.CommandText = "Select*from Citas";
                 dr = cmd.ExecuteReader();
-                if (dr.Read()) 
-                {
-                    while (dr.Read()) 
-                    { 
-                        if(dr.GetInt32(2) == id) 
-                        {
-                            return BadRequest("No se puede eliminar este médico porque tiene citas pendientes");
-                        }
-                    }
+                while (dr.Read()) 
+                { 
+                  if(dr.GetInt32(2) == id) 
+                  {
+                    return BadRequest("No se puede eliminar este médico porque tiene citas pendientes");
+                  }
                 }
                 dr.Close();
                 cmd.Dispose();
