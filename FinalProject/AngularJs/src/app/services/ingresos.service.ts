@@ -44,6 +44,14 @@ export class IngresosService {
     }));
   }
 
+  ObtenerTotal(filtro:string, busqueda:string, total:boolean):Observable<number>{
+    const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
+    return this.http.get<number>(this.url+"/Total/"+filtro+"/"+busqueda+"/"+total, httpOptions).pipe(retry(1), catchError((err: HttpErrorResponse)=>{
+      alert(err.error.Message);
+      return throwError(err.error.Message);
+    }));
+  }
+
 
   AgregarIngreso(ingreso:Ingresos): Observable<Ingresos>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};

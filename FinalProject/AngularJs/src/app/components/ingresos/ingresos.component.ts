@@ -21,6 +21,7 @@ export class IngresosComponent implements OnInit {
   todosIngresos: IngresoArreglado[];
   esFecha: boolean = false;
   busquedas: FormGroup;
+  totalIngresos: any;
   FechaDefecto: Date;
   fg: FormGroup;
   errorMessage: any;
@@ -44,6 +45,7 @@ export class IngresosComponent implements OnInit {
       Filtro: [""],
       Busqueda:[""],
       FechaBusqueda:[""],
+      Total: false,
     });
     this.obtenerIngresos();
     this.obtenerPacientes();
@@ -51,6 +53,7 @@ export class IngresosComponent implements OnInit {
   }
 
   obtenerIngresos(){
+    this.totalIngresos = null;
     this.is.ObtenerIngresos().subscribe((data:any)=>{
       return this.todosIngresos = data;
     });
@@ -84,14 +87,29 @@ export class IngresosComponent implements OnInit {
     let fechacompleta = dia+"-"+(mes+1)+"-"+año;
 
     if(this.busquedas.value.Filtro == "Habitacion" && this.busquedas.value.Busqueda != ""){
+      if(this.busquedas.value.Total == true){
+        this.is.ObtenerTotal(this.busquedas.value.Filtro, this.busquedas.value.Busqueda, this.busquedas.value.Total).subscribe((data:any)=>{
+          this.totalIngresos = data;
+        });
+      }else{
+        this.totalIngresos = null;
+      }
       this.is.ObtenerPorHabitacion(this.busquedas.value.Busqueda).subscribe((data:any)=>{
         this.todosIngresos = data;
       });
     }else if(this.busquedas.value.Filtro == "Fecha" && fechacompleta != ""){
+      if(this.busquedas.value.Total == true){
+        this.is.ObtenerTotal(this.busquedas.value.Filtro, fechacompleta, this.busquedas.value.Total).subscribe((data:any)=>{
+          this.totalIngresos = data;
+        });
+      }else{
+        this.totalIngresos = null;
+      }
       this.is.ObtenerPorFecha(fechacompleta).subscribe((data:any)=>{
         this.todosIngresos = data;
       });
     }else if(this.busquedas.value.Filtro != "" && (this.busquedas.value.Busqueda == "" || fechacompleta == "")) {
+      this.totalIngresos = null;
       this.obtenerIngresos();
     }
 
@@ -147,6 +165,10 @@ export class IngresosComponent implements OnInit {
 
   get FechaBusqueda(){
     return this.busquedas.get('FechaBusqueda');
+  }
+
+  get Total(){
+    return this.busquedas.get('Total');
   }
 
 }

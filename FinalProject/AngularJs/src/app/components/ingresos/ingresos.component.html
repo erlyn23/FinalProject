@@ -98,6 +98,7 @@
                                 <mat-datepicker-toggle matSuffix [for]="pickerBusqueda"></mat-datepicker-toggle>
                                 <mat-datepicker #pickerBusqueda></mat-datepicker>
                             </mat-form-field>
+                            <mat-checkbox formControlName="Total">Total de resultados de la búsqueda</mat-checkbox>
                         </form>
                         <div class="row d-flex justify-content-center">
                             <div class="col-md-2">
@@ -131,6 +132,14 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div class="container text-center">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p class="text-success ProductSans" *ngIf="busquedas.value.Filtro =='Fecha' && totalIngresos!= null">Total de ingresos en esta fecha: {{this.totalIngresos}}</p>
+                                <p class="text-success ProductSans" *ngIf="busquedas.value.Filtro == 'Habitacion' && totalIngresos != null">Total de ingresos con estas habitaciones: {{this.totalIngresos}}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                </div> 
             </div>

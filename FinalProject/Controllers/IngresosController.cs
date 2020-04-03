@@ -93,7 +93,50 @@ namespace FinalProject.Controllers
                 return null;
             }
         }
-        
+
+        [HttpGet]
+        [Route("api/Ingresos/Total/{filtro}/{busqueda}/{total}")]
+        public int? Total(string filtro, string busqueda, bool? total)
+        {
+            try
+            {
+                var listaCompleta = GetIngresos();
+                if (filtro == "Habitacion")
+                {
+                    var habitaciones = from h in listaCompleta where h.NumeroHabitacion.ToString().Contains(busqueda) orderby h.NumeroHabitacion select h;
+                    Opciones opc = new Opciones();
+                    if (total.HasValue)
+                    {
+                        opc.Sumatoria = habitaciones.ToList().Count();
+                        return opc.Sumatoria;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+                else if (filtro == "Fecha")
+                {
+                    var fechas = from f in listaCompleta where f.FechaIngreso == DateTime.Parse(busqueda) orderby f.FechaIngreso select f;
+                    Opciones opc = new Opciones();
+                    if (total.HasValue)
+                    {
+                        opc.Sumatoria = fechas.ToList().Count();
+                        return opc.Sumatoria;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+                return 0;
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
+        }
+
         [HttpPost]
         [Route("api/Ingresos/AgregarIngreso", Name = "addIngreso")]
         [ResponseType(typeof(Ingresos))]
