@@ -6,6 +6,7 @@ import { Habitaciones } from 'src/app/Models/Habitaciones';
 import { DialogComponent } from '../dialog/dialog.component';
 import { IngresosService } from 'src/app/services/ingresos.service';
 import { AltasService } from 'src/app/services/altas.service';
+import { Opciones } from 'src/app/Models/Opciones';
 
 @Component({
   selector: 'app-habitaciones',
@@ -17,6 +18,7 @@ export class HabitacionesComponent implements OnInit {
   todasHabitaciones: Habitaciones[];
   comprobar: boolean = false;
   busquedas: FormGroup;
+  opc: Opciones;
   fg: FormGroup;
   decimalpatron = '^[0-9]{1,4}(\.[0-9][0-9])?$';
 
@@ -38,21 +40,44 @@ export class HabitacionesComponent implements OnInit {
     this.busquedas = this.fb2.group({
       Filtro: [""],
       Busqueda: [""],
+      Total: false,
+      Suma: false,
+      Promedio: false,
+      Mayor: false,
+      Menor: false,
     });
     this.obtenerHabitaciones();
   }
 
   obtenerHabitaciones(){
+    this.opc = null;
     this.hs.ObtenerHabitaciones().subscribe((data:any)=>{
       return this.todasHabitaciones = data;
     });
   }
 
   Search(){
+    let total = this.busquedas.value.Total;
+    let suma = this.busquedas.value.Suma;
+    let promedio = this.busquedas.value.Promedio;
+    let minimo = this.busquedas.value.Menor;
+    let maximo = this.busquedas.value.Mayor;
+    
     if(this.busquedas.value.Filtro == "Tipo" && this.busquedas.value.Busqueda != ""){
+      if(total == true || suma == true || promedio == true || minimo == true || maximo == true){
+        this.hs.ObtenerOpciones(this.busquedas.value.Filtro, this.busquedas.value.Busqueda, total, suma, promedio, minimo, maximo).subscribe((data:any)=>{
+          this.opc = data;
+        });
+      }
+      else{
+        this.opc = null;
+      }
       this.hs.ObtenerPorTipo(this.busquedas.value.Busqueda).subscribe((data:any)=>{
         this.todasHabitaciones = data;
       });
+    }else{
+      this.opc = null;
+      this.hs.ObtenerHabitaciones();
     }
   }
 
@@ -147,6 +172,26 @@ export class HabitacionesComponent implements OnInit {
   }
   get Busqueda(){
     return this.busquedas.get('Busqueda');
+  }
+
+  get Total(){
+    return this.busquedas.get('Total');
+  }
+
+  get Suma(){
+    return this.busquedas.get('Suma');
+  }
+
+  get Promedio(){
+    return this.busquedas.get('Promedio');
+  }
+
+  get Mayor(){
+    return this.busquedas.get('Mayor');
+  }
+
+  get Menor(){
+    return this.busquedas.get('Menor');
   }
 
 }

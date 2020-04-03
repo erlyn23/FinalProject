@@ -41,7 +41,48 @@ namespace FinalProject.Controllers
                 var tipos = from t in listaCompleta where t.Tipo.Contains(tip) orderby t.Tipo select t;
                 return tipos;
             }
-            catch(Exception ex) 
+            catch(Exception) 
+            {
+                return null;
+            }
+        }
+
+        [HttpGet]
+        [Route("api/Habitaciones/Opciones/{filtro}/{busqueda}/{total}/{suma}/{promedio}/{mayor}/{menor}")]
+        public Opciones GetOpciones(string filtro, string busqueda, bool? total, bool? suma, bool? promedio, bool? mayor, bool? menor)
+        {
+            try
+            {
+                if(filtro== "Tipo")
+                {
+                    var listaCompleta = db.Habitaciones;
+                    var tipos = from t in listaCompleta where t.Tipo.Contains(busqueda) orderby t.Tipo select t;
+                    Opciones opc = new Opciones();
+                    if (total == true)
+                    {
+                        opc.Sumatoria = tipos.Count();
+                    }
+                    if (suma == true)
+                    {
+                        opc.Conteo = tipos.Sum(t => t.PrecioxDia);
+                    }
+                    if (promedio == true)
+                    {
+                        opc.Promedio = tipos.Average(t => t.PrecioxDia);
+                    }
+                    if (mayor == true)
+                    {
+                        opc.MontoMayor = tipos.Max(t => t.PrecioxDia);
+                    }
+                    if (menor == true)
+                    {
+                        opc.MontoMenor = tipos.Min(t => t.PrecioxDia);
+                    }
+                    return opc;
+                }
+                return null;
+            }
+            catch(Exception)
             {
                 return null;
             }

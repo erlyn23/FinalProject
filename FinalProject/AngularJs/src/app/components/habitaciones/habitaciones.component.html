@@ -104,7 +104,7 @@
                                     <mat-option value="Tipo">Tipo</mat-option>
                                 </mat-select>
                             </mat-form-field>
-                            <mat-form-field class="ml-3" style="width: 30%;">
+                            <mat-form-field class="ml-3" style="width: 50%;">
                                 <mat-label>Por Tipo</mat-label>
                                 <mat-select formControlName="Busqueda">
                                     <mat-option value="nada" disabled><b>Escoge una opción</b></mat-option>
@@ -113,6 +113,21 @@
                                     <mat-option value="Privada">Privada</mat-option>
                                 </mat-select>
                             </mat-form-field>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <mat-checkbox formControlName="Total">Total de resultados de la búsqueda</mat-checkbox>
+                                        <mat-checkbox formControlName="Suma">Suma total de los precios</mat-checkbox>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <mat-checkbox formControlName="Promedio">Promedio de precios</mat-checkbox>
+                                        <mat-checkbox formControlName="Menor">Monto menor de precios</mat-checkbox>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <mat-checkbox formControlName="Mayor">Monto mayor de precios</mat-checkbox>
+                                    </div>
+                                </div>
+                            </div>
                         </form>
                         <div class="row d-flex justify-content-center">
                             <div class="col-md-2">
@@ -152,6 +167,17 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div class="container text-center">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p class="text-success ProductSans" *ngIf="busquedas.value.Filtro =='Tipo' && opc != null">Total de habitaciones de este tipo: {{this.opc.Sumatoria}}</p>
+                                <p class="text-success ProductSans" *ngIf="busquedas.value.Filtro == 'Tipo' && opc != null">Suma total de los precios: {{this.opc.Conteo}}</p>
+                                <p class="text-success ProductSans" *ngIf="busquedas.value.Filtro == 'Tipo' && opc != null">Promedio de precios: {{this.opc.Promedio}}</p>
+                                <p class="text-success ProductSans" *ngIf="busquedas.value.Filtro == 'Tipo' && opc != null">Precio mínimo: {{this.opc.MontoMenor}}</p>
+                                <p class="text-success ProductSans" *ngIf="busquedas.value.Filtro == 'Tipo' && opc != null">Precio máximo: {{this.opc.MontoMayor}}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                </div> 
             </div>
