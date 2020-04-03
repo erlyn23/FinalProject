@@ -45,6 +45,14 @@ export class CitasService {
     }));
   }
 
+  ObtenerTotal(filtro: string, busqueda:string, total:boolean): Observable<number>{
+    const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
+    return this.http.get<number>(this.url+"/Total/"+filtro+"/"+busqueda+"/"+total, httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
+      alert(error.error.Message);
+      return throwError(error.error.Message);
+    }));
+  }
+
   AgregarCita(citas: Citas):Observable<Citas>{
   
       const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};

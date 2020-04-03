@@ -19,6 +19,7 @@ export class CitasComponent implements OnInit {
   todosMedicos: Medicos[];
   todosPacientes: Pacientes[];
   todasCitas: CitaArreglada[];
+  totalCitas: any;
   busquedas: FormGroup;
   esFecha: boolean = false;
 
@@ -43,7 +44,8 @@ export class CitasComponent implements OnInit {
     this.busquedas = this.fb2.group({
       Filtro:[""],
       Busqueda:[""],
-      FechaBusqueda: [""]
+      FechaBusqueda: [""],
+      Total: false,
     })
 
     this.obtenerMedicos();
@@ -52,6 +54,7 @@ export class CitasComponent implements OnInit {
   }
 
   obtenerCitas(){
+    this.totalCitas = null;
     this.cs.ObtenerCitas().subscribe((data:any)=>{
       return this.todasCitas = data;
     })
@@ -85,18 +88,40 @@ export class CitasComponent implements OnInit {
     let fechacompleta = dia+"-"+(mes+1)+"-"+año;
 
     if(this.busquedas.value.Filtro == "NombreMedico" && this.busquedas.value.Busqueda != ""){
+      if(this.busquedas.value.Total == true){
+        this.cs.ObtenerTotal(this.busquedas.value.Filtro, this.busquedas.value.Busqueda, this.busquedas.value.Total).subscribe((data:any)=>{
+          this.totalCitas = data;
+        });
+      }else{
+        this.totalCitas = null;
+      }
       this.cs.ObtenerPorMedico(this.busquedas.value.Busqueda).subscribe((data:any)=>{
         this.todasCitas = data;
       });
     }else if(this.busquedas.value.Filtro == "NombrePaciente" && this.busquedas.value.Busqueda != ""){
+      if(this.busquedas.value.Total == true){
+        this.cs.ObtenerTotal(this.busquedas.value.Filtro, this.busquedas.value.Busqueda, this.busquedas.value.Total).subscribe((data:any)=>{
+          this.totalCitas = data;
+        });
+      }else{
+        this.totalCitas = null;
+      }
       this.cs.ObtenerPorPaciente(this.busquedas.value.Busqueda).subscribe((data:any)=>{
         this.todasCitas = data;
       });
     }else if(this.busquedas.value.Filtro == "Fecha" && fechacompleta != ""){
+      if(this.busquedas.value.Total == true){
+        this.cs.ObtenerTotal(this.busquedas.value.Filtro, fechacompleta, this.busquedas.value.Total).subscribe((data:any)=>{
+          this.totalCitas = data;
+        });
+      }else{
+        this.totalCitas = null;
+      }
       this.cs.ObtenerPorFecha(fechacompleta).subscribe((data:any)=>{
         this.todasCitas = data;
       });
     }else if(this.busquedas.value.Filtro != "" && (this.busquedas.value.Busqueda == "" || fechacompleta == "")) {
+      this.totalCitas = null;
       this.obtenerCitas();
     }
   }
@@ -166,6 +191,10 @@ export class CitasComponent implements OnInit {
 
   get FechaBusqueda(){
     return this.busquedas.get('FechaBusqueda');
+  }
+
+  get Total(){
+    return this.busquedas.get("Total");
   }
 
 }

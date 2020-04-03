@@ -105,23 +105,50 @@ namespace FinalProject.Controllers
             }
         }
 
-       /* [HttpGet]
+        [HttpGet]
         [Route("api/Citas/Total/{filtro}/{busqueda}/{total}")]
         public int? GetTotal(string filtro, string busqueda, bool? total)
         {
             try 
             { 
-                if(filtro == "Paciente")
+                if(filtro == "NombrePaciente")
                 {
-                  
+                    var listaCompleta = GetCitas();
+                    var pacientes = from p in listaCompleta where p.NombrePaciente.ToLower().Contains(busqueda) orderby p.NombrePaciente select p;
+                    if (total.HasValue)
+                    {
+                        Opciones opc = new Opciones();
+                        return opc.Sumatoria = pacientes.ToList().Count();
+                    }
                 }
+                else if(filtro == "NombreMedico")
+                {
+                    var listaCompleta = GetCitas();
+                    var medicos = from m in listaCompleta where m.NombreMedico.ToLower().Contains(busqueda) orderby m.NombreMedico select m;
+                    if (total.HasValue)
+                    {
+                        Opciones opc = new Opciones();
+                        return opc.Sumatoria = medicos.ToList().Count();
+                    }
+                }
+                else if(filtro == "Fecha")
+                {
+                    var listaCompleta = GetCitas();
+                    var fechas = from f in listaCompleta where DateTime.Parse(f.Fecha) == DateTime.Parse(busqueda) orderby f.Fecha select f;
+                    if (total.HasValue)
+                    {
+                        Opciones opc = new Opciones();
+                        return opc.Sumatoria = fechas.ToList().Count();
+                    }
+                }
+                return 0;
             }
             catch (Exception)
             {
-
+                return 0;
             }
         }
-        */
+
         [HttpPost]
         [ResponseType(typeof(Citas))]
         [Route("api/Citas/AgregarCita",Name ="addCita")]
