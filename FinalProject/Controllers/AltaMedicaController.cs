@@ -83,6 +83,75 @@ namespace FinalProject.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("api/AltaMedica/Opciones/{filtro}/{busqueda}/{total}/{suma}/{promedio}/{mayor}/{menor}")]
+        public Opciones GetOpciones(string filtro, string busqueda, bool? total, bool? suma, bool? promedio, bool? mayor, bool? menor)
+        {
+            try
+            {
+                if (filtro == "Paciente")
+                {
+                    var listaCompleta = GetAltas();
+                    var pacientes = from p in listaCompleta where p.NombrePaciente.ToLower().Contains(busqueda) orderby p.NombrePaciente select p;
+                    Opciones opc = new Opciones();
+                    if (total == true)
+                    {
+                        opc.Sumatoria = pacientes.ToList().Count();
+                    }
+                    if (suma == true)
+                    {
+                        opc.Conteo = pacientes.Sum(t => t.Monto);
+                    }
+                    if (promedio == true)
+                    {
+                        opc.Promedio = pacientes.Average(t => t.Monto);
+                    }
+                    if (mayor == true)
+                    {
+                        opc.MontoMayor = pacientes.Max(t => t.Monto);
+                    }
+                    if (menor == true)
+                    {
+                        opc.MontoMenor = pacientes.Min(t => t.Monto);
+                    }
+                    return opc;
+                }
+                else if(filtro == "Fecha")
+                {
+                    var listaCompleta = GetAltas();
+                    var fechas = from f in listaCompleta where DateTime.Parse(f.FechaSalida) == DateTime.Parse(busqueda) orderby f.FechaSalida select f;
+                    Opciones opc = new Opciones();
+                    if (total == true)
+                    {
+                        opc.Sumatoria = fechas.ToList().Count();
+                    }
+                    if (suma == true)
+                    {
+                        opc.Conteo = fechas.Sum(t => t.Monto);
+                    }
+                    if (promedio == true)
+                    {
+                        opc.Promedio = fechas.Average(t => t.Monto);
+                    }
+                    if (mayor == true)
+                    {
+                        opc.MontoMayor = fechas.Max(t => t.Monto);
+                    }
+                    if (menor == true)
+                    {
+                        opc.MontoMenor = fechas.Min(t => t.Monto);
+                    }
+                    return opc;
+                }
+                return null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+
         [ResponseType(typeof(AltaMedica))]
 
         public IHttpActionResult PostAltaMedica(AltaMedica alta) 

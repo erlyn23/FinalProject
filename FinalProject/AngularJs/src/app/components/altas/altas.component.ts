@@ -11,6 +11,7 @@ import { AltaMedicaArreglada } from 'src/app/Models/AltaMedicaArreglada';
 import { Habitaciones } from 'src/app/Models/Habitaciones';
 import { Ingresos } from 'src/app/Models/Ingresos';
 import { AltaMedica } from 'src/app/Models/AltaMedica';
+import { Opciones } from 'src/app/Models/Opciones';
 
 @Component({
   selector: 'app-altas',
@@ -28,6 +29,7 @@ export class AltasComponent implements OnInit {
   comprobar:boolean = false;
   Monto: any;
   actual: any;
+  opc: Opciones;
   errorMessage: any;
   fg: FormGroup;
   esFecha: boolean = false;
@@ -54,6 +56,11 @@ export class AltasComponent implements OnInit {
       Filtro: [""],
       Busqueda:[""],
       FechaBusqueda:[""],
+      Total: false,
+      Suma: false,
+      Promedio: false,
+      Mayor: false,
+      Menor: false,
     });
     this.obtenerAltasMedicas();
     this.obtenerPacientes();
@@ -75,6 +82,7 @@ export class AltasComponent implements OnInit {
   }
 
   obtenerAltasMedicas(){
+    this.opc = null;
     this.as.ObtenerAltasMedicas().subscribe((data:any)=>{
       return this.todasAltasMedicas = data;
     });
@@ -107,15 +115,38 @@ export class AltasComponent implements OnInit {
     let año = fechabuscada.getFullYear();
     let fechacompleta = dia+"-"+(mes+1)+"-"+año;
 
+    let total = this.busquedas.value.Total;
+    let suma = this.busquedas.value.Suma;
+    let promedio = this.busquedas.value.Promedio;
+    let minimo = this.busquedas.value.Menor;
+    let maximo = this.busquedas.value.Mayor;
+
+    console.log(total,suma,promedio,minimo,maximo);
     if(this.busquedas.value.Filtro == "Paciente" && this.busquedas.value.Busqueda != ""){
+      if(total == true || suma == true || promedio == true || minimo == true || maximo == true){
+        this.as.ObtenerOpciones(this.busquedas.value.Filtro, this.busquedas.value.Busqueda, total, suma, promedio, minimo, maximo).subscribe((data:any)=>{
+          this.opc = data;
+          console.log(data);
+        });
+      }else{
+        this.opc = null;
+      }
       this.as.ObtenerPorPaciente(this.busquedas.value.Busqueda).subscribe((data:any)=>{
         this.todasAltasMedicas = data;
       });
     }else if(this.busquedas.value.Filtro == "Fecha" && fechacompleta != ""){
+      if(total == true || suma == true || promedio == true || minimo == true || maximo == true){
+        this.as.ObtenerOpciones(this.busquedas.value.Filtro, fechacompleta, total, suma, promedio, minimo, maximo).subscribe((data:any)=>{
+          this.opc = data;
+        });
+      }else{
+        this.opc = null;
+      }
       this.as.ObtenerPorFecha(fechacompleta).subscribe((data:any)=>{
         this.todasAltasMedicas = data;
       });
     }else if(this.busquedas.value.Filtro != "" && (this.busquedas.value.Busqueda == "" || fechacompleta == "")) {
+      this.opc = null;
       this.obtenerAltasMedicas();
     }
 
@@ -231,5 +262,25 @@ export class AltasComponent implements OnInit {
 
   get FechaBusqueda(){
     return this.busquedas.get('FechaBusqueda');
+  }
+
+  get Total(){
+    return this.busquedas.get('Total');
+  }
+
+  get Suma(){
+    return this.busquedas.get('Suma');
+  }
+
+  get Promedio(){
+    return this.busquedas.get('Promedio');
+  }
+
+  get Mayor(){
+    return this.busquedas.get('Mayor');
+  }
+
+  get Menor(){
+    return this.busquedas.get('Menor');
   }
 }

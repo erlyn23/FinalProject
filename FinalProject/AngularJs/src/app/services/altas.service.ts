@@ -5,6 +5,7 @@ import { AltaMedicaArreglada } from '../Models/AltaMedicaArreglada';
 import { AltaMedica } from '../Models/AltaMedica';
 import {throwError} from 'rxjs';
 import {retry, catchError} from 'rxjs/operators';
+import { Opciones } from '../Models/Opciones';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,15 @@ export class AltasService {
     return this.http.get<AltaMedicaArreglada[]>(this.url+"/PorFecha/"+fecha, httpOptions).pipe(retry(1), catchError((err: HttpErrorResponse)=>{
       alert(err.error.Message);
       return throwError(err.error.Message);
+    }));
+  }
+
+  ObtenerOpciones(filtro: string, busqueda:string, total: boolean, suma: boolean, promedio: boolean, minimo:boolean, maximo: boolean):Observable<Opciones>
+  {
+    const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
+    return this.http.get<Opciones>(this.url+"/Opciones/"+filtro+"/"+busqueda+"/"+total+"/"+suma+"/"+promedio+"/"+minimo+"/"+maximo, httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
+      alert(error.error.Message);
+      return throwError(error.error.Message);
     }));
   }
 
