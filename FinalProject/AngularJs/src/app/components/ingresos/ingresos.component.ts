@@ -19,6 +19,8 @@ export class IngresosComponent implements OnInit {
   todasHabitaciones: Habitaciones[];
   todosPacientes: Pacientes[];
   todosIngresos: IngresoArreglado[];
+  esFecha: boolean = false;
+  busquedas: FormGroup;
   FechaDefecto: Date;
   fg: FormGroup;
   errorMessage: any;
@@ -27,6 +29,7 @@ export class IngresosComponent implements OnInit {
     private ps: PacientesService,
     private hs: HabitacionesService,
     private fb:FormBuilder,
+    private fb2: FormBuilder,
     private snack: MatSnackBar) { }
 
   ngOnInit() {
@@ -35,6 +38,12 @@ export class IngresosComponent implements OnInit {
       NombrePaciente: ["",[Validators.required]],
       NoHabitacion: ["",[Validators.required]],
       Fecha: [this.FechaDefecto,[Validators.required]]
+    });
+
+    this.busquedas = this.fb2.group({
+      Filtro: [""],
+      Busqueda:[""],
+      FechaBusqueda:[""],
     });
     this.obtenerIngresos();
     this.obtenerPacientes();
@@ -58,6 +67,36 @@ export class IngresosComponent implements OnInit {
       return this.todosPacientes = data;
     });
   }
+
+  cambiarControl(val){
+    if(val == "Fecha"){
+      this.esFecha = true;
+    }else{
+      this.esFecha = false;
+    }
+  }
+
+  Search(){
+    let fechabuscada = new Date(this.busquedas.value.FechaBusqueda);
+    let dia = fechabuscada.getDate();
+    let mes = fechabuscada.getMonth();
+    let año = fechabuscada.getFullYear();
+    let fechacompleta = dia+"-"+(mes+1)+"-"+año;
+
+    if(this.busquedas.value.Filtro == "Habitacion" && this.busquedas.value.Busqueda != ""){
+      this.is.ObtenerPorHabitacion(this.busquedas.value.Busqueda).subscribe((data:any)=>{
+        this.todosIngresos = data;
+      });
+    }else if(this.busquedas.value.Filtro == "Fecha" && fechacompleta != ""){
+      this.is.ObtenerPorFecha(fechacompleta).subscribe((data:any)=>{
+        this.todosIngresos = data;
+      });
+    }else if(this.busquedas.value.Filtro != "" && (this.busquedas.value.Busqueda == "" || fechacompleta == "")) {
+      this.obtenerIngresos();
+    }
+
+  }
+
   addIngreso(){
     let ingreso = new Ingresos();
     ingreso.FechaIngreso = this.fg.value.Fecha;
@@ -96,6 +135,18 @@ export class IngresosComponent implements OnInit {
 
   get Fecha(){
     return this.fg.get('Fecha');
+  }
+
+  get Filtro(){
+    return this.busquedas.get('Filtro');
+  }
+
+  get Busqueda(){
+    return this.busquedas.get('Busqueda');
+  }
+
+  get FechaBusqueda(){
+    return this.busquedas.get('FechaBusqueda');
   }
 
 }

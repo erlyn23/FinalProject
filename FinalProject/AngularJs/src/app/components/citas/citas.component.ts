@@ -83,7 +83,6 @@ export class CitasComponent implements OnInit {
     let mes = fechabuscada.getMonth();
     let año = fechabuscada.getFullYear();
     let fechacompleta = dia+"-"+(mes+1)+"-"+año;
-    console.log(fechacompleta);
 
     if(this.busquedas.value.Filtro == "NombreMedico" && this.busquedas.value.Busqueda != ""){
       this.cs.ObtenerPorMedico(this.busquedas.value.Busqueda).subscribe((data:any)=>{

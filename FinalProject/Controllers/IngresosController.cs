@@ -64,12 +64,12 @@ namespace FinalProject.Controllers
 
         [HttpGet]
         [Route("api/Ingresos/PorFecha/{fecha}")]
-        public List<IngresosArreglados> GetPorFecha(DateTime fecha) 
+        public List<IngresosArreglados> GetPorFecha(string fecha) 
         {
             try
             {
                 var listaCompleta = GetIngresos();
-                var fechas = from f in listaCompleta where f.FechaIngreso == fecha orderby f.FechaIngreso select f;
+                var fechas = from f in listaCompleta where f.FechaIngreso == DateTime.Parse(fecha) orderby f.FechaIngreso select f;
                 return fechas.ToList();
             }
             catch(Exception ex)

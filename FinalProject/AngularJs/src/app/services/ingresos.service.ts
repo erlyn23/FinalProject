@@ -28,6 +28,23 @@ export class IngresosService {
     }));
   }
 
+  ObtenerPorHabitacion(hab:string): Observable<IngresoArreglado[]>{
+    const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
+    return this.http.get<IngresoArreglado[]>(this.url+"/PorHabitacion/"+hab, httpOptions).pipe(retry(1), catchError((err: HttpErrorResponse)=>{
+      alert(err.error.Message);
+      return throwError(err.error.Message);
+    }));
+  }
+
+  ObtenerPorFecha(fecha:string): Observable<IngresoArreglado[]>{
+    const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
+    return this.http.get<IngresoArreglado[]>(this.url+"/PorFecha/"+fecha, httpOptions).pipe(retry(1), catchError((err: HttpErrorResponse)=>{
+      alert(err.error.Message);
+      return throwError(err.error.Message);
+    }));
+  }
+
+
   AgregarIngreso(ingreso:Ingresos): Observable<Ingresos>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
     return this.http.post<Ingresos>(this.url+"/AgregarIngreso", ingreso, httpOptions).pipe(retry(1), catchError((err: HttpErrorResponse)=>{

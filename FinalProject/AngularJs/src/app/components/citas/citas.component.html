@@ -98,7 +98,7 @@
                             </mat-form-field>
                             <mat-form-field class="ml-3" style="width: 50%;" *ngIf="esFecha">
                                 <mat-label>Fecha: </mat-label>
-                                <input matInput formControlName="FechaBusqueda" [matDatepicker]="pickerBusqueda">
+                                <input matInput formControlName="FechaBusqueda" [matDatepicker]="pickerBusqueda" readonly="true">
                                 <mat-datepicker-toggle matSuffix [for]="pickerBusqueda"></mat-datepicker-toggle>
                                 <mat-datepicker #pickerBusqueda></mat-datepicker>
                             </mat-form-field>
