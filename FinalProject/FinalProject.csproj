@@ -173,6 +173,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Opciones.cs" />
     <Compile Include="Models\Pacientes.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>

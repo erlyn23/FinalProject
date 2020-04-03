@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit {
 
   todosMedicos: any[];
   valor: any;
+  totalMedicos: any;
   busquedas:FormGroup;
   Especialidades: any[] = ["Alergología",
     "Anestesiología",
@@ -99,7 +100,8 @@ export class HomeComponent implements OnInit {
 
     this.busquedas = this.fb2.group({
       Filtro: [""],
-      Busqueda: [""]
+      Busqueda: [""],
+      Total: [false]
     })
 
     this.Especialidades.sort();
@@ -107,6 +109,7 @@ export class HomeComponent implements OnInit {
   }
 
   obtenerMedicos(){
+    this.totalMedicos = null;
     this.ms.ObtenerMedicos().subscribe((data:any)=>
     {
       return this.todosMedicos = data;
@@ -187,16 +190,31 @@ export class HomeComponent implements OnInit {
 
   Search(){
     if(this.busquedas.value.Filtro == "Nombre" && this.busquedas.value.Busqueda != ""){
+      if(this.busquedas.value.Total == true){
+        this.ms.ObtenerTotal(this.busquedas.value.Filtro, this.busquedas.value.Busqueda, this.busquedas.value.Total).subscribe((data:any)=>{
+          this.totalMedicos = data;
+        });
+      }else{
+        this.totalMedicos = null;
+      }
       this.ms.ObtenerPorNombre(this.busquedas.value.Busqueda).subscribe((data:any)=>{
         this.todosMedicos = data;
       });
     }
     else if(this.busquedas.value.Filtro == "Especialidad" && this.busquedas.value.Busqueda != ""){
+      if(this.busquedas.value.Total == true){
+        this.ms.ObtenerTotal(this.busquedas.value.Filtro, this.busquedas.value.Busqueda, this.busquedas.value.Total).subscribe((data:any)=>{
+          this.totalMedicos = data;
+        });
+      }else{
+        this.totalMedicos = null;
+      }
       this.ms.ObtenerPorEspecialidad(this.busquedas.value.Busqueda).subscribe((data:any)=>{
         this.todosMedicos = data;
       });
     }
     else{
+      this.totalMedicos = null;
       this.obtenerMedicos();
     }
   }
@@ -217,6 +235,10 @@ export class HomeComponent implements OnInit {
 
   get Busqueda(){
     return this.busquedas.get('Busqueda');
+  }
+
+  get Total(){
+    return this.busquedas.get('Total');
   }
 
 }

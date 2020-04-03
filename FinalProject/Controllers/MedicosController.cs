@@ -51,7 +51,6 @@ namespace FinalProject.Controllers
             }
         }
 
-
         [HttpGet]
         [Route("api/Medicos/PorEspecialidad/{spc}")]
 
@@ -66,6 +65,50 @@ namespace FinalProject.Controllers
             catch(Exception ex) 
             {
                 return null;
+            }
+        }
+
+        [HttpGet]
+        [Route("api/Medicos/Total/{filtro}/{busqueda}/{total}")]
+
+        public int? Total(string filtro, string busqueda, bool? total)
+        {
+            try
+            {
+                var listaCompleta = db.Medicos;
+                if(filtro == "Nombre")
+                {
+                    var nombres = from n in listaCompleta where n.Nombre.ToLower().Contains(busqueda) orderby n.Nombre select n;
+                    Opciones  opc= new Opciones();
+                    if (total.HasValue)
+                    {
+                        opc.Sumatoria = nombres.Count();
+                        return opc.Sumatoria;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+                else if(filtro == "Especialidad")
+                {
+                    var especialidades = from e in listaCompleta where e.Especialidad.ToLower().Contains(busqueda) orderby e.Especialidad select e;
+                    Opciones opc = new Opciones();
+                    if (total.HasValue)
+                    {
+                        opc.Sumatoria = especialidades.Count();
+                        return opc.Sumatoria;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                return 0;
             }
         }
 

@@ -30,8 +30,7 @@ namespace FinalProject.Controllers
                 conexion.ConnectionString = "data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN; integrated security = SSPI; database=SistemaMedico1";
                 conexion.Open();
                 cmd.Connection = conexion;
-                string query2 = "select a.idAltaMedica, p.Nombre, i.FechaIngreso, a.FechaSalida, a.Monto from AltaMedica a inner join Pacientes p on a.idPaciente = p.idPaciente inner join Ingresos i on i.idIngreso = a.idIngreso";
-                cmd.CommandText = query2;
+                cmd.CommandText = "select a.idAltaMedica, p.Nombre, i.FechaIngreso, a.FechaSalida, a.Monto from AltaMedica a inner join Pacientes p on a.idPaciente = p.idPaciente inner join Ingresos i on i.idIngreso = a.idIngreso";
                 dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {

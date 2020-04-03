@@ -32,6 +32,14 @@ export class MedicosService {
     }));
   }
 
+  ObtenerTotal(filtro: string, busqueda:string, total: boolean): Observable<number>{
+    const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
+    return this.http.get<number>(this.url+"/Total/"+filtro+"/"+busqueda+"/"+total, httpOptions).pipe(retry(1),catchError((err)=>{
+      alert(err.error.Message);
+      return throwError(err.error.Message);
+    }));
+  }
+
   AgregarMedico(medico: Medicos): Observable<Medicos>
   {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) }; 
