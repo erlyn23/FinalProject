@@ -79,6 +79,71 @@ namespace FinalProject.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("api/Pacientes/Total/{filtro}/{busqueda}/{total}")]
+
+        public int? GetTotal(string filtro, string busqueda, bool? total)
+        {
+            try
+            {
+                try
+                {
+                    var listaCompleta = db.Pacientes;
+                    if (filtro == "Cedula")
+                    {
+                        var cedulas = from c in listaCompleta where c.Cedula.ToLower().Contains(busqueda) orderby c.Cedula select c;
+                        Opciones opc = new Opciones();
+                        if (total.HasValue)
+                        {
+                            opc.Sumatoria = cedulas.Count();
+                            return opc.Sumatoria;
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    }
+                    else if (filtro == "Nombre")
+                    {
+                        var nombres = from n in listaCompleta where n.Nombre.ToLower().Contains(busqueda) orderby n.Nombre select n;
+                        Opciones opc = new Opciones();
+                        if (total.HasValue)
+                        {
+                            opc.Sumatoria = nombres.Count();
+                            return opc.Sumatoria;
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    }
+                    else if (filtro == "Asegurados")
+                    {
+                        var asegurados = from a in listaCompleta where a.Asegurado.ToLower().Contains(busqueda) orderby a.Asegurado select a;
+                        Opciones opc = new Opciones();
+                        if (total.HasValue)
+                        {
+                            opc.Sumatoria = asegurados.Count();
+                            return opc.Sumatoria;
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    }
+                    return 0;
+                }
+                catch (Exception ex)
+                {
+                    return 0;
+                }
+            }
+            catch(Exception ex)
+            {
+                return 0;
+            }
+        }
+
         // GET: api/Pacientes/5
         [ResponseType(typeof(Pacientes))]
         public IHttpActionResult GetPacientes(int id)

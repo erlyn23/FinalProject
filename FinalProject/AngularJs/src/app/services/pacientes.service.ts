@@ -44,6 +44,14 @@ export class PacientesService {
     }));
   }
 
+  ObtenerTotal(filtro: string, busqueda:string, total:boolean):Observable<number>{
+    const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
+    return this.http.get<number>(this.url+"/Total/"+filtro+"/"+busqueda+"/"+total,httpOptions).pipe(retry(1), catchError((error: HttpErrorResponse)=>{
+      alert(error.error.Message);
+      return throwError(error.error.Message);
+    }));
+  }
+
   AgregarPaciente(paciente:Pacientes): Observable<Pacientes>{
     const httpOptions = {headers: new HttpHeaders({"Content-type": "application/json"})};
     return this.http.post<Pacientes>(this.url+"/AgregarPaciente",paciente,httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{

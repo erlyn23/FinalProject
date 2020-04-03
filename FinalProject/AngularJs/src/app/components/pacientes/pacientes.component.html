@@ -111,7 +111,7 @@
                                 <mat-label>Busqueda</mat-label>
                                 <input matInput formControlName="Busqueda" type="text" placeholder="Escribe lo que deseas buscar...">
                             </mat-form-field>
-                            <mat-form-field class="ml-3" style="width: 30%;" *ngIf="esAsegurado">
+                            <mat-form-field class="ml-3" style="width: 50%;" *ngIf="esAsegurado">
                                 <mat-label>Por Asegurado</mat-label>
                                 <mat-select formControlName="Asegurado" (ngModelChange)="filtroEspecial($event)">
                                     <mat-option value="nada" disabled><b>Escoge una opción</b></mat-option>
@@ -119,6 +119,7 @@
                                     <mat-option value="No">No</mat-option>
                                 </mat-select>
                             </mat-form-field>
+                            <mat-checkbox formControlName="Total">Total de resultados de la búsqueda</mat-checkbox>
                         </form>
                         <div class="row d-flex justify-content-center">
                             <div class="col-md-2">
@@ -156,6 +157,16 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div class="container text-center">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p class="text-success ProductSans" *ngIf="busquedas.value.Filtro =='Cedula' && totalPacientes != null">Total de pacientes con esta cédula: {{this.totalPacientes}}</p>
+                                <p class="text-success ProductSans" *ngIf="busquedas.value.Filtro == 'Nombre' && totalPacientes != null">Total de pacientes con este nombre: {{this.totalPacientes}}</p>
+                                <p class="text-success ProductSans" *ngIf="busquedas.value.Filtro == 'Asegurados' && busquedas.value.Asegurado == 'Sí' && totalPacientes != null">Total de pacientes asegurados: {{this.totalPacientes}}</p>
+                                <p class="text-success ProductSans" *ngIf="busquedas.value.Filtro == 'Asegurados' && busquedas.value.Asegurado == 'No' && totalPacientes != null">Total de pacientes no asegurados: {{this.totalPacientes}}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                </div> 
             </div>

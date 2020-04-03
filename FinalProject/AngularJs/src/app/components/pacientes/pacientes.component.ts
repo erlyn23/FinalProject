@@ -18,6 +18,7 @@ export class PacientesComponent implements OnInit {
   todosPacientes: Pacientes[];
   busquedas: FormGroup;
   fg: FormGroup;
+  totalPacientes: any;
   esAsegurado: boolean = false;
   comprobar: boolean = false;
 
@@ -40,11 +41,13 @@ export class PacientesComponent implements OnInit {
       Filtro: [""],
       Busqueda: [""],
       Asegurado: [""],
+      Total: false,
     })
     this.obtenerPacientes();
   }
 
   obtenerPacientes(){
+    this.totalPacientes = null;
     this.ps.ObtenerPacientes().subscribe(data=>{
       return this.todosPacientes = data;
     });
@@ -60,19 +63,41 @@ export class PacientesComponent implements OnInit {
 
   Search(){
     if(this.busquedas.value.Filtro == "Cedula" && this.busquedas.value.Busqueda != ""){
+      if(this.busquedas.value.Total == true){
+        this.ps.ObtenerTotal(this.busquedas.value.Filtro, this.busquedas.value.Busqueda, this.busquedas.value.Total).subscribe((data:any)=>{
+          this.totalPacientes = data;
+        });
+      }else{
+        this.totalPacientes = null;
+      }
       this.ps.ObtenerPorCedula(this.busquedas.value.Busqueda).subscribe((data:any)=>{
         this.todosPacientes = data;
       });
     }else if(this.busquedas.value.Filtro == "Nombre" && this.busquedas.value.Busqueda != ""){
+      if(this.busquedas.value.Total == true){
+        this.ps.ObtenerTotal(this.busquedas.value.Filtro, this.busquedas.value.Busqueda, this.busquedas.value.Total).subscribe((data:any)=>{
+          this.totalPacientes = data;
+        });
+      }else{
+        this.totalPacientes = null;
+      }
       this.ps.ObtenerPorNombre(this.busquedas.value.Busqueda).subscribe((data:any)=>{
         this.todosPacientes = data;
       });
     }else if(this.busquedas.value.Filtro != "" && (this.busquedas.value.Busqueda == "" || this.busquedas.value.Asegurado =="")){
+      this.totalPacientes = null;
       this.obtenerPacientes();
     }
   }
 
   filtroEspecial(val){
+    if(this.busquedas.value.Total == true){
+      this.ps.ObtenerTotal(this.busquedas.value.Filtro, val, this.busquedas.value.Total).subscribe((data:any)=>{
+        this.totalPacientes = data;
+      });
+    }else{
+      this.totalPacientes = null;
+    }
       this.ps.ObtenerPorAsegurado(val).subscribe((data:any)=>{
         this.todosPacientes = data;
       });
@@ -171,6 +196,10 @@ export class PacientesComponent implements OnInit {
 
   get Busqueda(){
     return this.busquedas.get('Busqueda');
+  }
+
+  get Total(){
+    return this.busquedas.get('Total');
   }
 
 }
