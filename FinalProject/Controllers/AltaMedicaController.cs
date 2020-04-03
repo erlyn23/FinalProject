@@ -59,7 +59,7 @@ namespace FinalProject.Controllers
             try
             {
                 var listaCompleta = GetAltas();
-                var pacientes = from p in listaCompleta where p.NombrePaciente.Contains(pac) orderby p.NombrePaciente select p;
+                var pacientes = from p in listaCompleta where p.NombrePaciente.ToLower().Contains(pac) orderby p.NombrePaciente select p;
                 return pacientes.ToList();
             }
             catch(Exception ex)
@@ -75,7 +75,7 @@ namespace FinalProject.Controllers
             try
             {
                 var listaCompleta = GetAltas();
-                var fechas = from f in listaCompleta where f.FechaSalida == fech orderby f.FechaSalida select f;
+                var fechas = from f in listaCompleta where DateTime.Parse(f.FechaSalida) == DateTime.Parse(fech) orderby f.FechaSalida select f;
                 return fechas.ToList();
             }
             catch (Exception ex)

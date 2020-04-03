@@ -21,6 +21,22 @@ export class AltasService {
     }));
   }
 
+  ObtenerPorPaciente(pac:string): Observable<AltaMedicaArreglada[]>{
+    const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
+    return this.http.get<AltaMedicaArreglada[]>(this.url+"/PorPaciente/"+pac, httpOptions).pipe(retry(1), catchError((err: HttpErrorResponse)=>{
+      alert(err.error.Message);
+      return throwError(err.error.Message);
+    }));
+  }
+
+  ObtenerPorFecha(fecha:string): Observable<AltaMedicaArreglada[]>{
+    const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
+    return this.http.get<AltaMedicaArreglada[]>(this.url+"/PorFecha/"+fecha, httpOptions).pipe(retry(1), catchError((err: HttpErrorResponse)=>{
+      alert(err.error.Message);
+      return throwError(err.error.Message);
+    }));
+  }
+
   AgregarAltaMedica(alta:AltaMedica):Observable<AltaMedica>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
     return this.http.post<AltaMedica>(this.url,alta, httpOptions).pipe(retry(1), catchError((err: HttpErrorResponse)=>{

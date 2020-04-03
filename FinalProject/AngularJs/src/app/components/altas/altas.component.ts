@@ -30,12 +30,15 @@ export class AltasComponent implements OnInit {
   actual: any;
   errorMessage: any;
   fg: FormGroup;
+  esFecha: boolean = false;
+  busquedas: FormGroup;
 
   constructor(private is:IngresosService, 
     private hs: HabitacionesService,
     private as: AltasService,
     private ps: PacientesService,
     private fb:FormBuilder,
+    private fb2: FormBuilder,
     private snack: MatSnackBar) { }
 
   ngOnInit() {
@@ -47,7 +50,11 @@ export class AltasComponent implements OnInit {
       FechaIngreso:["", [Validators.required]],
       FechaSalida: [this.actual,[Validators.required]],
     });
-
+    this.busquedas = this.fb2.group({
+      Filtro: [""],
+      Busqueda:[""],
+      FechaBusqueda:[""],
+    });
     this.obtenerAltasMedicas();
     this.obtenerPacientes();
     this.obtenerHabitaciones();
@@ -83,6 +90,35 @@ export class AltasComponent implements OnInit {
     this.hs.ObtenerHabitaciones().subscribe((data:any)=>{
       return this.todasHabitaciones = data;
     });
+  }
+
+  cambiarControl(val){
+    if(val == "Fecha"){
+      this.esFecha = true;
+    }else{
+      this.esFecha = false;
+    }
+  }
+
+  Search(){
+    let fechabuscada = new Date(this.busquedas.value.FechaBusqueda);
+    let dia = fechabuscada.getDate();
+    let mes = fechabuscada.getMonth();
+    let año = fechabuscada.getFullYear();
+    let fechacompleta = dia+"-"+(mes+1)+"-"+año;
+
+    if(this.busquedas.value.Filtro == "Paciente" && this.busquedas.value.Busqueda != ""){
+      this.as.ObtenerPorPaciente(this.busquedas.value.Busqueda).subscribe((data:any)=>{
+        this.todasAltasMedicas = data;
+      });
+    }else if(this.busquedas.value.Filtro == "Fecha" && fechacompleta != ""){
+      this.as.ObtenerPorFecha(fechacompleta).subscribe((data:any)=>{
+        this.todasAltasMedicas = data;
+      });
+    }else if(this.busquedas.value.Filtro != "" && (this.busquedas.value.Busqueda == "" || fechacompleta == "")) {
+      this.obtenerAltasMedicas();
+    }
+
   }
 
   buscarIngreso(val)
@@ -183,5 +219,17 @@ export class AltasComponent implements OnInit {
   }
   get FechaSalida(){
     return this.fg.get('FechaSalida');
+  }
+
+  get Filtro(){
+    return this.busquedas.get('Filtro');
+  }
+
+  get Busqueda(){
+    return this.busquedas.get('Busqueda');
+  }
+
+  get FechaBusqueda(){
+    return this.busquedas.get('FechaBusqueda');
   }
 }
