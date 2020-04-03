@@ -16,16 +16,18 @@ import { IngresosService } from 'src/app/services/ingresos.service';
 export class PacientesComponent implements OnInit {
 
   todosPacientes: Pacientes[];
+  busquedas: FormGroup;
   fg: FormGroup;
+  esAsegurado: boolean = false;
   comprobar: boolean = false;
 
   constructor(private ps: PacientesService, 
     private as: AltasService,
     private is: IngresosService,
     private fb: FormBuilder, 
+    private fb2: FormBuilder,
     private snack: MatSnackBar, 
     private dialog:MatDialog,
-    private dc: DialogComponent,
     private cs: CitasService) { }
 
   ngOnInit() {
@@ -34,6 +36,11 @@ export class PacientesComponent implements OnInit {
       Nombre: ["",[Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
       Asegurado: ["",[Validators.required]]
     });
+    this.busquedas = this.fb2.group({
+      Filtro: [""],
+      Busqueda: [""],
+      Asegurado: [""],
+    })
     this.obtenerPacientes();
   }
 
@@ -41,6 +48,34 @@ export class PacientesComponent implements OnInit {
     this.ps.ObtenerPacientes().subscribe(data=>{
       return this.todosPacientes = data;
     });
+  }
+
+  cambiarControl(val){
+    if(val == "Asegurados"){
+      this.esAsegurado = true;
+    }else{
+      this.esAsegurado = false;
+    }
+  }
+
+  Search(){
+    if(this.busquedas.value.Filtro == "Cedula" && this.busquedas.value.Busqueda != ""){
+      this.ps.ObtenerPorCedula(this.busquedas.value.Busqueda).subscribe((data:any)=>{
+        this.todosPacientes = data;
+      });
+    }else if(this.busquedas.value.Filtro == "Nombre" && this.busquedas.value.Busqueda != ""){
+      this.ps.ObtenerPorNombre(this.busquedas.value.Busqueda).subscribe((data:any)=>{
+        this.todosPacientes = data;
+      });
+    }else if(this.busquedas.value.Filtro != "" && (this.busquedas.value.Busqueda == "" || this.busquedas.value.Asegurado =="")){
+      this.obtenerPacientes();
+    }
+  }
+
+  filtroEspecial(val){
+      this.ps.ObtenerPorAsegurado(val).subscribe((data:any)=>{
+        this.todosPacientes = data;
+      });
   }
 
   addPaciente(paciente: Pacientes){

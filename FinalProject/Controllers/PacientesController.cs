@@ -31,13 +31,14 @@ namespace FinalProject.Controllers
             return db.Pacientes;
         }
 
-        [Route("PorNombre")]
+        [HttpGet]
+        [Route("api/Pacientes/PorNombre/{nom}")]
         public IQueryable<Pacientes> GetPorNombre(string nom) 
         {
             try
             {
                 var listaCompleta = db.Pacientes;
-                var nombres = from n in listaCompleta where n.Nombre == nom orderby n.Nombre select n;
+                var nombres = from n in listaCompleta where n.Nombre.Contains(nom) orderby n.Nombre select n;
                 return nombres;
             }
             catch(Exception ex) 
@@ -46,13 +47,14 @@ namespace FinalProject.Controllers
             }
         }
 
-        [Route("PorCedula")]
+        [HttpGet]
+        [Route("api/Pacientes/PorCedula/{ced}")]
         public IQueryable<Pacientes> GetPorCedula(string ced) 
         {
             try
             {
                 var listaCompleta = db.Pacientes;
-                var cedulas = from c in listaCompleta where c.Cedula == ced orderby c.Cedula select c;
+                var cedulas = from c in listaCompleta where c.Cedula.Contains(ced) orderby c.Cedula select c;
                 return cedulas;
             }
             catch(Exception ex) 
@@ -61,13 +63,14 @@ namespace FinalProject.Controllers
             }
         }
 
-        [Route("PorAsegurados")]
+        [HttpGet]
+        [Route("api/Pacientes/PorAsegurados/{asg}")]
         public IQueryable<Pacientes> GetPorAsegurados(string asg) 
         {
             try
             {
                 var listaCompleta = db.Pacientes;
-                var asegurados = from a in listaCompleta where a.Asegurado == asg orderby a.Asegurado select a;
+                var asegurados = from a in listaCompleta where a.Asegurado.Contains(asg) orderby a.Asegurado select a;
                 return asegurados;
             }
             catch(Exception ex)
@@ -106,7 +109,7 @@ namespace FinalProject.Controllers
                 Conexion();
                 conexion.Open();
                 cmd.Connection = conexion;
-                cmd.CommandText = "Select*from Pacientes";
+                cmd.CommandText = "Select*from Pacientes where not idPaciente=" + pacientes.idPaciente;
                 dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {

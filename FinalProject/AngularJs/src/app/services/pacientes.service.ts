@@ -20,6 +20,30 @@ export class PacientesService {
     }));
   }
 
+  ObtenerPorCedula(ced:string): Observable<Pacientes[]>{
+    const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
+    return this.http.get<Pacientes[]>(this.url+"/PorCedula/"+ced, httpOptions).pipe(retry(1), catchError((error: HttpErrorResponse)=>{
+      alert(error.error.Message);
+      return throwError(error.error.Message);
+    }));
+  }
+
+  ObtenerPorNombre(nom:string): Observable<Pacientes[]>{
+    const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
+    return this.http.get<Pacientes[]>(this.url+"/PorNombre/"+nom,httpOptions).pipe(retry(1), catchError((error: HttpErrorResponse)=>{
+      alert(error.error.Message);
+      return throwError(error.error.Message);
+    }));
+  }
+
+  ObtenerPorAsegurado(asg: string): Observable<Pacientes[]>{
+    const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
+    return this.http.get<Pacientes[]>(this.url+"/PorAsegurados/"+asg,httpOptions).pipe(retry(1), catchError((error: HttpErrorResponse)=>{
+      alert(error.error.Message);
+      return throwError(error.error.Message);
+    }));
+  }
+
   AgregarPaciente(paciente:Pacientes): Observable<Pacientes>{
     const httpOptions = {headers: new HttpHeaders({"Content-type": "application/json"})};
     return this.http.post<Pacientes>(this.url+"/AgregarPaciente",paciente,httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{

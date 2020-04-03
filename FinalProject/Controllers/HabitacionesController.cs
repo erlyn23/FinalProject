@@ -31,13 +31,14 @@ namespace FinalProject.Controllers
             return db.Habitaciones;
         }
 
-        [Route("PorTipo")]
+        [HttpGet]
+        [Route("api/Habitaciones/PorTipo/{tip}")]
         public IQueryable<Habitaciones> GetPorTipo(string tip) 
         {
             try
             {
                 var listaCompleta = db.Habitaciones;
-                var tipos = from t in listaCompleta where t.Tipo == tip orderby t.Tipo select t;
+                var tipos = from t in listaCompleta where t.Tipo.Contains(tip) orderby t.Tipo select t;
                 return tipos;
             }
             catch(Exception ex) 
@@ -75,7 +76,7 @@ namespace FinalProject.Controllers
                 Conexion();
                 conexion.Open();
                 cmd.Connection = conexion;
-                cmd.CommandText = "Select*from Habitaciones";
+                cmd.CommandText = "Select*from Habitaciones where not idHabitacion="+habitaciones.idHabitacion;
                 dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {

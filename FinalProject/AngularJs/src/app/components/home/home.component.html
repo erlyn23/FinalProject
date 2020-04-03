@@ -107,9 +107,16 @@
                                 <input matInput formControlName="Busqueda" type="text" placeholder="Escribe lo que deseas buscar...">
                             </mat-form-field>
                         </form>
-                        <div>
-                            <button mat-raised-button color="accent" (click)="Search()"><i class="fas fa-search"></i>
-                            Buscar</button>
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-md-2">
+                                    <button mat-raised-button color="accent" (click)="Search()"><i class="fas fa-search"></i>
+                                    Buscar</button>
+                            </div>
+                            <div class="col-md-2">
+                                    <button mat-raised-button color="accent" (click)="obtenerMedicos()"><i class="fas fa-undo-alt"></i>
+                                    Reiniciar Búsqueda
+                                    </button>
+                            </div>
                         </div>
                     </mat-card>
                 </div>

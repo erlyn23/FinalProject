@@ -56,7 +56,8 @@ namespace FinalProject.Controllers
             }
         }
 
-        [Route("PorFecha")]
+        [HttpGet]
+        [Route("api/Citas/PorFecha/{Fecha}")]
         public List<CitasArregladas> GetPorFecha(string Fecha)
         {
             try
@@ -71,13 +72,15 @@ namespace FinalProject.Controllers
             }
         }
 
-        [Route("PorMedico")]
+
+        [HttpGet]
+        [Route("api/Citas/PorMedico/{med}")]
         public List<CitasArregladas> GetPorMedico(string med)
         {
             try
             {
                 var listaCompleta = GetCitas();
-                var medicos = from m in listaCompleta where m.NombreMedico == med orderby m.NombreMedico select m;
+                var medicos = from m in listaCompleta where m.NombreMedico.Contains(med) orderby m.NombreMedico select m;
                 return medicos.ToList();
             }
             catch(Exception ex)
@@ -85,13 +88,15 @@ namespace FinalProject.Controllers
                 return null;
             }
         }
-        [Route("PorPaciente")]
+
+        [HttpGet]
+        [Route("api/Citas/PorPaciente/{pac}")]
         public List<CitasArregladas> GetPorPaciente(string pac)
         {
             try
             {
                 var listaCompleta = GetCitas();
-                var pacientes = from p in listaCompleta where p.NombrePaciente == pac orderby p.NombrePaciente select p;
+                var pacientes = from p in listaCompleta where p.NombrePaciente.Contains(pac) orderby p.NombrePaciente select p;
                 return pacientes.ToList();
             }
             catch(Exception ex)

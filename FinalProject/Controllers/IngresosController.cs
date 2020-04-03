@@ -62,7 +62,8 @@ namespace FinalProject.Controllers
             return db.Ingresos;
         }
 
-        [Route("PorFecha")]
+        [HttpGet]
+        [Route("api/Ingresos/PorFecha/{fecha}")]
         public List<IngresosArreglados> GetPorFecha(DateTime fecha) 
         {
             try
@@ -76,8 +77,9 @@ namespace FinalProject.Controllers
                 return null;
             }
         }
-        [Route("PorHabitacion")]
 
+        [HttpGet]
+        [Route("api/Ingresos/PorHabitacion/{num}")]
         public List<IngresosArreglados> GetPorHabitacion(int num)
         {
             try
