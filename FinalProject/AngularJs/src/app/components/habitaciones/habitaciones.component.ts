@@ -16,6 +16,7 @@ export class HabitacionesComponent implements OnInit {
 
   todasHabitaciones: Habitaciones[];
   comprobar: boolean = false;
+  busquedas: FormGroup;
   fg: FormGroup;
   decimalpatron = '^[0-9]{1,4}(\.[0-9][0-9])?$';
 
@@ -23,6 +24,7 @@ export class HabitacionesComponent implements OnInit {
     private is: IngresosService,
     private as: AltasService,
     private fb: FormBuilder,
+    private fb2: FormBuilder,
     private snack: MatSnackBar,
     private dialog: MatDialog) { }
 
@@ -32,6 +34,11 @@ export class HabitacionesComponent implements OnInit {
       Tipo: ["",[Validators.required]],
       PrecioxDia: ["",[Validators.required, Validators.minLength(3), Validators.maxLength(10), Validators.pattern(this.decimalpatron), Validators.max(9999.99)]]
     });
+
+    this.busquedas = this.fb2.group({
+      Filtro: [""],
+      Busqueda: [""],
+    });
     this.obtenerHabitaciones();
   }
 
@@ -39,6 +46,14 @@ export class HabitacionesComponent implements OnInit {
     this.hs.ObtenerHabitaciones().subscribe((data:any)=>{
       return this.todasHabitaciones = data;
     });
+  }
+
+  Search(){
+    if(this.busquedas.value.Filtro == "Tipo" && this.busquedas.value.Busqueda != ""){
+      this.hs.ObtenerPorTipo(this.busquedas.value.Busqueda).subscribe((data:any)=>{
+        this.todasHabitaciones = data;
+      });
+    }
   }
 
   addHabitacion()
@@ -125,6 +140,13 @@ export class HabitacionesComponent implements OnInit {
 
   get PrecioxDia(){
     return this.fg.get('PrecioxDia');
+  }
+
+  get Filtro(){
+    return this.busquedas.get('Filtro');
+  }
+  get Busqueda(){
+    return this.busquedas.get('Busqueda');
   }
 
 }

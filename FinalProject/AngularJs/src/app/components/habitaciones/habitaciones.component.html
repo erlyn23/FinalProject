@@ -94,7 +94,39 @@
             </div>
         <div class="col-md-8">
             <div class="card mb-4">
-                <div class="card-header ProductSans text-center text-white" style="background: #004D40;"><h3>Habitaciones registradas</h3></div>
+                <div class="card-header ProductSans text-center text-white" style="background: #004D40;"><h3>Habitaciones registradas</h3>
+                    <mat-card>
+                        <form [formGroup]="busquedas">
+                            <mat-form-field>
+                                <mat-label>Filtrar por</mat-label>
+                                <mat-select formControlName="Filtro">
+                                    <mat-option value="nada" disabled><b>Escoge una opción</b></mat-option>
+                                    <mat-option value="Tipo">Tipo</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field class="ml-3" style="width: 30%;">
+                                <mat-label>Por Tipo</mat-label>
+                                <mat-select formControlName="Busqueda">
+                                    <mat-option value="nada" disabled><b>Escoge una opción</b></mat-option>
+                                    <mat-option value="Doble">Doble</mat-option>
+                                    <mat-option value="Suite">Suite</mat-option>
+                                    <mat-option value="Privada">Privada</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </form>
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-md-2">
+                                    <button mat-raised-button color="accent" (click)="Search()"><i class="fas fa-search"></i>
+                                    Buscar</button>
+                            </div>
+                            <div class="col-md-2">
+                                    <button mat-raised-button color="accent" (click)="obtenerHabitaciones()"><i class="fas fa-undo-alt"></i>
+                                    Reiniciar Búsqueda
+                                    </button>
+                            </div>
+                        </div>
+                    </mat-card>
+                </div>
                 <div class="card-body">
                     <table class="table table-hover table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl ">
                         <thead>

@@ -161,4 +161,16 @@ export class PacientesComponent implements OnInit {
     return this.fg.get('Asegurado');
   }
 
+  get Filtro(){
+    return this.busquedas.get('Filtro');
+  }
+
+  get Asegurados(){
+    return this.busquedas.get('Asegurados');
+  }
+
+  get Busqueda(){
+    return this.busquedas.get('Busqueda');
+  }
+
 }
