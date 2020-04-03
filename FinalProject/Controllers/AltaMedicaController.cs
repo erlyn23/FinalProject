@@ -46,7 +46,7 @@ namespace FinalProject.Controllers
                 conexion.Close();
                 return alta;
             }
-            catch(Exception ex) 
+            catch(Exception) 
             {
                 return null;
             }
@@ -61,7 +61,7 @@ namespace FinalProject.Controllers
                 var pacientes = from p in listaCompleta where p.NombrePaciente.ToLower().Contains(pac) orderby p.NombrePaciente select p;
                 return pacientes.ToList();
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 return null;
             }
@@ -77,7 +77,7 @@ namespace FinalProject.Controllers
                 var fechas = from f in listaCompleta where DateTime.Parse(f.FechaSalida) == DateTime.Parse(fech) orderby f.FechaSalida select f;
                 return fechas.ToList();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }

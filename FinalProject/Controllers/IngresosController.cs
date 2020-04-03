@@ -50,7 +50,7 @@ namespace FinalProject.Controllers
                 conexion.Close();
                 return lista;
             }
-            catch(Exception e) 
+            catch(Exception) 
             {
                 return null;
             }
@@ -72,7 +72,7 @@ namespace FinalProject.Controllers
                 var fechas = from f in listaCompleta where f.FechaIngreso == DateTime.Parse(fecha) orderby f.FechaIngreso select f;
                 return fechas.ToList();
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 return null;
             }
@@ -88,7 +88,7 @@ namespace FinalProject.Controllers
                 var numeros = from n in listaCompleta where n.NumeroHabitacion == num orderby n.NumeroHabitacion select n;
                 return numeros.ToList();
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 return null;
             }

@@ -41,7 +41,7 @@ namespace FinalProject.Controllers
                 var nombres = from n in listaCompleta where n.Nombre.ToLower().Contains(nom) orderby n.Nombre select n;
                 return nombres;
             }
-            catch(Exception ex) 
+            catch(Exception) 
             {
                 return null;
             }
@@ -57,7 +57,7 @@ namespace FinalProject.Controllers
                 var cedulas = from c in listaCompleta where c.Cedula.Contains(ced) orderby c.Cedula select c;
                 return cedulas;
             }
-            catch(Exception ex) 
+            catch(Exception) 
             {
                 return null;
             }
@@ -73,7 +73,7 @@ namespace FinalProject.Controllers
                 var asegurados = from a in listaCompleta where a.Asegurado.Contains(asg) orderby a.Asegurado select a;
                 return asegurados;
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 return null;
             }
@@ -133,12 +133,12 @@ namespace FinalProject.Controllers
                     }
                     return 0;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return 0;
                 }
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 return 0;
             }

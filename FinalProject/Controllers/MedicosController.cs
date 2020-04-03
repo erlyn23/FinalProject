@@ -45,7 +45,7 @@ namespace FinalProject.Controllers
                 var nombres = from n in listaCompleta where n.Nombre.ToLower().Contains(nom) orderby n.Nombre select n;
                 return nombres;
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 return null;
             }
@@ -62,7 +62,7 @@ namespace FinalProject.Controllers
                 var especialidades = from e in listaCompleta where e.Especialidad.ToLower().Contains(spc) orderby e.Especialidad select e;
                 return especialidades;
             }
-            catch(Exception ex) 
+            catch(Exception) 
             {
                 return null;
             }
@@ -106,7 +106,7 @@ namespace FinalProject.Controllers
                 }
                 return 0;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return 0;
             }

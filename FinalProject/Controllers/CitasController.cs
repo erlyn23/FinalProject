@@ -50,7 +50,7 @@ namespace FinalProject.Controllers
                 conexion.Close();
                 return salida;
             }
-            catch(Exception ex) 
+            catch(Exception) 
             {
                 return null;
             }
@@ -66,7 +66,7 @@ namespace FinalProject.Controllers
                 var fechas = from f in listaCompleta where DateTime.Parse(f.Fecha) == DateTime.Parse(Fecha) orderby f.Fecha select f;
                 return fechas.ToList();
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 return null;
             }
@@ -83,7 +83,7 @@ namespace FinalProject.Controllers
                 var medicos = from m in listaCompleta where m.NombreMedico.ToLower().Contains(med) orderby m.NombreMedico select m;
                 return medicos.ToList();
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 return null;
             }
@@ -99,12 +99,29 @@ namespace FinalProject.Controllers
                 var pacientes = from p in listaCompleta where p.NombrePaciente.ToLower().Contains(pac) orderby p.NombrePaciente select p;
                 return pacientes.ToList();
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 return null;
             }
         }
 
+       /* [HttpGet]
+        [Route("api/Citas/Total/{filtro}/{busqueda}/{total}")]
+        public int? GetTotal(string filtro, string busqueda, bool? total)
+        {
+            try 
+            { 
+                if(filtro == "Paciente")
+                {
+                  
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+        */
         [HttpPost]
         [ResponseType(typeof(Citas))]
         [Route("api/Citas/AgregarCita",Name ="addCita")]
