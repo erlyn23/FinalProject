@@ -4,6 +4,6 @@ export class Citas{
     idCita: number;
     idMedico: number;
     idPaciente: number;
-    Fecha: Date;
+    Fecha: string;
     Hora: Time;
 }

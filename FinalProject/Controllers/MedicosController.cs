@@ -42,7 +42,7 @@ namespace FinalProject.Controllers
             try
             {
                 var listaCompleta = db.Medicos;
-                var nombres = from n in listaCompleta where n.Nombre.Contains(nom) orderby n.Nombre select n;
+                var nombres = from n in listaCompleta where n.Nombre.ToLower().Contains(nom) orderby n.Nombre select n;
                 return nombres;
             }
             catch(Exception ex)
@@ -60,7 +60,7 @@ namespace FinalProject.Controllers
             try
             {
                 var listaCompleta = db.Medicos;
-                var especialidades = from e in listaCompleta where e.Especialidad.Contains(spc) orderby e.Especialidad select e;
+                var especialidades = from e in listaCompleta where e.Especialidad.ToLower().Contains(spc) orderby e.Especialidad select e;
                 return especialidades;
             }
             catch(Exception ex) 

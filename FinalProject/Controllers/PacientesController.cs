@@ -38,7 +38,7 @@ namespace FinalProject.Controllers
             try
             {
                 var listaCompleta = db.Pacientes;
-                var nombres = from n in listaCompleta where n.Nombre.Contains(nom) orderby n.Nombre select n;
+                var nombres = from n in listaCompleta where n.Nombre.ToLower().Contains(nom) orderby n.Nombre select n;
                 return nombres;
             }
             catch(Exception ex) 

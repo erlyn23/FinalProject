@@ -80,7 +80,42 @@
         </div>
             <div class="col-md-8">
                <div class="card mb-4">
-                <div class="card-header ProductSans text-center text-white" style="background: #004D40;"><h3>Citas agendadas</h3></div>
+                <div class="card-header ProductSans text-center text-white" style="background: #004D40;"><h3>Citas agendadas</h3>
+                    <mat-card>
+                        <form [formGroup]="busquedas">
+                            <mat-form-field>
+                                <mat-label>Filtrar por</mat-label>
+                                <mat-select formControlName="Filtro" (ngModelChange)="cambiarControl($event)">
+                                    <mat-option value="nada" disabled><b>Escoge una opción</b></mat-option>
+                                    <mat-option value="NombreMedico">Médico</mat-option>
+                                    <mat-option value="NombrePaciente">Paciente</mat-option>
+                                    <mat-option value="Fecha">Fecha</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <mat-form-field class="ml-3" style="width: 70%;" *ngIf="!esFecha">
+                                <mat-label>Busqueda</mat-label>
+                                <input matInput formControlName="Busqueda" type="text" placeholder="Escribe lo que deseas buscar...">
+                            </mat-form-field>
+                            <mat-form-field class="ml-3" style="width: 50%;" *ngIf="esFecha">
+                                <mat-label>Fecha: </mat-label>
+                                <input matInput formControlName="FechaBusqueda" [matDatepicker]="pickerBusqueda">
+                                <mat-datepicker-toggle matSuffix [for]="pickerBusqueda"></mat-datepicker-toggle>
+                                <mat-datepicker #pickerBusqueda></mat-datepicker>
+                            </mat-form-field>
+                        </form>
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-md-2">
+                                    <button mat-raised-button color="accent" (click)="Search()"><i class="fas fa-search"></i>
+                                    Buscar</button>
+                            </div>
+                            <div class="col-md-2">
+                                    <button mat-raised-button color="accent" (click)="obtenerCitas()"><i class="fas fa-undo-alt"></i>
+                                    Reiniciar Búsqueda
+                                    </button>
+                            </div>
+                        </div>
+                    </mat-card>
+                </div>
                 <div class="card-body">
                     <table class="table table-hover table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl ">
                         <thead>

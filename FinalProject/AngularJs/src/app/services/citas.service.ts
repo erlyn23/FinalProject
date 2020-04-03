@@ -21,6 +21,30 @@ export class CitasService {
     }));
   }
 
+  ObtenerPorMedico(med: string): Observable<CitaArreglada[]>{
+    const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
+    return this.http.get<CitaArreglada[]>(this.url+"/PorMedico/"+med, httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
+      alert(error.error.Message);
+      return throwError(error.error.Message);
+    }));
+  }
+
+  ObtenerPorPaciente(pac: string): Observable<CitaArreglada[]>{
+    const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
+    return this.http.get<CitaArreglada[]>(this.url+"/PorPaciente/"+pac, httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
+      alert(error.error.Message);
+      return throwError(error.error.Message);
+    }));
+  }
+
+  ObtenerPorFecha(fech: string): Observable<CitaArreglada[]>{
+    const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
+    return this.http.get<CitaArreglada[]>(this.url+"/PorFecha/"+fech, httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
+      alert(error.error.Message);
+      return throwError(error.error.Message);
+    }));
+  }
+
   AgregarCita(citas: Citas):Observable<Citas>{
   
       const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
@@ -28,7 +52,6 @@ export class CitasService {
         alert(error.error.Message);
         return throwError(error.error.Message);
       }));
-     
   }
 
   BorrarCita(id: string, tipo:string): Observable<number>{

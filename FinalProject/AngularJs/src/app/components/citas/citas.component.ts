@@ -19,6 +19,8 @@ export class CitasComponent implements OnInit {
   todosMedicos: Medicos[];
   todosPacientes: Pacientes[];
   todasCitas: CitaArreglada[];
+  busquedas: FormGroup;
+  esFecha: boolean = false;
 
   fg: FormGroup;
 
@@ -27,6 +29,7 @@ export class CitasComponent implements OnInit {
     private ps: PacientesService,
     private cs: CitasService,
     private fb: FormBuilder,
+    private fb2: FormBuilder,
     private snack: MatSnackBar) { }
 
   ngOnInit() {
@@ -36,6 +39,12 @@ export class CitasComponent implements OnInit {
       Fecha: ["",[Validators.required]],
       Hora: ["",[Validators.required]]
     });
+
+    this.busquedas = this.fb2.group({
+      Filtro:[""],
+      Busqueda:[""],
+      FechaBusqueda: [""]
+    })
 
     this.obtenerMedicos();
     this.obtenerPacientes();
@@ -60,6 +69,38 @@ export class CitasComponent implements OnInit {
     });
   }
 
+  cambiarControl(val){
+    if(val == "Fecha"){
+      this.esFecha = true;
+    }else{
+      this.esFecha = false;
+    }
+  }
+
+  Search(){
+    let fechabuscada = new Date(this.busquedas.value.FechaBusqueda);
+    let dia = fechabuscada.getDate();
+    let mes = fechabuscada.getMonth();
+    let año = fechabuscada.getFullYear();
+    let fechacompleta = dia+"-"+(mes+1)+"-"+año;
+    console.log(fechacompleta);
+
+    if(this.busquedas.value.Filtro == "NombreMedico" && this.busquedas.value.Busqueda != ""){
+      this.cs.ObtenerPorMedico(this.busquedas.value.Busqueda).subscribe((data:any)=>{
+        this.todasCitas = data;
+      });
+    }else if(this.busquedas.value.Filtro == "NombrePaciente" && this.busquedas.value.Busqueda != ""){
+      this.cs.ObtenerPorPaciente(this.busquedas.value.Busqueda).subscribe((data:any)=>{
+        this.todasCitas = data;
+      });
+    }else if(this.busquedas.value.Filtro == "Fecha" && fechacompleta != ""){
+      this.cs.ObtenerPorFecha(fechacompleta).subscribe((data:any)=>{
+        this.todasCitas = data;
+      });
+    }else if(this.busquedas.value.Filtro != "" && (this.busquedas.value.Busqueda == "" || fechacompleta == "")) {
+      this.obtenerCitas();
+    }
+  }
 
   addCita()
   {
@@ -73,7 +114,7 @@ export class CitasComponent implements OnInit {
     cita.Fecha = this.fg.value.Fecha;
     cita.Hora = this.fg.value.Hora;
 
-    if(cita.Fecha < actual)
+    if(new Date(cita.Fecha) < actual)
     {
       alert("La fecha no es válida");
     }else{
@@ -114,6 +155,18 @@ export class CitasComponent implements OnInit {
 
   get Hora(){
     return this.fg.get('Hora');
+  }
+
+  get Filtro(){
+    return this.busquedas.get('Filtro');
+  }
+
+  get Busqueda(){
+    return this.busquedas.get('Busqueda');
+  }
+
+  get FechaBusqueda(){
+    return this.busquedas.get('FechaBusqueda');
   }
 
 }

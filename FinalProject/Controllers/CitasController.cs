@@ -63,7 +63,7 @@ namespace FinalProject.Controllers
             try
             {
                 var listaCompleta = GetCitas();
-                var fechas = from f in listaCompleta where f.Fecha == Fecha orderby f.Fecha select f;
+                var fechas = from f in listaCompleta where DateTime.Parse(f.Fecha) == DateTime.Parse(Fecha) orderby f.Fecha select f;
                 return fechas.ToList();
             }
             catch(Exception ex)
@@ -80,7 +80,7 @@ namespace FinalProject.Controllers
             try
             {
                 var listaCompleta = GetCitas();
-                var medicos = from m in listaCompleta where m.NombreMedico.Contains(med) orderby m.NombreMedico select m;
+                var medicos = from m in listaCompleta where m.NombreMedico.ToLower().Contains(med) orderby m.NombreMedico select m;
                 return medicos.ToList();
             }
             catch(Exception ex)
@@ -96,7 +96,7 @@ namespace FinalProject.Controllers
             try
             {
                 var listaCompleta = GetCitas();
-                var pacientes = from p in listaCompleta where p.NombrePaciente.Contains(pac) orderby p.NombrePaciente select p;
+                var pacientes = from p in listaCompleta where p.NombrePaciente.ToLower().Contains(pac) orderby p.NombrePaciente select p;
                 return pacientes.ToList();
             }
             catch(Exception ex)
@@ -117,6 +117,21 @@ namespace FinalProject.Controllers
 
             try
             {
+                //Conexion();
+                //conexion.Open();
+                //cmd.Connection = conexion;
+                //cmd.CommandText = "Select*from Citas";
+                //reader = cmd.ExecuteReader();
+                //while (reader.Read())
+                //{
+                //    if(reader.GetInt32(1)==cita.idMedico && reader.GetInt32(2) == cita.idPaciente)
+                //    {
+                //        return BadRequest("Ya este paciente tiene una cita agendada con este mismo doctor a esa misma hora");
+                //    }
+                //}
+                //reader.Close();
+                //cmd.Dispose();
+                //conexion.Close();
                 if (string.IsNullOrEmpty(cita.idPaciente.ToString()) || string.IsNullOrEmpty(cita.idMedico.ToString()) || string.IsNullOrEmpty(cita.Fecha.ToString()))
                 {
                     return BadRequest("No se aceptan campos nulos");
