@@ -6,6 +6,8 @@ import { AltaMedica } from '../Models/AltaMedica';
 import {throwError} from 'rxjs';
 import {retry, catchError} from 'rxjs/operators';
 import { Opciones } from '../Models/Opciones';
+import { MatDialog } from '@angular/material';
+import { DialogErrorComponent } from '../components/dialog-error/dialog-error.component';
 
 @Injectable({
   providedIn: 'root'
@@ -13,28 +15,40 @@ import { Opciones } from '../Models/Opciones';
 export class AltasService {
 
   url = "https://localhost:44347/api/AltaMedica";
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private dialog: MatDialog) { }
 
   ObtenerAltasMedicas():Observable<AltaMedicaArreglada[]>{
     return this.http.get<AltaMedicaArreglada[]>(this.url).pipe(retry(1), catchError((err: HttpErrorResponse)=>{
-      alert(err.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: err.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(err.error.Message);
     }));
   }
 
   ObtenerPorPaciente(pac:string): Observable<AltaMedicaArreglada[]>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
-    return this.http.get<AltaMedicaArreglada[]>(this.url+"/PorPaciente/"+pac, httpOptions).pipe(retry(1), catchError((err: HttpErrorResponse)=>{
-      alert(err.error.Message);
-      return throwError(err.error.Message);
+    return this.http.get<AltaMedicaArreglada[]>(this.url+"/PorPaciente/"+pac, httpOptions).pipe(retry(1), catchError((error: HttpErrorResponse)=>{
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
+      return throwError(error.error.Message);
     }));
   }
 
   ObtenerPorFecha(fecha:string): Observable<AltaMedicaArreglada[]>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
-    return this.http.get<AltaMedicaArreglada[]>(this.url+"/PorFecha/"+fecha, httpOptions).pipe(retry(1), catchError((err: HttpErrorResponse)=>{
-      alert(err.error.Message);
-      return throwError(err.error.Message);
+    return this.http.get<AltaMedicaArreglada[]>(this.url+"/PorFecha/"+fecha, httpOptions).pipe(retry(1), catchError((error: HttpErrorResponse)=>{
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
+      return throwError(error.error.Message);
     }));
   }
 
@@ -42,24 +56,36 @@ export class AltasService {
   {
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
     return this.http.get<Opciones>(this.url+"/Opciones/"+filtro+"/"+busqueda+"/"+total+"/"+suma+"/"+promedio+"/"+minimo+"/"+maximo, httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
-      alert(error.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(error.error.Message);
     }));
   }
 
   AgregarAltaMedica(alta:AltaMedica):Observable<AltaMedica>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
-    return this.http.post<AltaMedica>(this.url,alta, httpOptions).pipe(retry(1), catchError((err: HttpErrorResponse)=>{
-      alert(err.error.Message);
-      return throwError(err.error.Message);
+    return this.http.post<AltaMedica>(this.url,alta, httpOptions).pipe(retry(1), catchError((error: HttpErrorResponse)=>{
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
+      return throwError(error.error.Message);
     }));
   }
 
   EliminarAltaMedica(id: string, tipo:string): Observable<number>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
-    return this.http.delete<number>(this.url+"/?id="+id+"&tipo="+tipo, httpOptions).pipe(retry(1), catchError((err: HttpErrorResponse)=>{
-      alert(err.error.Message);
-      return throwError(err.error.Message);
+    return this.http.delete<number>(this.url+"/?id="+id+"&tipo="+tipo, httpOptions).pipe(retry(1), catchError((error: HttpErrorResponse)=>{
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
+      return throwError(error.error.Message);
     }));
   }
 }

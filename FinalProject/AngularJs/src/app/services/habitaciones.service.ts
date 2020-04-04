@@ -4,6 +4,8 @@ import { Habitaciones } from '../Models/Habitaciones';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { retry, catchError } from 'rxjs/operators';
 import { Opciones } from '../Models/Opciones';
+import { MatDialog } from '@angular/material';
+import { DialogErrorComponent } from '../components/dialog-error/dialog-error.component';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +13,15 @@ import { Opciones } from '../Models/Opciones';
 export class HabitacionesService {
 
   url = "https://localhost:44347/api/Habitaciones"
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private dialog: MatDialog) { }
 
   ObtenerHabitaciones(): Observable<Habitaciones[]>{
     return this.http.get<Habitaciones[]>(this.url).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
-      alert(error.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(error.error.Message);
     }));
   }
@@ -23,7 +29,11 @@ export class HabitacionesService {
   ObtenerPorTipo(tip:string):Observable<Habitaciones[]>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
     return this.http.get<Habitaciones[]>(this.url+"/PorTipo/"+tip, httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
-      alert(error.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(error.error.Message);
     }));
   }
@@ -32,7 +42,11 @@ export class HabitacionesService {
   {
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
     return this.http.get<Opciones>(this.url+"/Opciones/"+filtro+"/"+busqueda+"/"+total+"/"+suma+"/"+promedio+"/"+minimo+"/"+maximo, httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
-      alert(error.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(error.error.Message);
     }));
   }
@@ -40,7 +54,11 @@ export class HabitacionesService {
   AgregarHabitacion(habitacion: Habitaciones): Observable<Habitaciones>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
     return this.http.post<Habitaciones>(this.url+"/AgregarHabitacion", habitacion, httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
-      alert(error.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(error.error.Message);
     }));
   }
@@ -48,7 +66,11 @@ export class HabitacionesService {
   ModificarHabitacion(habitacion:Habitaciones): Observable<Habitaciones>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
     return this.http.put<Habitaciones>(this.url, habitacion, httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
-      alert(error.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(error.error.Message);
     }));
   }
@@ -56,7 +78,11 @@ export class HabitacionesService {
   EliminarHabitacion(id: string): Observable<number>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
     return this.http.delete<number>(this.url+"/?id="+id,httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
-      alert(error.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(error.error.Message);
     }));
   }

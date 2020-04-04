@@ -4,6 +4,8 @@ import { Citas } from '../Models/Citas';
 import { HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http';
 import { CitaArreglada } from '../Models/CitaArreglada';
 import {retry, catchError} from 'rxjs/operators';
+import { DialogErrorComponent } from '../components/dialog-error/dialog-error.component';
+import { MatDialog } from '@angular/material';
 
 @Injectable({
   providedIn: 'root'
@@ -11,12 +13,16 @@ import {retry, catchError} from 'rxjs/operators';
 export class CitasService {
 
   url = "https://localhost:44347/api/Citas";
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private dialog: MatDialog) { }
 
   ObtenerCitas(): Observable<CitaArreglada[]>
   {
     return this.http.get<CitaArreglada[]>(this.url).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
-      alert(error.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(error.error.Message);
     }));
   }
@@ -24,7 +30,11 @@ export class CitasService {
   ObtenerPorMedico(med: string): Observable<CitaArreglada[]>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
     return this.http.get<CitaArreglada[]>(this.url+"/PorMedico/"+med, httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
-      alert(error.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(error.error.Message);
     }));
   }
@@ -32,7 +42,11 @@ export class CitasService {
   ObtenerPorPaciente(pac: string): Observable<CitaArreglada[]>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
     return this.http.get<CitaArreglada[]>(this.url+"/PorPaciente/"+pac, httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
-      alert(error.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(error.error.Message);
     }));
   }
@@ -40,7 +54,11 @@ export class CitasService {
   ObtenerPorFecha(fech: string): Observable<CitaArreglada[]>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
     return this.http.get<CitaArreglada[]>(this.url+"/PorFecha/"+fech, httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
-      alert(error.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(error.error.Message);
     }));
   }
@@ -48,7 +66,11 @@ export class CitasService {
   ObtenerTotal(filtro: string, busqueda:string, total:boolean): Observable<number>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
     return this.http.get<number>(this.url+"/Total/"+filtro+"/"+busqueda+"/"+total, httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
-      alert(error.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(error.error.Message);
     }));
   }
@@ -57,7 +79,11 @@ export class CitasService {
   
       const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
       return this.http.post<Citas>(this.url+"/AgregarCita", citas, httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
-        alert(error.error.Message);
+        const dialogRef = this.dialog.open(DialogErrorComponent, {
+          width: '350px',
+          data: error.error.Message,
+        });
+        dialogRef.afterClosed().subscribe((response)=>{});
         return throwError(error.error.Message);
       }));
   }
@@ -65,7 +91,11 @@ export class CitasService {
   BorrarCita(id: string, tipo:string): Observable<number>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
     return this.http.delete<number>(this.url+"/?id="+id+"&tipo="+tipo, httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
-      alert(error.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(error.error.Message);
     }));
   }

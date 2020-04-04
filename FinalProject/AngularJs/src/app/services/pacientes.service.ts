@@ -3,6 +3,8 @@ import { Observable, throwError } from 'rxjs';
 import { Pacientes } from '../Models/Pacientes';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { retry, catchError } from 'rxjs/operators';
+import { MatDialog } from '@angular/material';
+import { DialogErrorComponent } from '../components/dialog-error/dialog-error.component';
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +12,16 @@ import { retry, catchError } from 'rxjs/operators';
 export class PacientesService {
 
   url = "https://localhost:44347/api/Pacientes";
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private dialog: MatDialog) { }
 
   ObtenerPacientes(): Observable<Pacientes[]>
   {
     return this.http.get<Pacientes[]>(this.url).pipe(retry(1), catchError((error: HttpErrorResponse)=>{
-      alert(error.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(error.error.Message);
     }));
   }
@@ -23,7 +29,11 @@ export class PacientesService {
   ObtenerPorCedula(ced:string): Observable<Pacientes[]>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
     return this.http.get<Pacientes[]>(this.url+"/PorCedula/"+ced, httpOptions).pipe(retry(1), catchError((error: HttpErrorResponse)=>{
-      alert(error.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(error.error.Message);
     }));
   }
@@ -31,7 +41,11 @@ export class PacientesService {
   ObtenerPorNombre(nom:string): Observable<Pacientes[]>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
     return this.http.get<Pacientes[]>(this.url+"/PorNombre/"+nom,httpOptions).pipe(retry(1), catchError((error: HttpErrorResponse)=>{
-      alert(error.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(error.error.Message);
     }));
   }
@@ -39,7 +53,11 @@ export class PacientesService {
   ObtenerPorAsegurado(asg: string): Observable<Pacientes[]>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
     return this.http.get<Pacientes[]>(this.url+"/PorAsegurados/"+asg,httpOptions).pipe(retry(1), catchError((error: HttpErrorResponse)=>{
-      alert(error.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(error.error.Message);
     }));
   }
@@ -47,7 +65,11 @@ export class PacientesService {
   ObtenerTotal(filtro: string, busqueda:string, total:boolean):Observable<number>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
     return this.http.get<number>(this.url+"/Total/"+filtro+"/"+busqueda+"/"+total,httpOptions).pipe(retry(1), catchError((error: HttpErrorResponse)=>{
-      alert(error.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(error.error.Message);
     }));
   }
@@ -55,7 +77,11 @@ export class PacientesService {
   AgregarPaciente(paciente:Pacientes): Observable<Pacientes>{
     const httpOptions = {headers: new HttpHeaders({"Content-type": "application/json"})};
     return this.http.post<Pacientes>(this.url+"/AgregarPaciente",paciente,httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
-      alert(error.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(error.error.Message);
     }));
   }
@@ -63,7 +89,11 @@ export class PacientesService {
   ModificarPaciente(paciente:Pacientes): Observable<Pacientes>{
     const httpOptions = {headers: new HttpHeaders({"Content-type": "application/json"})};
     return this.http.put<Pacientes>(this.url, paciente, httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
-      alert(error.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(error.error.Message);
     }));
   }
@@ -72,7 +102,11 @@ export class PacientesService {
   {
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
     return this.http.delete<number>(this.url+"/?id="+id, httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
-      alert(error.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(error.error.Message);
     }));
   }

@@ -3,6 +3,8 @@ import { Medicos } from '../Models/Medicos';
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import {retry, catchError} from 'rxjs/operators';
+import { MatDialog } from '@angular/material';
+import { DialogErrorComponent } from '../components/dialog-error/dialog-error.component';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,7 @@ import {retry, catchError} from 'rxjs/operators';
 export class MedicosService {
 
   url = "https://localhost:44347/api/Medicos"
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private dialog: MatDialog) { }
 
   ObtenerMedicos(): Observable<Medicos[]>{
     return this.http.get<Medicos[]>(this.url);
@@ -19,7 +21,12 @@ export class MedicosService {
   ObtenerPorNombre(filtro:string): Observable<Medicos[]>{
     const httpOptions = {headers: new HttpHeaders({"content-type":"application/json"})}
     return this.http.get<Medicos[]>(this.url+"/PorNombre/"+filtro, httpOptions).pipe(retry(1),catchError((err)=>{
-      alert(err.error.Message);
+
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: 'Error',
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(err.error.Message);
     }));
   }
@@ -44,7 +51,12 @@ export class MedicosService {
   {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) }; 
     return this.http.post<Medicos>(this.url+"/AgregarMedico", medico, httpOptions).pipe(retry(1),catchError((err)=>{
-      alert(err.error.Message);
+
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: err.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(err.error.Message);
     }));
   }
@@ -53,7 +65,11 @@ export class MedicosService {
   {
     const httpOptions = {headers: new HttpHeaders({'Content-type':'application/json'})}
     return this.http.put<Medicos>(this.url, medico, httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
-      alert(error.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(error.error.Message);
     }));
   }
@@ -61,8 +77,12 @@ export class MedicosService {
   BorrarMedico(idMedico: string): Observable<number>{
     const httpOptions = {headers: new HttpHeaders({'Content-type':'application/json'})};
     return this.http.delete<number>(this.url+"?id="+idMedico, httpOptions).pipe(retry(1),catchError((error: HttpErrorResponse)=>{
-      alert(error.error.Message);
-      return throwError(error);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: error.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
+      return throwError(error.error.Message);
     }));
   }
 }

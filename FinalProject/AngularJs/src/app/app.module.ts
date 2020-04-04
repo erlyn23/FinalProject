@@ -31,6 +31,7 @@ import { CitasComponent } from './components/citas/citas.component';
 import { HabitacionesComponent } from './components/habitaciones/habitaciones.component';
 import { IngresosComponent } from './components/ingresos/ingresos.component';
 import { AltasComponent } from './components/altas/altas.component';
+import { DialogErrorComponent } from './components/dialog-error/dialog-error.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { AltasComponent } from './components/altas/altas.component';
     CitasComponent,
     HabitacionesComponent,
     IngresosComponent,
-    AltasComponent
+    AltasComponent,
+    DialogErrorComponent
   ],
   imports: [
     BrowserModule,
@@ -76,7 +78,7 @@ import { AltasComponent } from './components/altas/altas.component';
     MatTableModule,
     
   ],
-  entryComponents:[DialogComponent],
+  entryComponents:[DialogComponent, DialogErrorComponent],
   providers: [{
     provide: MAT_DATE_LOCALE, useValue:'es-ES',
   },

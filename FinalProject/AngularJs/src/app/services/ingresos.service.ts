@@ -5,6 +5,8 @@ import { IngresoArreglado } from '../Models/IngresoArreglado';
 import { Ingresos } from '../Models/Ingresos';
 import {retry, catchError} from 'rxjs/operators';
 import {throwError }from 'rxjs';
+import { MatDialog } from '@angular/material';
+import { DialogErrorComponent } from '../components/dialog-error/dialog-error.component';
 
 @Injectable({
   providedIn: 'root'
@@ -12,18 +14,26 @@ import {throwError }from 'rxjs';
 export class IngresosService {
 
   url = "https://localhost:44347/api/Ingresos"
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private dialog:MatDialog) { }
 
   ObtenerIngresos(): Observable<IngresoArreglado[]>{
     return this.http.get<IngresoArreglado[]>(this.url).pipe(retry(1), catchError((err: HttpErrorResponse)=>{
-      alert(err.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: err.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(err.error.Message);
     }));
   }
 
   ObtenerIngresos2():Observable<Ingresos[]>{
     return this.http.get<Ingresos[]>(this.url+"/Ingresos2").pipe(retry(1), catchError((err: HttpErrorResponse)=>{
-      alert(err.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: err.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(err.error.Message);
     }));
   }
@@ -31,7 +41,11 @@ export class IngresosService {
   ObtenerPorHabitacion(hab:string): Observable<IngresoArreglado[]>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
     return this.http.get<IngresoArreglado[]>(this.url+"/PorHabitacion/"+hab, httpOptions).pipe(retry(1), catchError((err: HttpErrorResponse)=>{
-      alert(err.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: err.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(err.error.Message);
     }));
   }
@@ -39,7 +53,11 @@ export class IngresosService {
   ObtenerPorFecha(fecha:string): Observable<IngresoArreglado[]>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
     return this.http.get<IngresoArreglado[]>(this.url+"/PorFecha/"+fecha, httpOptions).pipe(retry(1), catchError((err: HttpErrorResponse)=>{
-      alert(err.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: err.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(err.error.Message);
     }));
   }
@@ -47,7 +65,11 @@ export class IngresosService {
   ObtenerTotal(filtro:string, busqueda:string, total:boolean):Observable<number>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
     return this.http.get<number>(this.url+"/Total/"+filtro+"/"+busqueda+"/"+total, httpOptions).pipe(retry(1), catchError((err: HttpErrorResponse)=>{
-      alert(err.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: err.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(err.error.Message);
     }));
   }
@@ -56,7 +78,11 @@ export class IngresosService {
   AgregarIngreso(ingreso:Ingresos): Observable<Ingresos>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
     return this.http.post<Ingresos>(this.url+"/AgregarIngreso", ingreso, httpOptions).pipe(retry(1), catchError((err: HttpErrorResponse)=>{
-      alert(err.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: err.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(err.error.Message);
     }));
   }
@@ -64,7 +90,11 @@ export class IngresosService {
   EliminarIngreso(id: string, tipo: string): Observable<number>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
     return this.http.delete<number>(this.url+"/?id="+id+"&tipo="+tipo, httpOptions).pipe(retry(1), catchError((err: HttpErrorResponse)=>{
-      alert(err.error.Message);
+      const dialogRef = this.dialog.open(DialogErrorComponent, {
+        width: '350px',
+        data: err.error.Message,
+      });
+      dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(err.error.Message);
     }));
   }
