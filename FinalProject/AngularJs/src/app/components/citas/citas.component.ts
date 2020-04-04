@@ -7,9 +7,10 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CitasService } from 'src/app/services/citas.service';
 import { CitaArreglada } from 'src/app/Models/CitaArreglada';
 import { Citas } from 'src/app/Models/Citas';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
 import htmlToImage from 'html-to-image'
 import * as jspdf from 'jspdf';
+import { DialogErrorComponent } from '../dialog-error/dialog-error.component';
 
 @Component({
   selector: 'app-citas',
@@ -34,7 +35,8 @@ export class CitasComponent implements OnInit {
     private cs: CitasService,
     private fb: FormBuilder,
     private fb2: FormBuilder,
-    private snack: MatSnackBar) { }
+    private snack: MatSnackBar,
+    private errDialog: MatDialog) { }
 
   ngOnInit() {
     this.fg = this.fb.group({
@@ -143,7 +145,11 @@ export class CitasComponent implements OnInit {
 
     if(new Date(cita.Fecha) < actual)
     {
-      alert("La fecha no es válida");
+      let dialogRef = this.errDialog.open(DialogErrorComponent,{
+        width: '350px',
+        data: 'Fecha pasada, elige una fecha mayor a la de hoy'
+      });
+      dialogRef.afterClosed().subscribe(()=>{});
     }else{
       this.cs.AgregarCita(cita).subscribe(()=>{
         this.snack.open('Cita agendada correctamente', '',{

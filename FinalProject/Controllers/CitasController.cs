@@ -161,21 +161,14 @@ namespace FinalProject.Controllers
 
             try
             {
-                //Conexion();
-                //conexion.Open();
-                //cmd.Connection = conexion;
-                //cmd.CommandText = "Select*from Citas";
-                //reader = cmd.ExecuteReader();
-                //while (reader.Read())
-                //{
-                //    if(reader.GetInt32(1)==cita.idMedico && reader.GetInt32(2) == cita.idPaciente)
-                //    {
-                //        return BadRequest("Ya este paciente tiene una cita agendada con este mismo doctor a esa misma hora");
-                //    }
-                //}
-                //reader.Close();
-                //cmd.Dispose();
-                //conexion.Close();
+                var comparar = db.Citas;
+                foreach(var com in comparar)
+                {
+                    if(com.idMedico == cita.idMedico && com.idPaciente == cita.idPaciente && com.Fecha.Day == cita.Fecha.Day && com.Fecha.Month == cita.Fecha.Month && com.Fecha.Year == cita.Fecha.Year && com.Hora == cita.Hora)
+                    {
+                        return BadRequest("Este paciente ya tiene una cita agendada con este doctor ese día a esa hora");
+                    }
+                }
                 if (string.IsNullOrEmpty(cita.idPaciente.ToString()) || string.IsNullOrEmpty(cita.idMedico.ToString()) || string.IsNullOrEmpty(cita.Fecha.ToString()))
                 {
                     return BadRequest("No se aceptan campos nulos");
