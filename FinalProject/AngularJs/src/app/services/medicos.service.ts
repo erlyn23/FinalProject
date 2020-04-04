@@ -11,7 +11,7 @@ import { DialogErrorComponent } from '../components/dialog-error/dialog-error.co
 })
 export class MedicosService {
 
-  url = "https://localhost:44347/api/Medicos"
+  url = "http://sistemamedico.somee.com/api/Medicos"
   constructor(private http: HttpClient, private dialog: MatDialog) { }
 
   ObtenerMedicos(): Observable<Medicos[]>{
@@ -24,7 +24,7 @@ export class MedicosService {
 
       const dialogRef = this.dialog.open(DialogErrorComponent, {
         width: '350px',
-        data: 'Error',
+        data: err.error.Message,
       });
       dialogRef.afterClosed().subscribe((response)=>{});
       return throwError(err.error.Message);
@@ -50,7 +50,7 @@ export class MedicosService {
   AgregarMedico(medico: Medicos): Observable<Medicos>
   {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) }; 
-    return this.http.post<Medicos>(this.url+"/AgregarMedico", medico, httpOptions).pipe(retry(1),catchError((err)=>{
+    return this.http.post<Medicos>("http://sistemamedico.somee.com/api/Medicos/AgregarMedico", medico, httpOptions).pipe(retry(1),catchError((err)=>{
 
       const dialogRef = this.dialog.open(DialogErrorComponent, {
         width: '350px',

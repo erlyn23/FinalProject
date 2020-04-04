@@ -22,7 +22,8 @@ namespace FinalProject.Controllers
 
         public void Conexion()
         {
-            conexion.ConnectionString = "Data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN;integrated security=SSPI;database=SistemaMedico1;";
+            //conexion.ConnectionString = "Data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN;integrated security=SSPI;database=SistemaMedico1;";
+            conexion.ConnectionString = "workstation id=SistemaMedico11.mssql.somee.com;packet size=4096;user id=emmanuel23_SQLLogin_1;pwd=8yjn4nrs1o;data source=SistemaMedico1.mssql.somee.com;persist security info=False;initial catalog=SistemaMedico1";
         }
 
         public List<CitasArregladas> GetCitas() 

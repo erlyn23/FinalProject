@@ -106,8 +106,8 @@ export class PacientesComponent implements OnInit {
       });
   }
 
-  addPaciente(paciente: Pacientes){
-    paciente = new Pacientes();
+  addPaciente(){
+    let paciente = new Pacientes();
     paciente.Cedula = this.fg.value.Cedula;
     paciente.Nombre = this.fg.value.Nombre;
     paciente.Asegurado = this.fg.value.Asegurado;
@@ -131,9 +131,9 @@ export class PacientesComponent implements OnInit {
     this.comprobar = true;
   }
 
-  modificarPaciente(paciente: Pacientes)
+  modificarPaciente()
   {
-    paciente = new Pacientes();
+    let paciente = new Pacientes();
     paciente.idPaciente = this.todosPacientes[this.index].idPaciente;
     paciente.Cedula = this.fg.value.Cedula;
     paciente.Nombre = this.fg.value.Nombre;

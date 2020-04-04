@@ -13,7 +13,7 @@ import { DialogErrorComponent } from '../components/dialog-error/dialog-error.co
 })
 export class IngresosService {
 
-  url = "https://localhost:44347/api/Ingresos"
+  url = "http://sistemamedico.somee.com/api/Ingresos"
   constructor(private http: HttpClient, private dialog:MatDialog) { }
 
   ObtenerIngresos(): Observable<IngresoArreglado[]>{

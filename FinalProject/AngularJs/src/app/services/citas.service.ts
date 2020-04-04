@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material';
 })
 export class CitasService {
 
-  url = "https://localhost:44347/api/Citas";
+  url = "http://sistemamedico.somee.com/api/Citas";
   constructor(private http: HttpClient, private dialog: MatDialog) { }
 
   ObtenerCitas(): Observable<CitaArreglada[]>

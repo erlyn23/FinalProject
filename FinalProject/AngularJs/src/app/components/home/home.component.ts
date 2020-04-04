@@ -118,9 +118,9 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  addMedico(medico: Medicos)
+  addMedico()
   {
-    medico = new Medicos();
+    let medico = new Medicos();
     
     medico.Nombre = this.fg.value.Nombre;
     medico.Exequatur = this.fg.value.Exequatur;

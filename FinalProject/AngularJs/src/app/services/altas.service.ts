@@ -14,7 +14,7 @@ import { DialogErrorComponent } from '../components/dialog-error/dialog-error.co
 })
 export class AltasService {
 
-  url = "https://localhost:44347/api/AltaMedica";
+  url = "http://sistemamedico.somee.com/api/AltaMedica";
   constructor(private http: HttpClient, private dialog: MatDialog) { }
 
   ObtenerAltasMedicas():Observable<AltaMedicaArreglada[]>{

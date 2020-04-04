@@ -27,7 +27,8 @@ namespace FinalProject.Controllers
             {
                 List<AltaArreglada> alta = new List<AltaArreglada>();
                 AltaArreglada alta1;
-                conexion.ConnectionString = "data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN; integrated security = SSPI; database=SistemaMedico1";
+                //conexion.ConnectionString = "data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN; integrated security = SSPI; database=SistemaMedico1";
+                conexion.ConnectionString = "workstation id=SistemaMedico11.mssql.somee.com;packet size=4096;user id=emmanuel23_SQLLogin_1;pwd=8yjn4nrs1o;data source=SistemaMedico1.mssql.somee.com;persist security info=False;initial catalog=SistemaMedico1";
                 conexion.Open();
                 cmd.Connection = conexion;
                 cmd.CommandText = "select a.idAltaMedica, p.Nombre, i.FechaIngreso, a.FechaSalida, a.Monto from AltaMedica a inner join Pacientes p on a.idPaciente = p.idPaciente inner join Ingresos i on i.idIngreso = a.idIngreso";
@@ -185,7 +186,8 @@ namespace FinalProject.Controllers
         {
             try
             {
-                conexion.ConnectionString = "data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN; integrated security = SSPI; database=SistemaMedico1";
+                //conexion.ConnectionString = "data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN; integrated security = SSPI; database=SistemaMedico1";
+                conexion.ConnectionString = "workstation id=SistemaMedico11.mssql.somee.com;packet size=4096;user id=emmanuel23_SQLLogin_1;pwd=8yjn4nrs1o;data source=SistemaMedico1.mssql.somee.com;persist security info=False;initial catalog=SistemaMedico1";
                 conexion.Open();
                 cmd.Connection = conexion;
                 switch (tipo)

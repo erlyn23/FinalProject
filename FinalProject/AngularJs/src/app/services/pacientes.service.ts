@@ -11,7 +11,7 @@ import { DialogErrorComponent } from '../components/dialog-error/dialog-error.co
 })
 export class PacientesService {
 
-  url = "https://localhost:44347/api/Pacientes";
+  url = "http://sistemamedico.somee.com/api/Pacientes";
   constructor(private http: HttpClient, private dialog: MatDialog) { }
 
   ObtenerPacientes(): Observable<Pacientes[]>

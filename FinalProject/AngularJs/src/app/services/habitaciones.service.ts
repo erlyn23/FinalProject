@@ -12,7 +12,7 @@ import { DialogErrorComponent } from '../components/dialog-error/dialog-error.co
 })
 export class HabitacionesService {
 
-  url = "https://localhost:44347/api/Habitaciones"
+  url = "http://sistemamedico.somee.com/api/Habitaciones"
   constructor(private http: HttpClient, private dialog: MatDialog) { }
 
   ObtenerHabitaciones(): Observable<Habitaciones[]>{
