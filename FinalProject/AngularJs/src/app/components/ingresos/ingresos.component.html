@@ -113,7 +113,7 @@
                         </div>
                     </mat-card>
                 </div>
-                <div class="card-body">
+                <div class="card-body" id="paraImprimir">
                     <table class="table table-hover table-responsive-sm table-responsive-md table-responsive-lg table-responsive-xl ">
                         <thead>
                             <tr class="text-center">
@@ -138,6 +138,15 @@
                                 <p class="text-success ProductSans" *ngIf="busquedas.value.Filtro =='Fecha' && totalIngresos!= null">Total de ingresos en esta fecha: {{this.totalIngresos}}</p>
                                 <p class="text-success ProductSans" *ngIf="busquedas.value.Filtro == 'Habitacion' && totalIngresos != null">Total de ingresos con estas habitaciones: {{this.totalIngresos}}</p>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container text-center">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button mat-raised-button color="accent" (click)="capturar()" class="mb-3"><i class="fas fa-file-pdf"></i>
+                            Convertir a PDF
+                            </button>
                         </div>
                     </div>
                 </div>

@@ -5,6 +5,8 @@ import { Medicos } from 'src/app/Models/Medicos';
 import { MatSnackBar, MatDialogRef, MatDialog } from '@angular/material';
 import { DialogComponent } from '../dialog/dialog.component';
 import { CitasService } from 'src/app/services/citas.service';
+import htmlToImage from 'html-to-image';
+import * as jspdf from 'jspdf';
 
 @Component({
   selector: 'app-home',
@@ -217,6 +219,18 @@ export class HomeComponent implements OnInit {
       this.totalMedicos = null;
       this.obtenerMedicos();
     }
+  }
+
+  capturar(){
+    this.snack.open('Espere mientras se descarga el archivo', '',{
+      duration: 3000,
+    })
+    htmlToImage.toPng(document.getElementById('paraImprimir'))
+    .then(function (dataUrl) {
+      let pdf = new jspdf('p','cm','a4');
+      pdf.addImage(dataUrl, 'png',0, 0, 20.1, 15.0);
+      pdf.save("ReporteAltaMedica.pdf");
+    });
   }
   
   get Nombre(){

@@ -7,6 +7,8 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { CitasService } from 'src/app/services/citas.service';
 import { AltasService } from 'src/app/services/altas.service';
 import { IngresosService } from 'src/app/services/ingresos.service';
+import * as jspdf from 'jspdf';
+import htmlToImage from 'html-to-image';
 
 @Component({
   selector: 'app-pacientes',
@@ -172,6 +174,18 @@ export class PacientesComponent implements OnInit {
         });
       }
     })
+  }
+
+  capturar(){
+    this.snack.open('Espere mientras se descarga el archivo', '',{
+      duration: 3000,
+    })
+    htmlToImage.toPng(document.getElementById('paraImprimir'))
+    .then(function (dataUrl) {
+      let pdf = new jspdf('p','cm','a4');
+      pdf.addImage(dataUrl, 'png',0, 0, 20.1, 15.0);
+      pdf.save("ReporteAltaMedica.pdf");
+    });
   }
 
   get Cedula(){

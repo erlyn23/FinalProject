@@ -7,6 +7,8 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { IngresosService } from 'src/app/services/ingresos.service';
 import { AltasService } from 'src/app/services/altas.service';
 import { Opciones } from 'src/app/Models/Opciones';
+import htmlToImage from 'html-to-image';
+import * as jspdf from 'jspdf';
 
 @Component({
   selector: 'app-habitaciones',
@@ -153,6 +155,17 @@ export class HabitacionesComponent implements OnInit {
         })
       }
     })
+  }
+  capturar(){
+    this.snack.open('Espere mientras se descarga el archivo', '',{
+      duration: 3000,
+    })
+    htmlToImage.toPng(document.getElementById('paraImprimir'))
+    .then(function (dataUrl) {
+      let pdf = new jspdf('p','cm','a4');
+      pdf.addImage(dataUrl, 'png',0, 0, 20.1, 15.0);
+      pdf.save("ReporteAltaMedica.pdf");
+    });
   }
 
   get NoHabitacion(){

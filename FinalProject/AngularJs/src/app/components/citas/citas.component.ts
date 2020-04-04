@@ -8,6 +8,8 @@ import { CitasService } from 'src/app/services/citas.service';
 import { CitaArreglada } from 'src/app/Models/CitaArreglada';
 import { Citas } from 'src/app/Models/Citas';
 import { MatSnackBar } from '@angular/material';
+import htmlToImage from 'html-to-image'
+import * as jspdf from 'jspdf';
 
 @Component({
   selector: 'app-citas',
@@ -162,6 +164,18 @@ export class CitasComponent implements OnInit {
       this.snack.open('Cita eliminada correctamente', '',{
         duration:3000,
       })
+    });
+  }
+
+  capturar(){
+    this.snack.open('Espere mientras se descarga el archivo', '',{
+      duration: 3000,
+    })
+    htmlToImage.toPng(document.getElementById('paraImprimir'))
+    .then(function (dataUrl) {
+      let pdf = new jspdf('p','cm','a4');
+      pdf.addImage(dataUrl, 'png',0, 0, 20.1, 15.0);
+      pdf.save("ReporteAltaMedica.pdf");
     });
   }
 

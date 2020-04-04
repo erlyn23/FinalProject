@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { IngresosService } from 'src/app/services/ingresos.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
@@ -12,6 +12,12 @@ import { Habitaciones } from 'src/app/Models/Habitaciones';
 import { Ingresos } from 'src/app/Models/Ingresos';
 import { AltaMedica } from 'src/app/Models/AltaMedica';
 import { Opciones } from 'src/app/Models/Opciones';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
+import * as jspdf from 'jspdf';
+import html2canvas from 'html2canvas';
+import htmlToImage from 'html-to-image';
 
 @Component({
   selector: 'app-altas',
@@ -233,6 +239,18 @@ export class AltasComponent implements OnInit {
         this.fg.controls.FechaIngreso.setValue("");
         this.comprobar = false;
       });
+  }
+
+  capturar(){
+    this.snack.open('Espere mientras se descarga el archivo', '',{
+      duration: 3000,
+    })
+    htmlToImage.toPng(document.getElementById('paraImprimir'))
+    .then(function (dataUrl) {
+      let pdf = new jspdf('p','cm','a4');
+      pdf.addImage(dataUrl, 'png',0, 0, 20.1, 15.0);
+      pdf.save("ReporteAltaMedica.pdf");
+    });
   }
 
 

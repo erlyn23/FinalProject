@@ -8,6 +8,9 @@ import { PacientesService } from 'src/app/services/pacientes.service';
 import { HabitacionesService } from 'src/app/services/habitaciones.service';
 import { IngresoArreglado } from 'src/app/Models/IngresoArreglado';
 import { Ingresos } from 'src/app/Models/Ingresos';
+import htmlToImage from 'html-to-image'
+import * as jspdf from 'jspdf'
+
 
 @Component({
   selector: 'app-ingresos',
@@ -141,6 +144,18 @@ export class IngresosComponent implements OnInit {
         this.fg.value.Fecha = this.FechaDefecto;
       });
     }
+  }
+
+  capturar(){
+    this.snack.open('Espere mientras se descarga el archivo', '',{
+      duration: 3000,
+    })
+    htmlToImage.toPng(document.getElementById('paraImprimir'))
+    .then(function (dataUrl) {
+      let pdf = new jspdf('p','cm','a4');
+      pdf.addImage(dataUrl, 'png',0, 0, 20.1, 15.0);
+      pdf.save("ReporteAltaMedica.pdf");
+    });
   }
 
   get NombrePaciente(){
