@@ -33,6 +33,7 @@ import { IngresosComponent } from './components/ingresos/ingresos.component';
 import { AltasComponent } from './components/altas/altas.component';
 import { DialogErrorComponent } from './components/dialog-error/dialog-error.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     HabitacionesComponent,
     IngresosComponent,
     AltasComponent,
-    DialogErrorComponent
+    DialogErrorComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
