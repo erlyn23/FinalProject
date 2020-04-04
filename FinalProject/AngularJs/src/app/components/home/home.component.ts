@@ -228,8 +228,8 @@ export class HomeComponent implements OnInit {
     htmlToImage.toPng(document.getElementById('paraImprimir'))
     .then(function (dataUrl) {
       let pdf = new jspdf('p','cm','a4');
-      pdf.addImage(dataUrl, 'png',0, 0, 20.1, 15.0);
-      pdf.save("ReporteAltaMedica.pdf");
+      pdf.addImage(dataUrl, 'png',0, 0, 20.0, 10.0);
+      pdf.save("ReporteMedicos.pdf");
     });
   }
   
