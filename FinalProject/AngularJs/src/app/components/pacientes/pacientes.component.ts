@@ -23,6 +23,7 @@ export class PacientesComponent implements OnInit {
   totalPacientes: any;
   esAsegurado: boolean = false;
   comprobar: boolean = false;
+  cargando: boolean = false;
 
   constructor(private ps: PacientesService, 
     private as: AltasService,
@@ -177,14 +178,14 @@ export class PacientesComponent implements OnInit {
   }
 
   capturar(){
-    this.snack.open('Espere mientras se descarga el archivo', '',{
-      duration: 3000,
-    })
+    this.cargando = true;
     htmlToImage.toPng(document.getElementById('paraImprimir'))
     .then(function (dataUrl) {
       let pdf = new jspdf('p','cm','a4');
       pdf.addImage(dataUrl, 'png',0, 0, 20.0, 10.0);
       pdf.save("ReportePacientes.pdf");
+    }).finally(()=>{
+      this.cargando = false;
     });
   }
 

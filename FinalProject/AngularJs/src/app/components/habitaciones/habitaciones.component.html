@@ -181,12 +181,15 @@
                 </div>
                 <div class="container text-center">
                     <div class="row">
-                        <div class="col-md-12">
+                        <div class="col-md-12" *ngIf="!cargando">
                             <button mat-raised-button color="accent" (click)="capturar()" class="mb-3"><i class="fas fa-file-pdf"></i>
                             Convertir a PDF
                             </button>
                         </div>
                     </div>
+                </div>
+                <div class="col-md-12 d-flex justify-content-center" *ngIf="cargando">
+                    <button mat-button><mat-spinner diameter="40"></mat-spinner> Descargando...</button>
                 </div>
                </div> 
             </div>

@@ -23,6 +23,7 @@ export class HabitacionesComponent implements OnInit {
   opc: Opciones;
   fg: FormGroup;
   decimalpatron = '^[0-9]{1,4}(\.[0-9][0-9])?$';
+  cargando: boolean = false;
 
   constructor(private hs: HabitacionesService,
     private is: IngresosService,
@@ -157,14 +158,14 @@ export class HabitacionesComponent implements OnInit {
     })
   }
   capturar(){
-    this.snack.open('Espere mientras se descarga el archivo', '',{
-      duration: 3000,
-    })
+    this.cargando = true;
     htmlToImage.toPng(document.getElementById('paraImprimir'))
     .then(function (dataUrl) {
       let pdf = new jspdf('p','cm','a4');
       pdf.addImage(dataUrl, 'png',0, 0, 20.0, 10.0);
       pdf.save("ReporteHabitaciones.pdf");
+    }).finally(()=>{
+      this.cargando = false;
     });
   }
 

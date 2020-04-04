@@ -32,6 +32,7 @@ import { HabitacionesComponent } from './components/habitaciones/habitaciones.co
 import { IngresosComponent } from './components/ingresos/ingresos.component';
 import { AltasComponent } from './components/altas/altas.component';
 import { DialogErrorComponent } from './components/dialog-error/dialog-error.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,7 @@ import { DialogErrorComponent } from './components/dialog-error/dialog-error.com
     NgxPaginationModule,
     NgxMaterialTimepickerModule.setLocale('es-ES'),
     MatTableModule,
+    MatProgressSpinnerModule,
     
   ],
   entryComponents:[DialogComponent, DialogErrorComponent],

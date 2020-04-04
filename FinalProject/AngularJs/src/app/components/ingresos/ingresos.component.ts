@@ -28,6 +28,7 @@ export class IngresosComponent implements OnInit {
   FechaDefecto: Date;
   fg: FormGroup;
   errorMessage: any;
+  cargando: boolean = false;
 
   constructor(private is: IngresosService,
     private ps: PacientesService,
@@ -147,14 +148,14 @@ export class IngresosComponent implements OnInit {
   }
 
   capturar(){
-    this.snack.open('Espere mientras se descarga el archivo', '',{
-      duration: 3000,
-    })
+    this.cargando = true;
     htmlToImage.toPng(document.getElementById('paraImprimir'))
     .then(function (dataUrl) {
       let pdf = new jspdf('p','cm','a4');
       pdf.addImage(dataUrl, 'png',0, 0, 20.0, 10.0);
       pdf.save("ReporteIngresos.pdf");
+    }).finally(()=>{
+      this.cargando = false;
     });
   }
 

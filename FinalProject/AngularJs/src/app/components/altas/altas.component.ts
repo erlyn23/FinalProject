@@ -40,6 +40,7 @@ export class AltasComponent implements OnInit {
   fg: FormGroup;
   esFecha: boolean = false;
   busquedas: FormGroup;
+  cargando: boolean = false;
 
   constructor(private is:IngresosService, 
     private hs: HabitacionesService,
@@ -242,14 +243,18 @@ export class AltasComponent implements OnInit {
   }
 
   capturar(){
-    this.snack.open('Espere mientras se descarga el archivo', '',{
-      duration: 3000,
-    })
+    //this.snack.open('Espere mientras se descarga el archivo', '',{
+      //duration: 3000,
+    //});
+    this.cargando = true;
     htmlToImage.toPng(document.getElementById('paraImprimir'))
     .then(function (dataUrl) {
       let pdf = new jspdf('p','cm','a4');
       pdf.addImage(dataUrl, 'png',0, 0, 20.0, 10.0);
       pdf.save("ReporteAltaMedica.pdf");
+    }).finally(()=>{
+      this.cargando = false;
+      console.log(this.cargando);
     });
   }
 
