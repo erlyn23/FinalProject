@@ -55,7 +55,7 @@
                                 Este campo es <strong>obligatorio</strong>
                             </mat-error>
                             <mat-error *ngIf="Exequatur.errors.maxlength">
-                                No puedes insertar más de 10 carácteres
+                                No puedes insertar más de 6 carácteres
                             </mat-error>
                             <mat-error *ngIf="Exequatur.errors.pattern">
                                 Solo puedes escribir números aquí
@@ -65,6 +65,7 @@
                             <mat-form-field style="width: 100%;">
                                 <mat-label><i class="fas fa-stethoscope"></i> Especialidad</mat-label>
                                 <mat-select formControlName="Especialidad"> 
+                                    <mat-option disabled>Seleccione una opción</mat-option>
                                     <mat-option *ngFor="let especialidad of Especialidades" [value]="especialidad">{{especialidad}}</mat-option>
                                 </mat-select>
                             </mat-form-field>

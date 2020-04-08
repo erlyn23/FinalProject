@@ -96,7 +96,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.fg = this.fb.group({
       Nombre: ["",[Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
-      Exequatur: ["", [Validators.required,Validators.pattern('[0-9]*'), Validators.maxLength(10)]],
+      Exequatur: ["", [Validators.required,Validators.pattern('[0-9]*'), Validators.maxLength(6)]],
       Especialidad: ["",[Validators.required]]
     });
 

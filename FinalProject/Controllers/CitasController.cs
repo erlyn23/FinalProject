@@ -164,9 +164,9 @@ namespace FinalProject.Controllers
                 var comparar = db.Citas;
                 foreach(var com in comparar)
                 {
-                    if(com.idMedico == cita.idMedico && com.idPaciente == cita.idPaciente && com.Fecha.Day == cita.Fecha.Day && com.Fecha.Month == cita.Fecha.Month && com.Fecha.Year == cita.Fecha.Year && com.Hora == cita.Hora)
+                    if((com.idMedico == cita.idMedico || com.idMedico != cita.idMedico) && com.idPaciente == cita.idPaciente && com.Fecha.Day == cita.Fecha.Day && com.Fecha.Month == cita.Fecha.Month && com.Fecha.Year == cita.Fecha.Year && com.Hora == cita.Hora)
                     {
-                        return BadRequest("Este paciente ya tiene una cita agendada con este doctor ese día a esa hora");
+                        return BadRequest("Este paciente ya tiene una cita agendada ese día a esa hora, intente con una nueva.");
                     }
                 }
                 if (string.IsNullOrEmpty(cita.idPaciente.ToString()) || string.IsNullOrEmpty(cita.idMedico.ToString()) || string.IsNullOrEmpty(cita.Fecha.ToString()))
