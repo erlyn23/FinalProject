@@ -1,0 +1,2 @@
+La carpeta del front end con las vistas y el diseño están dentro de la carpeta del proyecto dónde se encuentran los controladores y los modelos
+en una carpeta llamada AngularJs, ahí se puede apreciar todos los html y diseños de las páginas. 
