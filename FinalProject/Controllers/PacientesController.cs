@@ -15,16 +15,7 @@ namespace FinalProject.Controllers
 {
     public class PacientesController : ApiController
     {
-        private SistemaMedico1Entities db = new SistemaMedico1Entities();
-        private SqlConnection conexion = new SqlConnection();
-        private SqlCommand cmd = new SqlCommand();
-        private SqlDataReader dr;
-
-        public void Conexion()
-        {
-            conexion.ConnectionString = "Data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN;integrated security=SSPI;database=SistemaMedico1;";
-        }
-
+        private SistemaMedicoEntities db = new SistemaMedicoEntities();
         // GET: api/Pacientes
         public IQueryable<Pacientes> GetPacientes()
         {
@@ -41,9 +32,9 @@ namespace FinalProject.Controllers
                 var nombres = from n in listaCompleta where n.Nombre.ToLower().Contains(nom) orderby n.Nombre select n;
                 return nombres;
             }
-            catch(Exception) 
+            catch (Exception exception)
             {
-                return null;
+                throw exception;
             }
         }
 
@@ -57,9 +48,9 @@ namespace FinalProject.Controllers
                 var cedulas = from c in listaCompleta where c.Cedula.Contains(ced) orderby c.Cedula select c;
                 return cedulas;
             }
-            catch(Exception) 
+            catch (Exception exception)
             {
-                return null;
+                throw exception;
             }
         }
 
@@ -73,9 +64,9 @@ namespace FinalProject.Controllers
                 var asegurados = from a in listaCompleta where a.Asegurado.Contains(asg) orderby a.Asegurado select a;
                 return asegurados;
             }
-            catch(Exception)
+            catch (Exception exception)
             {
-                return null;
+                throw exception;
             }
         }
 
@@ -86,61 +77,54 @@ namespace FinalProject.Controllers
         {
             try
             {
-                try
+                var listaCompleta = db.Pacientes;
+                if (filtro == "Cedula")
                 {
-                    var listaCompleta = db.Pacientes;
-                    if (filtro == "Cedula")
+                    var cedulas = from c in listaCompleta where c.Cedula.ToLower().Contains(busqueda) orderby c.Cedula select c;
+                    Opciones opc = new Opciones();
+                    if (total.HasValue)
                     {
-                        var cedulas = from c in listaCompleta where c.Cedula.ToLower().Contains(busqueda) orderby c.Cedula select c;
-                        Opciones opc = new Opciones();
-                        if (total.HasValue)
-                        {
-                            opc.Sumatoria = cedulas.Count();
-                            return opc.Sumatoria;
-                        }
-                        else
-                        {
-                            return 0;
-                        }
+                        opc.Sumatoria = cedulas.Count();
+                        return opc.Sumatoria;
                     }
-                    else if (filtro == "Nombre")
+                    else
                     {
-                        var nombres = from n in listaCompleta where n.Nombre.ToLower().Contains(busqueda) orderby n.Nombre select n;
-                        Opciones opc = new Opciones();
-                        if (total.HasValue)
-                        {
-                            opc.Sumatoria = nombres.Count();
-                            return opc.Sumatoria;
-                        }
-                        else
-                        {
-                            return 0;
-                        }
+                        return 0;
                     }
-                    else if (filtro == "Asegurados")
-                    {
-                        var asegurados = from a in listaCompleta where a.Asegurado.ToLower().Contains(busqueda) orderby a.Asegurado select a;
-                        Opciones opc = new Opciones();
-                        if (total.HasValue)
-                        {
-                            opc.Sumatoria = asegurados.Count();
-                            return opc.Sumatoria;
-                        }
-                        else
-                        {
-                            return 0;
-                        }
-                    }
-                    return 0;
                 }
-                catch (Exception)
+                else if (filtro == "Nombre")
                 {
-                    return 0;
+                    var nombres = from n in listaCompleta where n.Nombre.ToLower().Contains(busqueda) orderby n.Nombre select n;
+                    Opciones opc = new Opciones();
+                    if (total.HasValue)
+                    {
+                        opc.Sumatoria = nombres.Count();
+                        return opc.Sumatoria;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
                 }
-            }
-            catch(Exception)
-            {
+                else if (filtro == "Asegurados")
+                {
+                    var asegurados = from a in listaCompleta where a.Asegurado.ToLower().Contains(busqueda) orderby a.Asegurado select a;
+                    Opciones opc = new Opciones();
+                    if (total.HasValue)
+                    {
+                        opc.Sumatoria = asegurados.Count();
+                        return opc.Sumatoria;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
                 return 0;
+            }
+            catch (Exception exception)
+            {
+                throw exception;
             }
         }
 
@@ -171,22 +155,16 @@ namespace FinalProject.Controllers
 
             try
             {
-                Conexion();
-                conexion.Open();
-                cmd.Connection = conexion;
-                cmd.CommandText = "Select*from Pacientes where not idPaciente=" + pacientes.idPaciente;
-                dr = cmd.ExecuteReader();
-                while (dr.Read())
+                var dbPacientes = db.Pacientes.Where(p => p.idPaciente != pacientes.idPaciente).ToList();
+                foreach (var item in dbPacientes)
                 {
-                    if (dr.GetString(1) == pacientes.Cedula)
+                    if (item.Cedula == pacientes.Cedula)
                     {
                         return BadRequest("La cédula ya existe, intente con una nueva");
                     }
                 }
-                dr.Close();
-                cmd.Dispose();
-                conexion.Close();
                 db.SaveChanges();
+                return Ok("Paciente modificado correctamente");
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -199,7 +177,6 @@ namespace FinalProject.Controllers
                     throw;
                 }
             }
-
             return StatusCode(HttpStatusCode.NoContent);
         }
 
@@ -215,28 +192,18 @@ namespace FinalProject.Controllers
             }
             try
             {
-                Conexion();
-                conexion.Open();
-                cmd.Connection = conexion;
-                cmd.CommandText = "Select*from Pacientes";
-                dr = cmd.ExecuteReader();
-                while (dr.Read())
+                var dbPacientes = db.Pacientes.Where(p => p.idPaciente != pacientes.idPaciente).ToList();
+                foreach (var item in dbPacientes)
                 {
-                  if (dr.GetString(1) == pacientes.Cedula)
-                  {
-                    return BadRequest("La cédula ya existe, intente con una nueva");
-                  }
+                    if (item.Cedula == pacientes.Cedula)
+                    {
+                        return BadRequest("La cédula ya existe, intente con una nueva");
+                    }
                 }
-                dr.Close();
-                cmd.Dispose();
-                conexion.Close();
+               
                 if (string.IsNullOrEmpty(pacientes.Cedula) || string.IsNullOrEmpty(pacientes.Nombre) || string.IsNullOrEmpty(pacientes.Asegurado))
                 {
                     return BadRequest("No se aceptan campos nulos");
-                }
-                else if(pacientes.Asegurado != "Sí" && pacientes.Asegurado != "No") 
-                {
-                    return BadRequest("El campo Asegurado solo acepta una de dos respuestas sí o no");
                 }
                 else
                 {
@@ -262,52 +229,44 @@ namespace FinalProject.Controllers
             }
             try
             {
-                Conexion();
-                conexion.Open();
-                cmd.Connection = conexion;
-                cmd.CommandText = "Select*from Citas";
-                dr = cmd.ExecuteReader();
-                while (dr.Read())
+                var citas = db.Citas.Where(c => c.idPaciente == id).ToList();
+                if(citas.Count > 0)
                 {
-                    if (dr.GetInt32(2) == id)
+                    foreach(var cita in citas)
                     {
-                        return BadRequest("No se puede eliminar este paciente porque tiene citas pendientes");
+                        db.Citas.Remove(cita);
+                        db.SaveChanges();
                     }
                 }
-                dr.Close();
-                cmd.Dispose();
-                cmd.CommandText = "Select*from Ingresos";
-                dr = cmd.ExecuteReader();
-                while (dr.Read()) 
-                { 
-                  if(dr.GetInt32(3) == id) 
-                  {
-                    return BadRequest("No se puede eliminar este paciente porque tiene ingresos pendientes");
-                  }
+
+                var altasMedicas = db.AltaMedica.Where(am => am.idPaciente == id).ToList();
+                if (altasMedicas.Count > 0)
+                {
+                    foreach (var altaMedica in altasMedicas)
+                    {
+                        db.AltaMedica.Remove(altaMedica);
+                        db.SaveChanges();
+                    }
                 }
-                dr.Close();
-                cmd.Dispose();
-                cmd.CommandText = "Select*from AltaMedica";
-                dr = cmd.ExecuteReader();
-                while (dr.Read()) 
-                { 
-                  if(dr.GetInt32(3) == id) 
-                  {
-                    return BadRequest("No se puede eliminar este paciente porque está registrado en la tabla altas médicas");
-                  }
+
+                var ingresos = db.Ingresos.Where(i => i.idPaciente == id).ToList();
+                if(ingresos.Count > 0)
+                {
+                    foreach(var ingreso in ingresos)
+                    {
+                        db.Ingresos.Remove(ingreso);
+                        db.SaveChanges();
+                    }
                 }
-                dr.Close();
-                cmd.Dispose();
-                conexion.Close();
+
                 db.Pacientes.Remove(pacientes);
                 db.SaveChanges();
-                return Ok(pacientes);
+                return Ok("Paciente eliminado correctamente");
             }
             catch (Exception e)
             {
                 return BadRequest(e.Message);
             }
-
         }
 
         protected override void Dispose(bool disposing)

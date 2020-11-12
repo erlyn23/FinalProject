@@ -15,45 +15,19 @@ namespace FinalProject.Controllers
 {
     public class CitasController : ApiController
     {
-        private SistemaMedico1Entities db = new SistemaMedico1Entities();
-        private SqlConnection conexion = new SqlConnection();
-        private SqlCommand cmd = new SqlCommand();
-        private SqlDataReader reader;
+        private SistemaMedicoEntities db = new SistemaMedicoEntities();
 
-        public void Conexion()
-        {
-            conexion.ConnectionString = "Data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN;integrated security=SSPI;database=SistemaMedico1;";
-        }
-
+        [HttpGet]
         public List<CitasArregladas> GetCitas() 
         {
-            try 
+            return db.Citas.Include("Medicos").Include("Pacientes").Select(c => new CitasArregladas()
             {
-                List<CitasArregladas> salida = new List<CitasArregladas>();
-                Conexion();
-                conexion.Open();
-                cmd.Connection = conexion;
-                cmd.CommandText = "select c.idCita, m.Nombre, p.Nombre, c.Fecha, c.Hora from Citas c inner join Medicos m on c.idMedico = m.idMedico inner join Pacientes p on c.idPaciente = p.idPaciente ";
-                reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    CitasArregladas cita = new CitasArregladas();
-                    cita.IdCita = reader.GetInt32(0);
-                    cita.NombrePaciente = reader.GetString(2);
-                    cita.NombreMedico = reader.GetString(1);
-                    cita.Fecha = reader.GetDateTime(3).ToLongDateString();
-                    cita.Hora = reader.GetTimeSpan(4).ToString();
-                    salida.Add(cita);
-                }
-                cmd.Dispose();
-                conexion.Close();
-                return salida;
-            }
-            catch(Exception) 
-            {
-                return null;
-            }
+                IdCita = c.idCita,
+                NombreMedico = c.Medicos.Nombre,
+                NombrePaciente = c.Pacientes.Nombre,
+                Fecha = c.Fecha.ToString(),
+                Hora = c.Hora.ToString()
+            }).ToList();
         }
 
         [HttpGet]
@@ -66,9 +40,9 @@ namespace FinalProject.Controllers
                 var fechas = from f in listaCompleta where DateTime.Parse(f.Fecha) == DateTime.Parse(Fecha) orderby f.Fecha select f;
                 return fechas.ToList();
             }
-            catch(Exception)
+            catch(Exception exception)
             {
-                return null;
+                throw exception;
             }
         }
 
@@ -83,9 +57,9 @@ namespace FinalProject.Controllers
                 var medicos = from m in listaCompleta where m.NombreMedico.ToLower().Contains(med) orderby m.NombreMedico select m;
                 return medicos.ToList();
             }
-            catch(Exception)
+            catch (Exception exception)
             {
-                return null;
+                throw exception;
             }
         }
 
@@ -99,9 +73,9 @@ namespace FinalProject.Controllers
                 var pacientes = from p in listaCompleta where p.NombrePaciente.ToLower().Contains(pac) orderby p.NombrePaciente select p;
                 return pacientes.ToList();
             }
-            catch(Exception)
+            catch (Exception exception)
             {
-                return null;
+                throw exception;
             }
         }
 
@@ -143,9 +117,9 @@ namespace FinalProject.Controllers
                 }
                 return 0;
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                return 0;
+                throw exception;
             }
         }
 
@@ -164,16 +138,20 @@ namespace FinalProject.Controllers
                 var comparar = db.Citas;
                 foreach(var com in comparar)
                 {
-                    if((com.idMedico == cita.idMedico || com.idMedico != cita.idMedico) && com.idPaciente == cita.idPaciente && com.Fecha.Day == cita.Fecha.Day && com.Fecha.Month == cita.Fecha.Month && com.Fecha.Year == cita.Fecha.Year && com.Hora == cita.Hora)
+                    if((com.idMedico == cita.idMedico || com.idMedico != cita.idMedico) && com.idPaciente == cita.idPaciente 
+                        && com.Fecha.Day == cita.Fecha.Day && com.Fecha.Month == cita.Fecha.Month 
+                        && com.Fecha.Year == cita.Fecha.Year && com.Hora == cita.Hora)
                     {
                         return BadRequest("Este paciente ya tiene una cita agendada ese día a esa hora, intente con una nueva.");
                     }
                 }
-                if (string.IsNullOrEmpty(cita.idPaciente.ToString()) || string.IsNullOrEmpty(cita.idMedico.ToString()) || string.IsNullOrEmpty(cita.Fecha.ToString()))
+                if (string.IsNullOrEmpty(cita.idPaciente.ToString()) || string.IsNullOrEmpty(cita.idMedico.ToString()) 
+                    || string.IsNullOrEmpty(cita.Fecha.ToString()))
                 {
                     return BadRequest("No se aceptan campos nulos");
                 }
-                if (DateTime.Parse(cita.Hora.ToString()) > DateTime.Parse("20:00") || DateTime.Parse(cita.Hora.ToString()) < DateTime.Parse("8:00")) 
+                if (DateTime.Parse(cita.Hora.ToString()) > DateTime.Parse("20:00")
+                    || DateTime.Parse(cita.Hora.ToString()) < DateTime.Parse("8:00")) 
                 {
                     return BadRequest("Hora no permitida, el horario de citas es de 8:00a.m. a 8:00p.m.");
                 }
@@ -191,42 +169,18 @@ namespace FinalProject.Controllers
         }
 
         [ResponseType(typeof(Citas))]
-
+        [HttpDelete]
+        [Route("api/Citas/{id}/{tipo}")]
         public IHttpActionResult DeleteCita(int id, string tipo) 
         {
-            try 
+            var obtenerCitaPorIdCita = db.Citas.Where(c => c.idCita == id).FirstOrDefault();
+            if(obtenerCitaPorIdCita != null)
             {
-                Conexion();
-                conexion.Open();
-                cmd.Connection = conexion;
-                switch (tipo)
-                {
-                    case "Médico":
-                        string query = "delete from Citas where idMedico=" + id;
-                        cmd.CommandText = query;
-                        cmd.ExecuteNonQuery();
-                        break;
-                    case "Paciente":
-                        string query1 = "delete from Citas where idPaciente=" + id;
-                        cmd.CommandText = query1;
-                        cmd.ExecuteNonQuery();
-                        break;
-                    case "Cita":
-                        string query2 = "delete from Citas where idCita=" + id;
-                        cmd.CommandText = query2;
-                        cmd.ExecuteNonQuery();
-                        break;
-                }
-
-                cmd.Dispose();
-                conexion.Close();
-                return Ok(id);
+                db.Citas.Remove(obtenerCitaPorIdCita);
+                db.SaveChanges();
+                return Ok("Cita eliminada correctamente");
             }
-            catch(Exception ex) 
-            {
-                return BadRequest(ex.Message);
-            }
-
+            return BadRequest("Ha ocurrido un error al eliminar la cita");
         }
 
         protected override void Dispose(bool disposing)

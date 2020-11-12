@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http'
 import { CitaArreglada } from '../Models/CitaArreglada';
 import {retry, catchError} from 'rxjs/operators';
 import { DialogErrorComponent } from '../components/dialog-error/dialog-error.component';
+import { environment } from 'src/environments/environment';
 import { MatDialog } from '@angular/material';
 
 @Injectable({
@@ -12,7 +13,7 @@ import { MatDialog } from '@angular/material';
 })
 export class CitasService {
 
-  url = "https://localhost:44347/api/Citas";
+  url = environment.urls.Citas;
   constructor(private http: HttpClient, private dialog: MatDialog) { }
 
   ObtenerCitas(): Observable<CitaArreglada[]>
@@ -88,9 +89,9 @@ export class CitasService {
       }));
   }
 
-  BorrarCita(id: string, tipo:string): Observable<number>{
+  BorrarCita(id: string): Observable<number>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
-    return this.http.delete<number>(this.url+"/?id="+id+"&tipo="+tipo, httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
+    return this.http.delete<number>(this.url+"/"+id, httpOptions).pipe(retry(1), catchError((error:HttpErrorResponse)=>{
       const dialogRef = this.dialog.open(DialogErrorComponent, {
         width: '350px',
         data: error.error.Message,

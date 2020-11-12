@@ -5,13 +5,14 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { retry, catchError } from 'rxjs/operators';
 import { MatDialog } from '@angular/material';
 import { DialogErrorComponent } from '../components/dialog-error/dialog-error.component';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PacientesService {
 
-  url = "https://localhost:44347/api/Pacientes";
+  url = environment.urls.Pacientes;
   constructor(private http: HttpClient, private dialog: MatDialog) { }
 
   ObtenerPacientes(): Observable<Pacientes[]>

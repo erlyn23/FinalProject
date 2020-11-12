@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Medicos } from '../Models/Medicos';
-import { HttpClient, HttpHeaders, HttpParams, HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import {retry, catchError} from 'rxjs/operators';
 import { MatDialog } from '@angular/material';
+import { environment } from 'src/environments/environment';
 import { DialogErrorComponent } from '../components/dialog-error/dialog-error.component';
 
 @Injectable({
@@ -11,7 +12,7 @@ import { DialogErrorComponent } from '../components/dialog-error/dialog-error.co
 })
 export class MedicosService {
 
-  url = "https://localhost:44347/api/Medicos"
+  url = environment.urls.Medicos;
   constructor(private http: HttpClient, private dialog: MatDialog) { }
 
   ObtenerMedicos(): Observable<Medicos[]>{

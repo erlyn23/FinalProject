@@ -7,13 +7,14 @@ import {retry, catchError} from 'rxjs/operators';
 import {throwError }from 'rxjs';
 import { MatDialog } from '@angular/material';
 import { DialogErrorComponent } from '../components/dialog-error/dialog-error.component';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IngresosService {
 
-  url = "https://localhost:44347/api/Ingresos"
+  url = environment.urls.Ingresos;
   constructor(private http: HttpClient, private dialog:MatDialog) { }
 
   ObtenerIngresos(): Observable<IngresoArreglado[]>{
@@ -87,9 +88,9 @@ export class IngresosService {
     }));
   }
 
-  EliminarIngreso(id: string, tipo: string): Observable<number>{
+  EliminarIngreso(id: string): Observable<number>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
-    return this.http.delete<number>(this.url+"/?id="+id+"&tipo="+tipo, httpOptions).pipe(retry(1), catchError((err: HttpErrorResponse)=>{
+    return this.http.delete<number>(this.url+"/?id="+id, httpOptions).pipe(retry(1), catchError((err: HttpErrorResponse)=>{
       const dialogRef = this.dialog.open(DialogErrorComponent, {
         width: '350px',
         data: err.error.Message,

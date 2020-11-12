@@ -11,45 +11,22 @@ using System.Web.Http.Description;
 using System.Data.SqlClient;
 using FinalProject.Models;
 
-
 namespace FinalProject.Controllers
 {
     public class AltaMedicaController : ApiController
     {
-        SistemaMedico1Entities db = new SistemaMedico1Entities();
-        SqlConnection conexion = new SqlConnection();
-        SqlCommand cmd = new SqlCommand();
-        SqlDataReader dr;
+        SistemaMedicoEntities db = new SistemaMedicoEntities();
            
         public List<AltaArreglada> GetAltas() 
         {
-            try
+            return db.AltaMedica.Include("Pacientes").Select(am => new AltaArreglada()
             {
-                List<AltaArreglada> alta = new List<AltaArreglada>();
-                AltaArreglada alta1;
-                conexion.ConnectionString = "data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN; integrated security = SSPI; database=SistemaMedico1";
-                conexion.Open();
-                cmd.Connection = conexion;
-                cmd.CommandText = "select a.idAltaMedica, p.Nombre, i.FechaIngreso, a.FechaSalida, a.Monto from AltaMedica a inner join Pacientes p on a.idPaciente = p.idPaciente inner join Ingresos i on i.idIngreso = a.idIngreso";
-                dr = cmd.ExecuteReader();
-                while (dr.Read())
-                {
-                    alta1 = new AltaArreglada();
-                    alta1.idAltaMedica = dr.GetInt32(0);
-                    alta1.NombrePaciente = dr.GetString(1);
-                    alta1.FechaIngreso = dr.GetDateTime(2).ToString();
-                    alta1.FechaSalida = dr.GetDateTime(3).ToString();
-                    alta1.Monto = dr.GetDecimal(4);
-                    alta.Add(alta1);
-                }
-                cmd.Dispose();
-                conexion.Close();
-                return alta;
-            }
-            catch(Exception) 
-            {
-                return null;
-            }
+                idAltaMedica = am.idAltaMedica,
+                NombrePaciente = am.Ingresos.Pacientes.Nombre,
+                FechaIngreso = am.FehcaIngreso.ToString(),
+                FechaSalida = am.FechaSalida.ToString(),
+                Monto = (decimal)am.Monto
+            }).ToList();
         }
         [HttpGet]
         [Route("api/AltaMedica/PorPaciente/{pac}")]
@@ -61,9 +38,9 @@ namespace FinalProject.Controllers
                 var pacientes = from p in listaCompleta where p.NombrePaciente.ToLower().Contains(pac) orderby p.NombrePaciente select p;
                 return pacientes.ToList();
             }
-            catch(Exception)
+            catch(Exception exception)
             {
-                return null;
+                throw exception;
             }
         }
 
@@ -77,15 +54,15 @@ namespace FinalProject.Controllers
                 var fechas = from f in listaCompleta where DateTime.Parse(f.FechaSalida) == DateTime.Parse(fech) orderby f.FechaSalida select f;
                 return fechas.ToList();
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                return null;
+                throw exception;
             }
         }
 
         [HttpGet]
         [Route("api/AltaMedica/Opciones/{filtro}/{busqueda}/{total}/{suma}/{promedio}/{mayor}/{menor}")]
-        public Opciones GetOpciones(string filtro, string busqueda, bool? total, bool? suma, bool? promedio, bool? mayor, bool? menor)
+        public IHttpActionResult GetOpciones(string filtro, string busqueda, bool? total, bool? suma, bool? promedio, bool? mayor, bool? menor)
         {
             try
             {
@@ -114,7 +91,7 @@ namespace FinalProject.Controllers
                     {
                         opc.MontoMenor = pacientes.Min(t => t.Monto);
                     }
-                    return opc;
+                    return Ok(opc);
                 }
                 else if(filtro == "Fecha")
                 {
@@ -141,13 +118,13 @@ namespace FinalProject.Controllers
                     {
                         opc.MontoMenor = fechas.Min(t => t.Monto);
                     }
-                    return opc;
+                    return Ok(opc);
                 }
-                return null;
+                return BadRequest();
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                return null;
+                throw exception;
             }
         }
 
@@ -183,37 +160,14 @@ namespace FinalProject.Controllers
 
         public IHttpActionResult DeleteAltaMedica(int id, string tipo) 
         {
-            try
+            var obtenerAltaMedica = db.AltaMedica.Where(am => am.idAltaMedica == id).FirstOrDefault();
+            if(obtenerAltaMedica != null)
             {
-                conexion.ConnectionString = "data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN; integrated security = SSPI; database=SistemaMedico1";
-                conexion.Open();
-                cmd.Connection = conexion;
-                switch (tipo)
-                {
-                    case "Paciente":
-                        string query1 = "delete from AltaMedica where idPaciente=" + id;
-                        cmd.CommandText = query1;
-                        cmd.ExecuteNonQuery();
-                        break;
-                    case "Habitacion":
-                        string query2 = "delete from AltaMedica where idHabitacion=" + id;
-                        cmd.CommandText = query2;
-                        cmd.ExecuteNonQuery();
-                        break;
-                    default:
-                        string query3 = "delete from AltaMedica where idAltaMedica=" + id;
-                        cmd.CommandText = query3;
-                        cmd.ExecuteNonQuery();
-                        break;
-                }
-                cmd.Dispose();
-                conexion.Close();
-                return Ok(id);
+                db.AltaMedica.Remove(obtenerAltaMedica);
+                db.SaveChanges();
+                return Ok("Alta médica eliminada correctamente");
             }
-            catch(Exception ex) 
-            {
-                return BadRequest(ex.Message);
-            }
+            return NotFound();
         }
     }
 }

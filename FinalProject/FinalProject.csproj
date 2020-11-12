@@ -116,15 +116,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="Models\Model1.Context.tt">
+    <Content Include="Models\SistemaMedicoModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model1.edmx</DependentUpon>
-      <LastGenOutput>Model1.Context.cs</LastGenOutput>
+      <DependentUpon>SistemaMedicoModel.edmx</DependentUpon>
+      <LastGenOutput>SistemaMedicoModel.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\Model1.tt">
+    <Content Include="Models\SistemaMedicoModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Model1.edmx</DependentUpon>
-      <LastGenOutput>Model1.cs</LastGenOutput>
+      <DependentUpon>SistemaMedicoModel.edmx</DependentUpon>
+      <LastGenOutput>SistemaMedicoModel.cs</LastGenOutput>
     </Content>
     <Content Include="Web.config" />
   </ItemGroup>
@@ -142,54 +142,60 @@
     </Compile>
     <Compile Include="Models\AltaArreglada.cs" />
     <Compile Include="Models\AltaMedica.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>SistemaMedicoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Citas.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>SistemaMedicoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CitasArregladas.cs" />
     <Compile Include="Models\Habitaciones.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>SistemaMedicoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Ingresos.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>SistemaMedicoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IngresosArreglados.cs" />
     <Compile Include="Models\Medicos.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Model1.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Model1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Model1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.edmx</DependentUpon>
+      <DependentUpon>SistemaMedicoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Opciones.cs" />
     <Compile Include="Models\Pacientes.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>SistemaMedicoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SistemaMedicoModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SistemaMedicoModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SistemaMedicoModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SistemaMedicoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SistemaMedicoModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SistemaMedicoModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>SistemaMedicoModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sp_helpdiagrams_Result.cs">
+      <DependentUpon>SistemaMedicoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\sysdiagrams.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
+      <DependentUpon>SistemaMedicoModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
-    <EntityDeploy Include="Models\Model1.edmx">
+    <EntityDeploy Include="Models\SistemaMedicoModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+      <LastGenOutput>SistemaMedicoModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\Model1.edmx.diagram">
-      <DependentUpon>Model1.edmx</DependentUpon>
+    <Content Include="Models\SistemaMedicoModel.edmx.diagram">
+      <DependentUpon>SistemaMedicoModel.edmx</DependentUpon>
     </Content>
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />

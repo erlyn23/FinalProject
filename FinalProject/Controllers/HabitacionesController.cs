@@ -15,17 +15,10 @@ namespace FinalProject.Controllers
 {
     public class HabitacionesController : ApiController
     {
-        private SistemaMedico1Entities db = new SistemaMedico1Entities();
-        private SqlConnection conexion = new SqlConnection();
-        private SqlCommand cmd = new SqlCommand();
-        private SqlDataReader dr;
+        private SistemaMedicoEntities db = new SistemaMedicoEntities();
 
 
-        public void Conexion()
-        {
-            conexion.ConnectionString = "Data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN;integrated security=SSPI;database=SistemaMedico1;";
-        }
-        // GET: api/Habitaciones
+        [HttpGet]
         public IQueryable<Habitaciones> GetHabitaciones()
         {
             return db.Habitaciones;
@@ -41,9 +34,9 @@ namespace FinalProject.Controllers
                 var tipos = from t in listaCompleta where t.Tipo.Contains(tip) orderby t.Tipo select t;
                 return tipos;
             }
-            catch(Exception) 
+            catch (Exception exception)
             {
-                return null;
+                throw exception;
             }
         }
 
@@ -58,23 +51,23 @@ namespace FinalProject.Controllers
                     var listaCompleta = db.Habitaciones;
                     var tipos = from t in listaCompleta where t.Tipo.Contains(busqueda) orderby t.Tipo select t;
                     Opciones opc = new Opciones();
-                    if (total == true)
+                    if ((bool)total)
                     {
                         opc.Sumatoria = tipos.Count();
                     }
-                    if (suma == true)
+                    if ((bool)suma)
                     {
                         opc.Conteo = tipos.Sum(t => t.PrecioxDia);
                     }
-                    if (promedio == true)
+                    if ((bool)promedio)
                     {
                         opc.Promedio = tipos.Average(t => t.PrecioxDia);
                     }
-                    if (mayor == true)
+                    if ((bool)mayor)
                     {
                         opc.MontoMayor = tipos.Max(t => t.PrecioxDia);
                     }
-                    if (menor == true)
+                    if ((bool)menor)
                     {
                         opc.MontoMenor = tipos.Min(t => t.PrecioxDia);
                     }
@@ -82,13 +75,12 @@ namespace FinalProject.Controllers
                 }
                 return null;
             }
-            catch(Exception)
+            catch (Exception exception)
             {
-                return null;
+                throw exception;
             }
         }
 
-        // GET: api/Habitaciones/5
         [ResponseType(typeof(Habitaciones))]
         public IHttpActionResult GetHabitaciones(int id)
         {
@@ -114,22 +106,16 @@ namespace FinalProject.Controllers
 
             try
             {
-                Conexion();
-                conexion.Open();
-                cmd.Connection = conexion;
-                cmd.CommandText = "Select*from Habitaciones where not idHabitacion="+habitaciones.idHabitacion;
-                dr = cmd.ExecuteReader();
-                while (dr.Read())
+                var dbHabitaciones = db.Habitaciones.Where(h=> h.idHabitacion != habitaciones.idHabitacion).ToList();
+                foreach (var item in dbHabitaciones)
                 {
-                    if (dr.GetInt32(1) == habitaciones.Numero)
+                    if (item.Numero == habitaciones.Numero)
                     {
                         return BadRequest("El número de habitación ya existe, intente con uno nuevo");
                     }
                 }
-                dr.Close();
-                cmd.Dispose();
-                conexion.Close();
                 db.SaveChanges();
+                return Ok("Habitación modificada correctamente");
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -142,7 +128,6 @@ namespace FinalProject.Controllers
                     throw;
                 }
             }
-
             return StatusCode(HttpStatusCode.NoContent);
         }
 
@@ -158,21 +143,14 @@ namespace FinalProject.Controllers
 
             try
             {
-                Conexion();
-                conexion.Open();
-                cmd.Connection = conexion;
-                cmd.CommandText = "Select*from Habitaciones";
-                dr = cmd.ExecuteReader();
-                while (dr.Read())
+                var dbHabitaciones = db.Habitaciones.Where(h => h.idHabitacion != habitaciones.idHabitacion).ToList();
+                foreach (var item in dbHabitaciones)
                 {
-                  if (dr.GetInt32(1) == habitaciones.Numero)
-                  {
-                    return BadRequest("El número de habitación ya existe, intente con uno nuevo");
-                  }
+                    if (item.Numero == habitaciones.Numero)
+                    {
+                        return BadRequest("El número de habitación ya existe, intente con uno nuevo");
+                    }
                 }
-                dr.Close();
-                cmd.Dispose();
-                conexion.Close();
                 if (string.IsNullOrEmpty(habitaciones.Numero.ToString()) || string.IsNullOrEmpty(habitaciones.Tipo) || string.IsNullOrEmpty(habitaciones.PrecioxDia.ToString()) || string.IsNullOrEmpty(habitaciones.Disponible.ToString()))
                 {
                     return BadRequest("No se aceptan campos nulos");
@@ -202,32 +180,25 @@ namespace FinalProject.Controllers
 
             try
             {
-                Conexion();
-                conexion.Open();
-                cmd.Connection = conexion;
-                cmd.CommandText = "Select*from Ingresos";
-                dr = cmd.ExecuteReader();
-                while (dr.Read())
+                var altasMedicas = db.AltaMedica.Where(am => am.idHabitacion == id).ToList();
+                if (altasMedicas.Count > 0)
                 {
-                    if (dr.GetInt32(2) == id)
+                    foreach (var altaMedica in altasMedicas)
                     {
-                        return BadRequest("No se puede eliminar esta habitación porque tiene ingresos pendientes");
+                        db.AltaMedica.Remove(altaMedica);
+                        db.SaveChanges();
                     }
                 }
-                dr.Close();
-                cmd.Dispose();
-                cmd.CommandText = "Select*from AltaMedica";
-                dr = cmd.ExecuteReader();
-                while (dr.Read())
+
+                var ingresos = db.Ingresos.Where(i => i.idHabitacion == id).ToList();
+                if (ingresos.Count > 0)
                 {
-                    if (dr.GetInt32(2) == id)
+                    foreach(var ingreso in ingresos)
                     {
-                        return BadRequest("No se puede eliminar esta habitación porque está registrado en la tabla altas médicas");
+                        db.Ingresos.Remove(ingreso);
+                        db.SaveChanges();
                     }
                 }
-                dr.Close();
-                cmd.Dispose();
-                conexion.Close();
                 db.Habitaciones.Remove(habitaciones);
                 db.SaveChanges();
                 return Ok(habitaciones);

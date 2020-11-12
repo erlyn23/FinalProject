@@ -5,21 +5,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {ReactiveFormsModule, FormsModule} from '@angular/forms';
-import {AngularFireModule} from '@angular/fire';
-import {AngularFireDatabaseModule } from '@angular/fire/database';
-import {AngularFireAuthModule} from '@angular/fire/auth';
 import {HttpClientModule} from '@angular/common/http';
-import {MatToolbarModule, MatCard, MatCheckbox, MatMenuModule, MatIconModule, MatPaginatorModule, MatNativeDateModule, MAT_DATE_LOCALE, MAT_DATE_FORMATS, MatTableModule} from '@angular/material';
-import {environment} from '../environments/environment';
+import {MatToolbarModule, MatMenuModule, MatIconModule, MatPaginatorModule, MatNativeDateModule, MAT_DATE_LOCALE, MatTableModule } from '@angular/material';
 import {MatButtonModule} from '@angular/material/button';
-import {MatCardModule} from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
 import {MatInputModule} from '@angular/material';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatDialogModule, MatDialog} from '@angular/material/dialog';
+import {MatDialogModule } from '@angular/material/dialog';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {NgxPaginationModule} from 'ngx-pagination';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
@@ -55,13 +51,9 @@ import { FooterComponent } from './components/footer/footer.component';
     BrowserAnimationsModule,
     ReactiveFormsModule,
     FormsModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireDatabaseModule, 
-    AngularFireAuthModule,
     HttpClientModule,
     MatToolbarModule,
     MatButtonModule,
-    MatCardModule,
     MatInputModule,
     MatCheckboxModule,
     MatRadioModule,
@@ -71,6 +63,7 @@ import { FooterComponent } from './components/footer/footer.component';
     MatTooltipModule,
     MatMenuModule,
     MatIconModule,
+    MatCardModule,
     MatPaginatorModule,
     MatSelectModule,
     MatDialogModule,

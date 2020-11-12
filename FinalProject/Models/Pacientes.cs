@@ -18,6 +18,7 @@ namespace FinalProject.Models
         public Pacientes()
         {
             this.Citas = new HashSet<Citas>();
+            this.Ingresos = new HashSet<Ingresos>();
         }
     
         public int idPaciente { get; set; }
@@ -27,5 +28,7 @@ namespace FinalProject.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Citas> Citas { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Ingresos> Ingresos { get; set; }
     }
 }

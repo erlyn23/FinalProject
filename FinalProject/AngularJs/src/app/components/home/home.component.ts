@@ -90,8 +90,7 @@ export class HomeComponent implements OnInit {
     private fb2: FormBuilder,
     private ms: MedicosService,
     private snack: MatSnackBar,
-    private dialog: MatDialog,
-    private cs: CitasService) { }
+    private dialog: MatDialog) { }
 
   ngOnInit() {
     this.fg = this.fb.group({
@@ -118,9 +117,9 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  addMedico(medico: Medicos)
+  addMedico()
   {
-    medico = new Medicos();
+    let medico = new Medicos();
     
     medico.Nombre = this.fg.value.Nombre;
     medico.Exequatur = this.fg.value.Exequatur;
@@ -147,7 +146,6 @@ export class HomeComponent implements OnInit {
         if(result)
         {
           const idMed = this.todosMedicos[i].idMedico;
-          this.cs.BorrarCita(idMed.toString(),"Médico").subscribe(()=>{});
           this.ms.BorrarMedico(idMed.toString()).subscribe(()=>
           {
             this.todosMedicos = [];

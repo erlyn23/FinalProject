@@ -6,13 +6,14 @@ import { retry, catchError } from 'rxjs/operators';
 import { Opciones } from '../Models/Opciones';
 import { MatDialog } from '@angular/material';
 import { DialogErrorComponent } from '../components/dialog-error/dialog-error.component';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HabitacionesService {
 
-  url = "https://localhost:44347/api/Habitaciones"
+  url = environment.urls.Habitaciones;
   constructor(private http: HttpClient, private dialog: MatDialog) { }
 
   ObtenerHabitaciones(): Observable<Habitaciones[]>{

@@ -7,6 +7,7 @@ import {throwError} from 'rxjs';
 import {retry, catchError} from 'rxjs/operators';
 import { Opciones } from '../Models/Opciones';
 import { MatDialog } from '@angular/material';
+import { environment } from 'src/environments/environment';
 import { DialogErrorComponent } from '../components/dialog-error/dialog-error.component';
 
 @Injectable({
@@ -14,7 +15,7 @@ import { DialogErrorComponent } from '../components/dialog-error/dialog-error.co
 })
 export class AltasService {
 
-  url = "https://localhost:44347/api/AltaMedica";
+  url = environment.urls.AltasMedicas;
   constructor(private http: HttpClient, private dialog: MatDialog) { }
 
   ObtenerAltasMedicas():Observable<AltaMedicaArreglada[]>{
@@ -77,9 +78,9 @@ export class AltasService {
     }));
   }
 
-  EliminarAltaMedica(id: string, tipo:string): Observable<number>{
+  EliminarAltaMedica(id: string): Observable<number>{
     const httpOptions = {headers: new HttpHeaders({"Content-type":"application/json"})};
-    return this.http.delete<number>(this.url+"/?id="+id+"&tipo="+tipo, httpOptions).pipe(retry(1), catchError((error: HttpErrorResponse)=>{
+    return this.http.delete<number>(this.url+"/?id="+id, httpOptions).pipe(retry(1), catchError((error: HttpErrorResponse)=>{
       const dialogRef = this.dialog.open(DialogErrorComponent, {
         width: '350px',
         data: error.error.Message,

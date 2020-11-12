@@ -165,7 +165,7 @@ export class CitasComponent implements OnInit {
   deleteCita(i: number)
   {
     const idCita = this.todasCitas[i].IdCita;
-    this.cs.BorrarCita(idCita.toString(), "Cita").subscribe(()=>{
+    this.cs.BorrarCita(idCita.toString()).subscribe(()=>{
       this.todasCitas = [];
       this.obtenerCitas();
       this.snack.open('Cita eliminada correctamente', '',{

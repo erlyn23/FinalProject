@@ -16,46 +16,25 @@ namespace FinalProject.Controllers
 {
     public class IngresosController : ApiController
     {
-        private SistemaMedico1Entities db = new SistemaMedico1Entities();
-        private SqlConnection conexion = new SqlConnection();
-        private SqlCommand cmd = new SqlCommand();
-        private SqlDataReader dr;
+        private SistemaMedicoEntities db = new SistemaMedicoEntities();
 
-        public void Conexion()
-        {
-            conexion.ConnectionString = "Data source=DESKTOP-KQ78R80\\SQLEXPRESSERLYN; database=SistemaMedico1; integrated security=SSPI";
-        }
+        [HttpGet]
         public List<IngresosArreglados> GetIngresos() 
         {
-            try
-            {
-                List<IngresosArreglados> lista = new List<IngresosArreglados>();
-                Conexion();
-                conexion.Open();
-                cmd.Connection = conexion;
-                string query = "select i.idIngreso, p.idPaciente, p.Nombre, h.Numero, i.FechaIngreso from Ingresos i inner join Pacientes p on i.idPaciente = p.idPaciente inner join Habitaciones h on i.idHabitacion = h.idHabitacion left join AltaMedica a on i.idIngreso = a.idIngreso where a.idIngreso is null";
-                cmd.CommandText = query;
-                dr = cmd.ExecuteReader();
-                while (dr.Read())
+            return db.Ingresos.SqlQuery("select i.idIngreso, i.idPaciente,i.idHabitacion, p.Nombre, h.Numero, i.FechaIngreso from  " +
+                "Ingresos i inner join Pacientes p on i.idPaciente = p.idPaciente " +
+                "inner join Habitaciones h on i.idHabitacion = h.idHabitacion left join AltaMedica am " +
+                "on i.idIngreso = am.idIngreso where am.idIngreso is null").Select(i => new IngresosArreglados()
                 {
-                    IngresosArreglados ingreso = new IngresosArreglados();
-                    ingreso.idIngreso = dr.GetInt32(0);
-                    ingreso.idPaciente = dr.GetInt32(1);
-                    ingreso.NombrePaciente = dr.GetString(2);
-                    ingreso.NumeroHabitacion = dr.GetInt32(3);
-                    ingreso.FechaIngreso = dr.GetDateTime(4);
-                    lista.Add(ingreso);
-                }
-                cmd.Dispose();
-                conexion.Close();
-                return lista;
-            }
-            catch(Exception) 
-            {
-                return null;
-            }
+                    idIngreso = i.idIngreso,
+                    idPaciente = i.idPaciente,
+                    NombrePaciente = i.Pacientes.Nombre,
+                    NumeroHabitacion = i.Habitaciones.Numero,
+                    FechaIngreso = i.FechaIngreso
+                }).ToList();
         }
 
+        [HttpGet]
         [Route("Ingresos2")]
         public IQueryable<Ingresos> GetIngresos2()
         {
@@ -72,9 +51,9 @@ namespace FinalProject.Controllers
                 var fechas = from f in listaCompleta where f.FechaIngreso == DateTime.Parse(fecha) orderby f.FechaIngreso select f;
                 return fechas.ToList();
             }
-            catch(Exception)
+            catch (Exception exception)
             {
-                return null;
+                throw exception;
             }
         }
 
@@ -88,9 +67,9 @@ namespace FinalProject.Controllers
                 var numeros = from n in listaCompleta where n.NumeroHabitacion == num orderby n.NumeroHabitacion select n;
                 return numeros.ToList();
             }
-            catch(Exception)
+            catch (Exception exception)
             {
-                return null;
+                throw exception;
             }
         }
 
@@ -131,9 +110,9 @@ namespace FinalProject.Controllers
                 }
                 return 0;
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                return 0;
+                throw exception;
             }
         }
 
@@ -149,22 +128,14 @@ namespace FinalProject.Controllers
             }
             try
             {
-                Conexion();
-                conexion.Open();
-                cmd.Connection = conexion;
-                cmd.CommandText = "select i.idIngreso, p.idPaciente, p.Nombre, h.Numero, i.FechaIngreso from Ingresos i inner join Pacientes p on i.idPaciente = p.idPaciente inner join Habitaciones h on i.idHabitacion = h.idHabitacion left join AltaMedica a on i.idIngreso = a.idIngreso where a.idIngreso is null";
-                dr = cmd.ExecuteReader();
-                while (dr.Read())
+                var obtenerIngresos = GetIngresos();
+                foreach (var item in obtenerIngresos)
                 {
-                    if (dr.GetInt32(1) == ingreso.idPaciente)
+                    if (item.idPaciente == ingreso.idPaciente)
                     {
                         return BadRequest("El paciente ya ha sido ingresado en una habitación, primero registre el alta médica e ingréselo de nuevo");
                     }
                 }
-                dr.Close();
-                cmd.Dispose();
-                conexion.Close();
-
                 if (string.IsNullOrEmpty(ingreso.idPaciente.ToString()) || string.IsNullOrEmpty(ingreso.idHabitacion.ToString()) || string.IsNullOrEmpty(ingreso.FechaIngreso.ToString()))
                 {
                     return BadRequest("No se aceptan campos nulos");
@@ -184,39 +155,16 @@ namespace FinalProject.Controllers
 
         [ResponseType(typeof(Ingresos))]
 
-        public IHttpActionResult DeleteIngreso(int id, string tipo) 
+        public IHttpActionResult DeleteIngreso(int id) 
         {
-            try 
+            var obtenerIngreso = db.Ingresos.Where(i => i.idIngreso == id).FirstOrDefault();
+            if(obtenerIngreso != null)
             {
-                Conexion();
-                conexion.Open();
-                cmd.Connection = conexion;
-                switch (tipo)
-                {
-                    case "Paciente":
-                        string query = "delete from Ingresos where idPaciente=" + id;
-                        cmd.CommandText = query;
-                        cmd.ExecuteNonQuery();
-                        break;
-                    case "Habitacion":
-                        string query1 = "delete from Ingresos where idHabitacion=" + id;
-                        cmd.CommandText = query1;
-                        cmd.ExecuteNonQuery();
-                        break;
-                    case "Ingreso":
-                        string query2 = "delete from Ingresos where idIngreso=" + id;
-                        cmd.CommandText = query2;
-                        cmd.ExecuteNonQuery();
-                        break;
-                }
-                cmd.Dispose();
-                conexion.Close();
-                return Ok(id);
+                db.Ingresos.Remove(obtenerIngreso);
+                db.SaveChanges();
+                return Ok("Ingreso eliminado correctamente");
             }
-            catch(Exception ex) 
-            {
-                return BadRequest(ex.Message);
-            }
+            return BadRequest();
         }
     }
 }

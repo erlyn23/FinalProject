@@ -4,9 +4,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { Pacientes } from 'src/app/Models/Pacientes';
 import { DialogComponent } from '../dialog/dialog.component';
-import { CitasService } from 'src/app/services/citas.service';
-import { AltasService } from 'src/app/services/altas.service';
-import { IngresosService } from 'src/app/services/ingresos.service';
 import * as jspdf from 'jspdf';
 import htmlToImage from 'html-to-image';
 
@@ -26,13 +23,10 @@ export class PacientesComponent implements OnInit {
   cargando: boolean = false;
 
   constructor(private ps: PacientesService, 
-    private as: AltasService,
-    private is: IngresosService,
     private fb: FormBuilder, 
     private fb2: FormBuilder,
     private snack: MatSnackBar, 
-    private dialog:MatDialog,
-    private cs: CitasService) { }
+    private dialog:MatDialog) { }
 
   ngOnInit() {
     this.fg = this.fb.group({
@@ -106,8 +100,8 @@ export class PacientesComponent implements OnInit {
       });
   }
 
-  addPaciente(paciente: Pacientes){
-    paciente = new Pacientes();
+  addPaciente(){
+    let paciente = new Pacientes();
     paciente.Cedula = this.fg.value.Cedula;
     paciente.Nombre = this.fg.value.Nombre;
     paciente.Asegurado = this.fg.value.Asegurado;
@@ -131,9 +125,9 @@ export class PacientesComponent implements OnInit {
     this.comprobar = true;
   }
 
-  modificarPaciente(paciente: Pacientes)
+  modificarPaciente()
   {
-    paciente = new Pacientes();
+    let paciente = new Pacientes();
     paciente.idPaciente = this.todosPacientes[this.index].idPaciente;
     paciente.Cedula = this.fg.value.Cedula;
     paciente.Nombre = this.fg.value.Nombre;
@@ -162,9 +156,6 @@ export class PacientesComponent implements OnInit {
     dialogRef.afterClosed().subscribe(data=>{
       if(data){
         const idPac = this.todosPacientes[i].idPaciente;
-        this.as.EliminarAltaMedica(idPac.toString(), "Paciente").subscribe(()=>{});
-        this.is.EliminarIngreso(idPac.toString(), "Paciente").subscribe(()=>{});
-        this.cs.BorrarCita(idPac.toString(), "Paciente").subscribe(()=>{});
         this.ps.EliminarPaciente(idPac.toString()).subscribe(()=>
         {  
           this.todosPacientes = [];

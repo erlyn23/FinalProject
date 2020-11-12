@@ -18,17 +18,10 @@ namespace FinalProject.Controllers
 {
     public class MedicosController : ApiController
     {
-        private SistemaMedico1Entities db = new SistemaMedico1Entities();
-        private SqlConnection conexion = new SqlConnection();
-        private SqlCommand cmd = new SqlCommand();
-        private SqlDataReader dr;
+        private SistemaMedicoEntities db = new SistemaMedicoEntities();
 
 
-        public void Conexion()
-        {
-            conexion.ConnectionString = "Data source = DESKTOP-KQ78R80\\SQLEXPRESSERLYN;integrated security=SSPI;database=SistemaMedico1;";
-        }
-        // GET: api/Medicos
+        [HttpGet]
         public IQueryable<Medicos> GetMedicos()
         {
             return db.Medicos;
@@ -45,9 +38,9 @@ namespace FinalProject.Controllers
                 var nombres = from n in listaCompleta where n.Nombre.ToLower().Contains(nom) orderby n.Nombre select n;
                 return nombres;
             }
-            catch(Exception)
+            catch (Exception exception)
             {
-                return null;
+                throw exception;
             }
         }
 
@@ -62,9 +55,9 @@ namespace FinalProject.Controllers
                 var especialidades = from e in listaCompleta where e.Especialidad.ToLower().Contains(spc) orderby e.Especialidad select e;
                 return especialidades;
             }
-            catch(Exception) 
+            catch (Exception exception)
             {
-                return null;
+                throw exception;
             }
         }
 
@@ -106,9 +99,9 @@ namespace FinalProject.Controllers
                 }
                 return 0;
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                return 0;
+                throw exception;
             }
         }
 
@@ -138,22 +131,16 @@ namespace FinalProject.Controllers
 
             try
             {
-                Conexion();
-                conexion.Open();
-                cmd.Connection = conexion;
-                cmd.CommandText = "Select*from Medicos where not idMedico="+medicos.idMedico;
-                dr = cmd.ExecuteReader();
-                while (dr.Read())
+                var dbMedicos = db.Medicos.Where(m => m.idMedico != medicos.idMedico).ToList();
+                foreach (var item in dbMedicos)
                 {
-                  if (dr.GetInt32(2) == medicos.Exequatur)
+                  if (item.Exequatur == medicos.Exequatur)
                   {
                     return BadRequest("El exequatur ya existe intente con uno nuevo");
                   }
                 }
-                dr.Close();
-                cmd.Dispose();
-                conexion.Close();
                 db.SaveChanges();
+                return Ok("Médico modificado correctamente");
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -166,8 +153,6 @@ namespace FinalProject.Controllers
                     throw;
                 }
             }
-
-            return StatusCode(HttpStatusCode.NoContent);
         }
 
         // POST: api/Medicos
@@ -183,21 +168,14 @@ namespace FinalProject.Controllers
 
             try 
             {
-                Conexion();
-                conexion.Open();
-                cmd.Connection = conexion;
-                cmd.CommandText = "Select*from Medicos";
-                dr = cmd.ExecuteReader();
-                while (dr.Read())
+                var dbMedicos = db.Medicos.Where(m => m.idMedico != medicos.idMedico).ToList();
+                foreach (var item in dbMedicos)
                 {
-                  if(dr.GetInt32(2) == medicos.Exequatur) 
+                  if(item.Exequatur == medicos.Exequatur) 
                   {
                     return BadRequest("El exequatur ya existe intente con uno nuevo");
                   }
                 }
-                dr.Close();
-                cmd.Dispose();
-                conexion.Close();
                 if (string.IsNullOrEmpty(medicos.Nombre) || string.IsNullOrEmpty(medicos.Exequatur.ToString()) || string.IsNullOrEmpty(medicos.Especialidad))
                 {
                     return BadRequest("No se aceptan campos nulos");
@@ -227,24 +205,18 @@ namespace FinalProject.Controllers
 
             try 
             {
-                Conexion();
-                conexion.Open();
-                cmd.Connection = conexion;
-                cmd.CommandText = "Select*from Citas";
-                dr = cmd.ExecuteReader();
-                while (dr.Read()) 
+                var citas = db.Citas.Where(c => c.idMedico == id).ToList();
+                if (citas.Count > 0) 
                 { 
-                  if(dr.GetInt32(2) == id) 
-                  {
-                    return BadRequest("No se puede eliminar este médico porque tiene citas pendientes");
-                  }
+                    foreach(var cita in citas)
+                    {
+                        db.Citas.Remove(cita);
+                        db.SaveChanges();
+                    }
                 }
-                dr.Close();
-                cmd.Dispose();
-                conexion.Close();
                 db.Medicos.Remove(medicos);
                 db.SaveChanges();
-                return Ok(medicos);
+                return Ok("Médico eliminado correctamente");
             }
             catch(Exception e) 
             {

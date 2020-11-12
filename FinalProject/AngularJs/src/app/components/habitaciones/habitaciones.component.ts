@@ -26,8 +26,6 @@ export class HabitacionesComponent implements OnInit {
   cargando: boolean = false;
 
   constructor(private hs: HabitacionesService,
-    private is: IngresosService,
-    private as: AltasService,
     private fb: FormBuilder,
     private fb2: FormBuilder,
     private snack: MatSnackBar,
@@ -144,8 +142,6 @@ export class HabitacionesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(salida=>{
       if(salida){
-          this.as.EliminarAltaMedica(idHab.toString(),"Habitacion").subscribe(()=>{});
-          this.is.EliminarIngreso(idHab.toString(), "Habitacion").subscribe(()=>{});
           this.hs.EliminarHabitacion(idHab.toString()).subscribe(()=>{
           this.todasHabitaciones = [];
           this.obtenerHabitaciones();
